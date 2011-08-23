@@ -1,0 +1,270 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BCC206581403D9CE00C1BF57 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCC206571403D9CE00C1BF57 /* UIKit.framework */; };
+		BCC2065A1403D9CE00C1BF57 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCC206591403D9CE00C1BF57 /* Foundation.framework */; };
+		BCC2065C1403D9CE00C1BF57 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCC2065B1403D9CE00C1BF57 /* CoreGraphics.framework */; };
+		BCC206621403D9CE00C1BF57 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BCC206601403D9CE00C1BF57 /* InfoPlist.strings */; };
+		BCC206641403D9CE00C1BF57 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC206631403D9CE00C1BF57 /* main.m */; };
+		BCC206681403D9CE00C1BF57 /* WideNoiseAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC206671403D9CE00C1BF57 /* WideNoiseAppDelegate.m */; };
+		BCC2066B1403D9CE00C1BF57 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = BCC206691403D9CE00C1BF57 /* MainWindow.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		BCC206531403D9CE00C1BF57 /* WideNoise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WideNoise.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BCC206571403D9CE00C1BF57 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		BCC206591403D9CE00C1BF57 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		BCC2065B1403D9CE00C1BF57 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		BCC2065F1403D9CE00C1BF57 /* WideNoise-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WideNoise-Info.plist"; sourceTree = "<group>"; };
+		BCC206611403D9CE00C1BF57 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		BCC206631403D9CE00C1BF57 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		BCC206651403D9CE00C1BF57 /* WideNoise-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WideNoise-Prefix.pch"; sourceTree = "<group>"; };
+		BCC206661403D9CE00C1BF57 /* WideNoiseAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WideNoiseAppDelegate.h; sourceTree = "<group>"; };
+		BCC206671403D9CE00C1BF57 /* WideNoiseAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WideNoiseAppDelegate.m; sourceTree = "<group>"; };
+		BCC2066A1403D9CE00C1BF57 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainWindow.xib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BCC206501403D9CE00C1BF57 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BCC206581403D9CE00C1BF57 /* UIKit.framework in Frameworks */,
+				BCC2065A1403D9CE00C1BF57 /* Foundation.framework in Frameworks */,
+				BCC2065C1403D9CE00C1BF57 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BCC206481403D9CE00C1BF57 = {
+			isa = PBXGroup;
+			children = (
+				BCC2065D1403D9CE00C1BF57 /* WideNoise */,
+				BCC206561403D9CE00C1BF57 /* Frameworks */,
+				BCC206541403D9CE00C1BF57 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BCC206541403D9CE00C1BF57 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BCC206531403D9CE00C1BF57 /* WideNoise.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BCC206561403D9CE00C1BF57 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BCC206571403D9CE00C1BF57 /* UIKit.framework */,
+				BCC206591403D9CE00C1BF57 /* Foundation.framework */,
+				BCC2065B1403D9CE00C1BF57 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BCC2065D1403D9CE00C1BF57 /* WideNoise */ = {
+			isa = PBXGroup;
+			children = (
+				BCC206661403D9CE00C1BF57 /* WideNoiseAppDelegate.h */,
+				BCC206671403D9CE00C1BF57 /* WideNoiseAppDelegate.m */,
+				BCC206691403D9CE00C1BF57 /* MainWindow.xib */,
+				BCC2065E1403D9CE00C1BF57 /* Supporting Files */,
+			);
+			path = WideNoise;
+			sourceTree = "<group>";
+		};
+		BCC2065E1403D9CE00C1BF57 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				BCC2065F1403D9CE00C1BF57 /* WideNoise-Info.plist */,
+				BCC206601403D9CE00C1BF57 /* InfoPlist.strings */,
+				BCC206631403D9CE00C1BF57 /* main.m */,
+				BCC206651403D9CE00C1BF57 /* WideNoise-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BCC206521403D9CE00C1BF57 /* WideNoise */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BCC2066E1403D9CE00C1BF57 /* Build configuration list for PBXNativeTarget "WideNoise" */;
+			buildPhases = (
+				BCC2064F1403D9CE00C1BF57 /* Sources */,
+				BCC206501403D9CE00C1BF57 /* Frameworks */,
+				BCC206511403D9CE00C1BF57 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WideNoise;
+			productName = WideNoise;
+			productReference = BCC206531403D9CE00C1BF57 /* WideNoise.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BCC2064A1403D9CE00C1BF57 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = BCC2064D1403D9CE00C1BF57 /* Build configuration list for PBXProject "WideNoise" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = BCC206481403D9CE00C1BF57;
+			productRefGroup = BCC206541403D9CE00C1BF57 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BCC206521403D9CE00C1BF57 /* WideNoise */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BCC206511403D9CE00C1BF57 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BCC206621403D9CE00C1BF57 /* InfoPlist.strings in Resources */,
+				BCC2066B1403D9CE00C1BF57 /* MainWindow.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BCC2064F1403D9CE00C1BF57 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BCC206641403D9CE00C1BF57 /* main.m in Sources */,
+				BCC206681403D9CE00C1BF57 /* WideNoiseAppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		BCC206601403D9CE00C1BF57 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BCC206611403D9CE00C1BF57 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		BCC206691403D9CE00C1BF57 /* MainWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BCC2066A1403D9CE00C1BF57 /* en */,
+			);
+			name = MainWindow.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		BCC2066C1403D9CE00C1BF57 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		BCC2066D1403D9CE00C1BF57 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		BCC2066F1403D9CE00C1BF57 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WideNoise/WideNoise-Prefix.pch";
+				INFOPLIST_FILE = "WideNoise/WideNoise-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		BCC206701403D9CE00C1BF57 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WideNoise/WideNoise-Prefix.pch";
+				INFOPLIST_FILE = "WideNoise/WideNoise-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BCC2064D1403D9CE00C1BF57 /* Build configuration list for PBXProject "WideNoise" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BCC2066C1403D9CE00C1BF57 /* Debug */,
+				BCC2066D1403D9CE00C1BF57 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BCC2066E1403D9CE00C1BF57 /* Build configuration list for PBXNativeTarget "WideNoise" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BCC2066F1403D9CE00C1BF57 /* Debug */,
+				BCC206701403D9CE00C1BF57 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BCC2064A1403D9CE00C1BF57 /* Project object */;
+}

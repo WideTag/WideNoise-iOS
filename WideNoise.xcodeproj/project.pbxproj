@@ -118,6 +118,9 @@
 /* Begin PBXProject section */
 		BCC2064A1403D9CE00C1BF57 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				ORGANIZATIONNAME = "WideTag, Inc.";
+			};
 			buildConfigurationList = BCC2064D1403D9CE00C1BF57 /* Build configuration list for PBXProject "WideNoise" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;

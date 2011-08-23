@@ -3,7 +3,7 @@
 //  WideNoise
 //
 //  Created by Emilio Pavia on 23/08/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Copyright 2011 WideTag, Inc. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

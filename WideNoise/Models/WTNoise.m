@@ -8,8 +8,6 @@
 
 #import "WTNoise.h"
 
-#import <CoreLocation/CoreLocation.h>
-
 @implementation WTNoise
 
 @synthesize location = _location;

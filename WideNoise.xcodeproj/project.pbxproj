@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BC5706771404E02E009AE913 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC5706761404E02E009AE913 /* CoreLocation.framework */; };
+		BC5706C41404E9A0009AE913 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCC206571403D9CE00C1BF57 /* UIKit.framework */; };
+		BC5706C51404E9A0009AE913 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCC206591403D9CE00C1BF57 /* Foundation.framework */; };
+		BC5706C61404E9A0009AE913 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCC2065B1403D9CE00C1BF57 /* CoreGraphics.framework */; };
+		BC5706CC1404E9A0009AE913 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BC5706CA1404E9A0009AE913 /* InfoPlist.strings */; };
+		BC5706CE1404E9A0009AE913 /* WideNoiseTests.h in Resources */ = {isa = PBXBuildFile; fileRef = BC5706CD1404E9A0009AE913 /* WideNoiseTests.h */; };
+		BC5706D01404E9A0009AE913 /* WideNoiseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BC5706CF1404E9A0009AE913 /* WideNoiseTests.m */; };
+		BC5706E01404EE76009AE913 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC5706DF1404EE76009AE913 /* SenTestingKit.framework */; };
 		BCC206581403D9CE00C1BF57 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCC206571403D9CE00C1BF57 /* UIKit.framework */; };
 		BCC2065A1403D9CE00C1BF57 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCC206591403D9CE00C1BF57 /* Foundation.framework */; };
 		BCC2065C1403D9CE00C1BF57 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCC2065B1403D9CE00C1BF57 /* CoreGraphics.framework */; };
@@ -14,9 +22,28 @@
 		BCC206641403D9CE00C1BF57 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC206631403D9CE00C1BF57 /* main.m */; };
 		BCC206681403D9CE00C1BF57 /* WideNoiseAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC206671403D9CE00C1BF57 /* WideNoiseAppDelegate.m */; };
 		BCC2066B1403D9CE00C1BF57 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = BCC206691403D9CE00C1BF57 /* MainWindow.xib */; };
+		BCC2067B1403E3D500C1BF57 /* WTNoise.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC2067A1403E3D500C1BF57 /* WTNoise.m */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		BC5706D51404EDD2009AE913 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BCC2064A1403D9CE00C1BF57 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BCC206521403D9CE00C1BF57;
+			remoteInfo = WideNoise;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		BC5706761404E02E009AE913 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		BC5706C11404E9A0009AE913 /* WideNoiseTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WideNoiseTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BC5706C91404E9A0009AE913 /* WideNoiseTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WideNoiseTests-Info.plist"; sourceTree = "<group>"; };
+		BC5706CB1404E9A0009AE913 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		BC5706CD1404E9A0009AE913 /* WideNoiseTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WideNoiseTests.h; sourceTree = "<group>"; };
+		BC5706CF1404E9A0009AE913 /* WideNoiseTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WideNoiseTests.m; sourceTree = "<group>"; };
+		BC5706D11404E9A0009AE913 /* WideNoiseTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WideNoiseTests-Prefix.pch"; sourceTree = "<group>"; };
+		BC5706DF1404EE76009AE913 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		BCC206531403D9CE00C1BF57 /* WideNoise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WideNoise.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCC206571403D9CE00C1BF57 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		BCC206591403D9CE00C1BF57 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -28,13 +55,27 @@
 		BCC206661403D9CE00C1BF57 /* WideNoiseAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WideNoiseAppDelegate.h; sourceTree = "<group>"; };
 		BCC206671403D9CE00C1BF57 /* WideNoiseAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WideNoiseAppDelegate.m; sourceTree = "<group>"; };
 		BCC2066A1403D9CE00C1BF57 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainWindow.xib; sourceTree = "<group>"; };
+		BCC206791403E3D500C1BF57 /* WTNoise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WTNoise.h; path = Models/WTNoise.h; sourceTree = "<group>"; };
+		BCC2067A1403E3D500C1BF57 /* WTNoise.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WTNoise.m; path = Models/WTNoise.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		BC5706BD1404E9A0009AE913 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BC5706E01404EE76009AE913 /* SenTestingKit.framework in Frameworks */,
+				BC5706C41404E9A0009AE913 /* UIKit.framework in Frameworks */,
+				BC5706C51404E9A0009AE913 /* Foundation.framework in Frameworks */,
+				BC5706C61404E9A0009AE913 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BCC206501403D9CE00C1BF57 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC5706771404E02E009AE913 /* CoreLocation.framework in Frameworks */,
 				BCC206581403D9CE00C1BF57 /* UIKit.framework in Frameworks */,
 				BCC2065A1403D9CE00C1BF57 /* Foundation.framework in Frameworks */,
 				BCC2065C1403D9CE00C1BF57 /* CoreGraphics.framework in Frameworks */,
@@ -44,10 +85,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BC5706C71404E9A0009AE913 /* WideNoiseTests */ = {
+			isa = PBXGroup;
+			children = (
+				BC5706CD1404E9A0009AE913 /* WideNoiseTests.h */,
+				BC5706CF1404E9A0009AE913 /* WideNoiseTests.m */,
+				BC5706C81404E9A0009AE913 /* Supporting Files */,
+			);
+			path = WideNoiseTests;
+			sourceTree = "<group>";
+		};
+		BC5706C81404E9A0009AE913 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				BC5706C91404E9A0009AE913 /* WideNoiseTests-Info.plist */,
+				BC5706CA1404E9A0009AE913 /* InfoPlist.strings */,
+				BC5706D11404E9A0009AE913 /* WideNoiseTests-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		BCC206481403D9CE00C1BF57 = {
 			isa = PBXGroup;
 			children = (
 				BCC2065D1403D9CE00C1BF57 /* WideNoise */,
+				BC5706C71404E9A0009AE913 /* WideNoiseTests */,
 				BCC206561403D9CE00C1BF57 /* Frameworks */,
 				BCC206541403D9CE00C1BF57 /* Products */,
 			);
@@ -57,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				BCC206531403D9CE00C1BF57 /* WideNoise.app */,
+				BC5706C11404E9A0009AE913 /* WideNoiseTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -64,6 +127,8 @@
 		BCC206561403D9CE00C1BF57 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BC5706DF1404EE76009AE913 /* SenTestingKit.framework */,
+				BC5706761404E02E009AE913 /* CoreLocation.framework */,
 				BCC206571403D9CE00C1BF57 /* UIKit.framework */,
 				BCC206591403D9CE00C1BF57 /* Foundation.framework */,
 				BCC2065B1403D9CE00C1BF57 /* CoreGraphics.framework */,
@@ -77,6 +142,7 @@
 				BCC206661403D9CE00C1BF57 /* WideNoiseAppDelegate.h */,
 				BCC206671403D9CE00C1BF57 /* WideNoiseAppDelegate.m */,
 				BCC206691403D9CE00C1BF57 /* MainWindow.xib */,
+				BCC2067C1403E3D800C1BF57 /* Models */,
 				BCC2065E1403D9CE00C1BF57 /* Supporting Files */,
 			);
 			path = WideNoise;
@@ -93,9 +159,37 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		BCC2067C1403E3D800C1BF57 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BCC206791403E3D500C1BF57 /* WTNoise.h */,
+				BCC2067A1403E3D500C1BF57 /* WTNoise.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		BC5706C01404E9A0009AE913 /* WideNoiseTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BC5706D21404E9A0009AE913 /* Build configuration list for PBXNativeTarget "WideNoiseTests" */;
+			buildPhases = (
+				BC5706BC1404E9A0009AE913 /* Sources */,
+				BC5706BD1404E9A0009AE913 /* Frameworks */,
+				BC5706BE1404E9A0009AE913 /* Resources */,
+				BC5706BF1404E9A0009AE913 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BC5706D61404EDD2009AE913 /* PBXTargetDependency */,
+			);
+			name = WideNoiseTests;
+			productName = WideNoiseTests;
+			productReference = BC5706C11404E9A0009AE913 /* WideNoiseTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
 		BCC206521403D9CE00C1BF57 /* WideNoise */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BCC2066E1403D9CE00C1BF57 /* Build configuration list for PBXNativeTarget "WideNoise" */;
@@ -134,11 +228,21 @@
 			projectRoot = "";
 			targets = (
 				BCC206521403D9CE00C1BF57 /* WideNoise */,
+				BC5706C01404E9A0009AE913 /* WideNoiseTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		BC5706BE1404E9A0009AE913 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BC5706CC1404E9A0009AE913 /* InfoPlist.strings in Resources */,
+				BC5706CE1404E9A0009AE913 /* WideNoiseTests.h in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BCC206511403D9CE00C1BF57 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -150,19 +254,60 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		BC5706BF1404E9A0009AE913 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
+		BC5706BC1404E9A0009AE913 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BC5706D01404E9A0009AE913 /* WideNoiseTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BCC2064F1403D9CE00C1BF57 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				BCC206641403D9CE00C1BF57 /* main.m in Sources */,
 				BCC206681403D9CE00C1BF57 /* WideNoiseAppDelegate.m in Sources */,
+				BCC2067B1403E3D500C1BF57 /* WTNoise.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		BC5706D61404EDD2009AE913 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BCC206521403D9CE00C1BF57 /* WideNoise */;
+			targetProxy = BC5706D51404EDD2009AE913 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
+		BC5706CA1404E9A0009AE913 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BC5706CB1404E9A0009AE913 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		BCC206601403D9CE00C1BF57 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -182,6 +327,40 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		BC5706D31404E9A0009AE913 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WideNoise.app/WideNoise";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WideNoiseTests/WideNoiseTests-Prefix.pch";
+				INFOPLIST_FILE = "WideNoiseTests/WideNoiseTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		BC5706D41404E9A0009AE913 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WideNoise.app/WideNoise";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WideNoiseTests/WideNoiseTests-Prefix.pch";
+				INFOPLIST_FILE = "WideNoiseTests/WideNoiseTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
 		BCC2066C1403D9CE00C1BF57 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -250,6 +429,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		BC5706D21404E9A0009AE913 /* Build configuration list for PBXNativeTarget "WideNoiseTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC5706D31404E9A0009AE913 /* Debug */,
+				BC5706D41404E9A0009AE913 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		BCC2064D1403D9CE00C1BF57 /* Build configuration list for PBXProject "WideNoise" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -266,6 +453,7 @@
 				BCC206701403D9CE00C1BF57 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

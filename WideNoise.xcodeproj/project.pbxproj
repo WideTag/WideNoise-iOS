@@ -15,6 +15,15 @@
 		BC5706CE1404E9A0009AE913 /* WideNoiseTests.h in Resources */ = {isa = PBXBuildFile; fileRef = BC5706CD1404E9A0009AE913 /* WideNoiseTests.h */; };
 		BC5706D01404E9A0009AE913 /* WideNoiseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BC5706CF1404E9A0009AE913 /* WideNoiseTests.m */; };
 		BC5706E01404EE76009AE913 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC5706DF1404EE76009AE913 /* SenTestingKit.framework */; };
+		BC5706E31404FB5C009AE913 /* NSURLConnection+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = BC5706E21404FB5C009AE913 /* NSURLConnection+Blocks.m */; };
+		BC5706EF14052F62009AE913 /* ListenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC5706ED14052F62009AE913 /* ListenViewController.m */; };
+		BC5706F014052F62009AE913 /* ListenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BC5706EE14052F62009AE913 /* ListenViewController.xib */; };
+		BC5706F514052FA7009AE913 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC5706F314052FA7009AE913 /* MapViewController.m */; };
+		BC5706F614052FA7009AE913 /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BC5706F414052FA7009AE913 /* MapViewController.xib */; };
+		BC5706FA14052FBD009AE913 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC5706F814052FBD009AE913 /* ShareViewController.m */; };
+		BC5706FB14052FBD009AE913 /* ShareViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BC5706F914052FBD009AE913 /* ShareViewController.xib */; };
+		BC57070414052FDD009AE913 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC57070214052FDD009AE913 /* AboutViewController.m */; };
+		BC57070514052FDD009AE913 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BC57070314052FDD009AE913 /* AboutViewController.xib */; };
 		BCC206581403D9CE00C1BF57 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCC206571403D9CE00C1BF57 /* UIKit.framework */; };
 		BCC2065A1403D9CE00C1BF57 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCC206591403D9CE00C1BF57 /* Foundation.framework */; };
 		BCC2065C1403D9CE00C1BF57 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCC2065B1403D9CE00C1BF57 /* CoreGraphics.framework */; };
@@ -44,6 +53,20 @@
 		BC5706CF1404E9A0009AE913 /* WideNoiseTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WideNoiseTests.m; sourceTree = "<group>"; };
 		BC5706D11404E9A0009AE913 /* WideNoiseTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WideNoiseTests-Prefix.pch"; sourceTree = "<group>"; };
 		BC5706DF1404EE76009AE913 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		BC5706E11404FB5C009AE913 /* NSURLConnection+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSURLConnection+Blocks.h"; path = "Categories/NSURLConnection+Blocks.h"; sourceTree = "<group>"; };
+		BC5706E21404FB5C009AE913 /* NSURLConnection+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSURLConnection+Blocks.m"; path = "Categories/NSURLConnection+Blocks.m"; sourceTree = "<group>"; };
+		BC5706EC14052F61009AE913 /* ListenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ListenViewController.h; path = "View Controllers/ListenViewController.h"; sourceTree = "<group>"; };
+		BC5706ED14052F62009AE913 /* ListenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ListenViewController.m; path = "View Controllers/ListenViewController.m"; sourceTree = "<group>"; };
+		BC5706EE14052F62009AE913 /* ListenViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ListenViewController.xib; path = "View Controllers/ListenViewController.xib"; sourceTree = "<group>"; };
+		BC5706F214052FA7009AE913 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MapViewController.h; path = "View Controllers/MapViewController.h"; sourceTree = "<group>"; };
+		BC5706F314052FA7009AE913 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MapViewController.m; path = "View Controllers/MapViewController.m"; sourceTree = "<group>"; };
+		BC5706F414052FA7009AE913 /* MapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MapViewController.xib; path = "View Controllers/MapViewController.xib"; sourceTree = "<group>"; };
+		BC5706F714052FBD009AE913 /* ShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShareViewController.h; path = "View Controllers/ShareViewController.h"; sourceTree = "<group>"; };
+		BC5706F814052FBD009AE913 /* ShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShareViewController.m; path = "View Controllers/ShareViewController.m"; sourceTree = "<group>"; };
+		BC5706F914052FBD009AE913 /* ShareViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ShareViewController.xib; path = "View Controllers/ShareViewController.xib"; sourceTree = "<group>"; };
+		BC57070114052FDD009AE913 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AboutViewController.h; path = "View Controllers/AboutViewController.h"; sourceTree = "<group>"; };
+		BC57070214052FDD009AE913 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AboutViewController.m; path = "View Controllers/AboutViewController.m"; sourceTree = "<group>"; };
+		BC57070314052FDD009AE913 /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AboutViewController.xib; path = "View Controllers/AboutViewController.xib"; sourceTree = "<group>"; };
 		BCC206531403D9CE00C1BF57 /* WideNoise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WideNoise.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCC206571403D9CE00C1BF57 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		BCC206591403D9CE00C1BF57 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -105,6 +128,41 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		BC5706E41404FB6E009AE913 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				BC5706E11404FB5C009AE913 /* NSURLConnection+Blocks.h */,
+				BC5706E21404FB5C009AE913 /* NSURLConnection+Blocks.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
+		BC5706E51405032B009AE913 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		BC5706F114052F66009AE913 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				BC57070114052FDD009AE913 /* AboutViewController.h */,
+				BC57070214052FDD009AE913 /* AboutViewController.m */,
+				BC57070314052FDD009AE913 /* AboutViewController.xib */,
+				BC5706EC14052F61009AE913 /* ListenViewController.h */,
+				BC5706ED14052F62009AE913 /* ListenViewController.m */,
+				BC5706EE14052F62009AE913 /* ListenViewController.xib */,
+				BC5706F214052FA7009AE913 /* MapViewController.h */,
+				BC5706F314052FA7009AE913 /* MapViewController.m */,
+				BC5706F414052FA7009AE913 /* MapViewController.xib */,
+				BC5706F714052FBD009AE913 /* ShareViewController.h */,
+				BC5706F814052FBD009AE913 /* ShareViewController.m */,
+				BC5706F914052FBD009AE913 /* ShareViewController.xib */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
 		BCC206481403D9CE00C1BF57 = {
 			isa = PBXGroup;
 			children = (
@@ -142,7 +200,10 @@
 				BCC206661403D9CE00C1BF57 /* WideNoiseAppDelegate.h */,
 				BCC206671403D9CE00C1BF57 /* WideNoiseAppDelegate.m */,
 				BCC206691403D9CE00C1BF57 /* MainWindow.xib */,
+				BC5706E41404FB6E009AE913 /* Categories */,
+				BC5706E51405032B009AE913 /* Classes */,
 				BCC2067C1403E3D800C1BF57 /* Models */,
+				BC5706F114052F66009AE913 /* View Controllers */,
 				BCC2065E1403D9CE00C1BF57 /* Supporting Files */,
 			);
 			path = WideNoise;
@@ -249,6 +310,10 @@
 			files = (
 				BCC206621403D9CE00C1BF57 /* InfoPlist.strings in Resources */,
 				BCC2066B1403D9CE00C1BF57 /* MainWindow.xib in Resources */,
+				BC5706F014052F62009AE913 /* ListenViewController.xib in Resources */,
+				BC5706F614052FA7009AE913 /* MapViewController.xib in Resources */,
+				BC5706FB14052FBD009AE913 /* ShareViewController.xib in Resources */,
+				BC57070514052FDD009AE913 /* AboutViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,6 +351,11 @@
 				BCC206641403D9CE00C1BF57 /* main.m in Sources */,
 				BCC206681403D9CE00C1BF57 /* WideNoiseAppDelegate.m in Sources */,
 				BCC2067B1403E3D500C1BF57 /* WTNoise.m in Sources */,
+				BC5706E31404FB5C009AE913 /* NSURLConnection+Blocks.m in Sources */,
+				BC5706EF14052F62009AE913 /* ListenViewController.m in Sources */,
+				BC5706F514052FA7009AE913 /* MapViewController.m in Sources */,
+				BC5706FA14052FBD009AE913 /* ShareViewController.m in Sources */,
+				BC57070414052FDD009AE913 /* AboutViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

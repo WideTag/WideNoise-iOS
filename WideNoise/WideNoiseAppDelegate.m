@@ -8,13 +8,16 @@
 
 #import "WideNoiseAppDelegate.h"
 
+#import "NSURLConnection+Blocks.h"
+
 @implementation WideNoiseAppDelegate
 
 @synthesize window = _window;
+@synthesize tabBarController = _tabBarController;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
+    [self.window addSubview:self.tabBarController.view];
     [self.window makeKeyAndVisible];
     return YES;
 }
@@ -61,6 +64,7 @@
 - (void)dealloc
 {
     [_window release];
+    [_tabBarController release];
     [super dealloc];
 }
 

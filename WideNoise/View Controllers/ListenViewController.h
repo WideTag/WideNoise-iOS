@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ListenViewController : UIViewController
+#import "WTNoiseRecorder.h"
+
+@interface ListenViewController : UIViewController <WTNoiseRecorderDelegate>
+
+@property (nonatomic, retain) IBOutlet UIButton *takeButton;
+@property (nonatomic, retain) IBOutlet UIButton *extendButton;
+@property (nonatomic, retain) IBOutlet UIButton *qualifyButton;
+
+- (IBAction)takeNoiseSample:(id)sender;
+- (IBAction)extendSampling:(id)sender;
+- (IBAction)qualifyNoise:(id)sender;
 
 @end

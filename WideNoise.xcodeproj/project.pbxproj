@@ -24,6 +24,9 @@
 		BC5706FB14052FBD009AE913 /* ShareViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BC5706F914052FBD009AE913 /* ShareViewController.xib */; };
 		BC57070414052FDD009AE913 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC57070214052FDD009AE913 /* AboutViewController.m */; };
 		BC57070514052FDD009AE913 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BC57070314052FDD009AE913 /* AboutViewController.xib */; };
+		BC5ADFF7140692640058EB45 /* functions.c in Sources */ = {isa = PBXBuildFile; fileRef = BC5ADFF6140692640058EB45 /* functions.c */; };
+		BC937D2A140546FE004B1147 /* WTNoiseRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = BC937D29140546FE004B1147 /* WTNoiseRecorder.m */; };
+		BC937D2D140547D4004B1147 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC937D2C140547D4004B1147 /* AVFoundation.framework */; };
 		BCC206581403D9CE00C1BF57 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCC206571403D9CE00C1BF57 /* UIKit.framework */; };
 		BCC2065A1403D9CE00C1BF57 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCC206591403D9CE00C1BF57 /* Foundation.framework */; };
 		BCC2065C1403D9CE00C1BF57 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCC2065B1403D9CE00C1BF57 /* CoreGraphics.framework */; };
@@ -67,6 +70,11 @@
 		BC57070114052FDD009AE913 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AboutViewController.h; path = "View Controllers/AboutViewController.h"; sourceTree = "<group>"; };
 		BC57070214052FDD009AE913 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AboutViewController.m; path = "View Controllers/AboutViewController.m"; sourceTree = "<group>"; };
 		BC57070314052FDD009AE913 /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AboutViewController.xib; path = "View Controllers/AboutViewController.xib"; sourceTree = "<group>"; };
+		BC5ADFF6140692640058EB45 /* functions.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = functions.c; sourceTree = "<group>"; };
+		BC5ADFFA140696350058EB45 /* functions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = functions.h; sourceTree = "<group>"; };
+		BC937D28140546FE004B1147 /* WTNoiseRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WTNoiseRecorder.h; path = Classes/WTNoiseRecorder.h; sourceTree = "<group>"; };
+		BC937D29140546FE004B1147 /* WTNoiseRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WTNoiseRecorder.m; path = Classes/WTNoiseRecorder.m; sourceTree = "<group>"; };
+		BC937D2C140547D4004B1147 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		BCC206531403D9CE00C1BF57 /* WideNoise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WideNoise.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCC206571403D9CE00C1BF57 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		BCC206591403D9CE00C1BF57 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -98,6 +106,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC937D2D140547D4004B1147 /* AVFoundation.framework in Frameworks */,
 				BC5706771404E02E009AE913 /* CoreLocation.framework in Frameworks */,
 				BCC206581403D9CE00C1BF57 /* UIKit.framework in Frameworks */,
 				BCC2065A1403D9CE00C1BF57 /* Foundation.framework in Frameworks */,
@@ -140,6 +149,8 @@
 		BC5706E51405032B009AE913 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				BC937D28140546FE004B1147 /* WTNoiseRecorder.h */,
+				BC937D29140546FE004B1147 /* WTNoiseRecorder.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -185,6 +196,7 @@
 		BCC206561403D9CE00C1BF57 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BC937D2C140547D4004B1147 /* AVFoundation.framework */,
 				BC5706DF1404EE76009AE913 /* SenTestingKit.framework */,
 				BC5706761404E02E009AE913 /* CoreLocation.framework */,
 				BCC206571403D9CE00C1BF57 /* UIKit.framework */,
@@ -216,6 +228,8 @@
 				BCC206601403D9CE00C1BF57 /* InfoPlist.strings */,
 				BCC206631403D9CE00C1BF57 /* main.m */,
 				BCC206651403D9CE00C1BF57 /* WideNoise-Prefix.pch */,
+				BC5ADFF6140692640058EB45 /* functions.c */,
+				BC5ADFFA140696350058EB45 /* functions.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -356,6 +370,8 @@
 				BC5706F514052FA7009AE913 /* MapViewController.m in Sources */,
 				BC5706FA14052FBD009AE913 /* ShareViewController.m in Sources */,
 				BC57070414052FDD009AE913 /* AboutViewController.m in Sources */,
+				BC937D2A140546FE004B1147 /* WTNoiseRecorder.m in Sources */,
+				BC5ADFF7140692640058EB45 /* functions.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -506,6 +522,7 @@
 				BC5706D41404E9A0009AE913 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		BCC2064D1403D9CE00C1BF57 /* Build configuration list for PBXProject "WideNoise" */ = {
 			isa = XCConfigurationList;

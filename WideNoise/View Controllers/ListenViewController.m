@@ -8,7 +8,54 @@
 
 #import "ListenViewController.h"
 
+@interface ListenViewController ()
+
+@property (nonatomic, retain) WTNoiseRecorder *noiseRecorder;
+
+@end
+
 @implementation ListenViewController
+
+@synthesize takeButton;
+@synthesize extendButton;
+@synthesize qualifyButton;
+
+@synthesize noiseRecorder = _noiseRecorder;
+
+#pragma marl - IBAction methods
+
+- (IBAction)takeNoiseSample:(id)sender
+{
+    self.noiseRecorder = [[WTNoiseRecorder alloc] init];
+    self.noiseRecorder.delegate = self;
+    self.noiseRecorder.samplesPerSecond = 1;
+    
+    [self.noiseRecorder recordForDuration:10];
+}
+
+- (IBAction)extendSampling:(id)sender
+{
+    
+}
+
+- (IBAction)qualifyNoise:(id)sender
+{
+    
+}
+
+#pragma mark - WTNoiseRecorderDelegate methods
+
+- (void)noiseRecorder:(WTNoiseRecorder *)noiseRecorder didRecordSampleWithLevel:(float)level
+{
+    NSLog(@"level: %f", level);
+}
+
+- (void)noiseRecorder:(WTNoiseRecorder *)noiseRecorder didFinishRecordingNoise:(WTNoise *)noise
+{
+    NSLog(@"average level: %f", noise.averageLevel);
+}
+
+#pragma mark - 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -27,6 +74,15 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
+- (void)dealloc
+{
+    [takeButton release];
+    [extendButton release];
+    [qualifyButton release];
+    [_noiseRecorder release];
+    [super dealloc];
+}
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
@@ -38,8 +94,10 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+    
+    self.takeButton = nil;
+    self.extendButton = nil;
+    self.qualifyButton = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

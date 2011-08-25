@@ -8,6 +8,29 @@
 
 #import <Foundation/Foundation.h>
 
-@interface WTNoiseRecorder : NSObject
+#import <AVFoundation/AVFoundation.h>
+
+#import "WTNoise.h"
+
+@class WTNoiseRecorder;
+
+@protocol WTNoiseRecorderDelegate <NSObject>
+
+- (void)noiseRecorder:(WTNoiseRecorder *)noiseRecorder didRecordSampleWithLevel:(float)level;
+- (void)noiseRecorder:(WTNoiseRecorder *)noiseRecorder didFinishRecordingNoise:(WTNoise *)noise;
+
+@optional
+
+- (void)noiseRecorderErrorDidOccurr:(WTNoiseRecorder *)noiseRecorder error:(NSError *)error;
+
+@end
+
+@interface WTNoiseRecorder : NSObject <AVAudioRecorderDelegate>
+
+@property (nonatomic, assign) id <WTNoiseRecorderDelegate> delegate;
+@property (nonatomic, assign) NSUInteger samplesPerSecond;
+
+- (BOOL)recordForDuration:(NSTimeInterval)duration;
+- (void)stop;
 
 @end

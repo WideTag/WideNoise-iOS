@@ -9,6 +9,6 @@
 #ifndef WideNoise_functions_h
 #define WideNoise_functions_h
 
-
+float interpolate(float x, float lookup_table[][2], int table_size);
 
 #endif

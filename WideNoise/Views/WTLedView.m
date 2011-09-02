@@ -55,8 +55,15 @@
     NSUInteger cols = self.numberOfCols;
     NSUInteger rows = self.numberOfRows;
     for (int i=1; i<=cols; i++) {
+        CGFloat value = [self.dataSource ledView:self valueForColumnAtIndex:i-1];
+        if (value <= 0.0) {
+            continue;
+        } else if (value > 1.0) {
+            value = 1.0;
+        }
+        
         CGContextMoveToPoint(context, COL_WIDTH*i, self.frame.size.height);
-        CGContextAddLineToPoint(context, COL_WIDTH*i, self.frame.size.height - ((int)(rows*[self.dataSource ledView:self valueForColumnAtIndex:i-1]) * COL_WIDTH));
+        CGContextAddLineToPoint(context, COL_WIDTH*i, self.frame.size.height - ((int)(rows*value) * COL_WIDTH));
         
         CGContextStrokePath(context);
     }

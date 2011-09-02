@@ -14,8 +14,6 @@
 
 @property (nonatomic, retain) AVAudioRecorder *audioRecorder;
 @property (nonatomic, assign) NSTimer *samplingTimer;
-@property (nonatomic, assign) NSUInteger recordingDuration;
-@property (nonatomic, retain) WTNoise *recordedNoise;
 
 @property (nonatomic, readonly) NSUInteger numberOfSamples;
 
@@ -27,11 +25,11 @@
 
 @synthesize delegate;
 @synthesize samplesPerSecond;
+@synthesize recordedNoise = _recordedNoise;
 
 @synthesize audioRecorder = _audioRecorder;
 @synthesize samplingTimer = _samplingTimer;
 @synthesize recordingDuration = _recordingDuration;
-@synthesize recordedNoise = _recordedNoise;
 
 #pragma mark - Properties
 
@@ -48,8 +46,8 @@
         return NO;
     }
     
-    self.recordingDuration = duration;
-    self.recordedNoise = [[[WTNoise alloc] init] autorelease];
+    _recordingDuration += duration;
+    
     self.samplingTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/self.samplesPerSecond 
                                                           target:self
                                                         selector:@selector(recordSample) 
@@ -62,14 +60,24 @@
 - (void)stop
 {
     [self.audioRecorder stop];
-    [self.audioRecorder deleteRecording];
+}
+
+- (void)clear
+{
+    if (!self.audioRecorder.recording) {
+        [_recordedNoise release];
+        _recordedNoise = [[WTNoise alloc] init];
+        _recordingDuration = 0.0;
+        
+        [self.audioRecorder deleteRecording];
+    }    
 }
 
 #pragma mark - Private methods
 
 - (void)recordSample
 {
-    if (self.audioRecorder.recording) {
+    if (self.audioRecorder.recording && [self.recordedNoise.samples count] < self.numberOfSamples) {
         [self.audioRecorder updateMeters];
         
         // convert the non-linear dB value to a linear one in [0,1]
@@ -94,11 +102,15 @@
         level = interpolate(level, lookup_table, 14);
         
         [self.recordedNoise addSample:level];
-        [self.delegate noiseRecorder:self didRecordSampleWithLevel:level];
         
-        if ([self.recordedNoise.samples count] >= self.numberOfSamples) {
-            [self stop];
-        }
+        if ([self.delegate respondsToSelector:@selector(noiseRecorder:didUpdateNoise:)]) {
+            [self.delegate noiseRecorder:self didUpdateNoise:self.recordedNoise];
+        }        
+    } else {
+        [self.samplingTimer invalidate];
+        self.samplingTimer = nil;
+        
+        [self stop];
     }
 }
 
@@ -106,10 +118,9 @@
 
 - (void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag
 {
-    [self.samplingTimer invalidate];
-    self.samplingTimer = nil;
+    [self.delegate noiseRecorderDidFinishRecording:self];
     
-    [self.delegate noiseRecorder:self didFinishRecordingNoise:self.recordedNoise];   
+    [recorder deleteRecording];
 }
 
 - (void)audioRecorderEncodeErrorDidOccur:(AVAudioRecorder *)recorder error:(NSError *)error
@@ -136,8 +147,10 @@
         _audioRecorder.delegate = self;
         _audioRecorder.meteringEnabled = YES;
         
+        _recordedNoise = [[WTNoise alloc] init];
+        
         self.samplesPerSecond = 1;
-        self.recordingDuration = 0.0;
+        _recordingDuration = 0.0;
     }
     
     return self;

@@ -19,6 +19,8 @@
 @interface WTNoise : NSObject  {
 @private
     NSMutableArray *_samples;
+    NSMutableArray *_types;
+    NSMutableArray *_tags;
 }
 
 /*
@@ -50,6 +52,22 @@
 @property (nonatomic, retain) CLLocation *location;
 
 /*
+ *  types
+ *  
+ *  Discussion:
+ *    Contains values from a predefined set selected by the user to categorize the noise.
+ */
+@property (nonatomic, readonly) NSArray *types;
+
+/*
+ *  tags
+ *  
+ *  Discussion:
+ *    Contains values that can be defined by the user to categorize the noise.
+ */
+@property (nonatomic, readonly) NSArray *tags;
+
+/*
  *  addSample:
  *  
  *  Discussion:
@@ -58,5 +76,21 @@
  *    or maximum power. Out of range values will be given the nearest valid value.
  */
 - (void)addSample:(float)level;
+
+/*
+ *  addType:
+ *  
+ *  Discussion:
+ *    Assigns a type to the noise.
+ */
+- (void)addType:(NSString *)type;
+
+/*
+ *  addTag:
+ *  
+ *  Discussion:
+ *    Assigns a tag to the noise.
+ */
+- (void)addTag:(NSString *)tag;
 
 @end

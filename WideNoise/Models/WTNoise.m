@@ -20,6 +20,18 @@
     return [samples autorelease];
 }
 
+- (NSArray *)types
+{
+    NSSet *types = [[NSArray alloc] initWithArray:_types];
+    return [types autorelease];
+}
+
+- (NSArray *)tags
+{
+    NSSet *tags = [[NSArray alloc] initWithArray:_tags];
+    return [tags autorelease];
+}
+
 - (float)averageLevel
 {
     float averageLevel = 0.0;
@@ -41,6 +53,16 @@
     [_samples addObject:[NSNumber numberWithFloat:level]];
 }
 
+- (void)addType:(NSString *)type
+{
+    [_types addObject:type];
+}
+
+- (void)addTag:(NSString *)tag
+{
+    [_tags addObject:tag];
+}
+
 #pragma mark -
 
 - (id)init
@@ -48,6 +70,8 @@
     self = [super init];
     if (self) {
         _samples = [[NSMutableArray alloc] init];
+        _types = [[NSMutableArray alloc] init];
+        _tags = [[NSMutableArray alloc] init];
     }
     
     return self;
@@ -57,6 +81,8 @@
 {
     [_samples release];
     [_location release];
+    [_types release];
+    [_tags release];
     [super dealloc];
 }
 

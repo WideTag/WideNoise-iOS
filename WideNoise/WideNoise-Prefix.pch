@@ -13,4 +13,5 @@
     #import <Foundation/Foundation.h>
 #endif
 
-#define USE_OPENSPIME
+#define USE_REFERENCE_API
+#define API_SHARED_KEY @"xxxxxxxxxxxxx"

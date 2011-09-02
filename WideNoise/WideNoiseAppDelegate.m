@@ -8,7 +8,6 @@
 
 #import "WideNoiseAppDelegate.h"
 
-#import "NSURLConnection+Blocks.h"
 
 @implementation WideNoiseAppDelegate
 

@@ -103,7 +103,7 @@
         
         [self.recordedNoise addSample:level];
         
-        if ([self.delegate respondsToSelector:@selector(noiseRecorder:didUpdateNoise:)]) {
+        if ([self.delegate respondsToSelector:@selector(noiseRecorder:didUpdateNoise:)] && [self.recordedNoise.samples count]%2 == 0) {
             [self.delegate noiseRecorder:self didUpdateNoise:self.recordedNoise];
         }        
     } else {

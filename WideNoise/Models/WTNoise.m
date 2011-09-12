@@ -11,6 +11,8 @@
 @implementation WTNoise
 
 @synthesize location = _location;
+@synthesize measurementDate = _measurementDate;
+@synthesize tags = _tags;
 
 #pragma mark - Properties
 
@@ -26,12 +28,6 @@
     return [types autorelease];
 }
 
-- (NSArray *)tags
-{
-    NSSet *tags = [[NSArray alloc] initWithArray:_tags];
-    return [tags autorelease];
-}
-
 - (float)averageLevel
 {
     float averageLevel = 0.0;
@@ -39,6 +35,11 @@
         averageLevel += [sample floatValue];
     }
     return averageLevel / [_samples count];
+}
+
+- (MKCircle *)overlayCircle
+{
+    return [[[MKCircle circleWithCenterCoordinate:self.location.coordinate radius:pow(self.averageLevel/30.0, 3.0)/3.0] retain] autorelease];
 }
 
 #pragma mark - Public methods
@@ -58,9 +59,55 @@
     [_types addObject:type];
 }
 
-- (void)addTag:(NSString *)tag
+- (UIImage *)icon
 {
-    [_tags addObject:tag];
+    float db = self.averageLevel;
+    NSString *imageName = nil;
+    if (db <= 30) {
+		imageName = @"feather_icon.png";
+	} else if (db <= 60) {
+		imageName = @"cat_icon.png";
+	} else if (db <= 70) {
+		imageName = @"tv_icon.png";
+	} else if (db <= 90) {
+		imageName = @"car_icon.png";
+	} else if (db <= 100) {
+		imageName = @"dragster_icon.png";
+	} else if (db <= 115) {
+		imageName = @"t-rex_icon.png";
+	} else {
+		imageName = @"concert_icon.png";
+	}
+    
+    return [UIImage imageNamed:imageName];
+}
+
+#pragma mark - MKAnnotation and MKOverlay protocol methods
+
+- (CLLocationCoordinate2D)coordinate
+{
+    return self.location.coordinate;
+}
+
+- (NSString *)title
+{
+    return [NSString stringWithFormat:@"%ddb", (int)self.averageLevel];
+}
+
+- (NSString *)subtitle
+{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd 'at' HH:mm"];
+    NSString *formattedDate = [dateFormatter stringFromDate:self.measurementDate];
+    [dateFormatter release];
+    
+    return formattedDate;
+}
+
+- (MKMapRect)boundingMapRect
+{
+    MKMapPoint mapPoint = MKMapPointForCoordinate(self.location.coordinate);
+    return MKMapRectMake(mapPoint.x, mapPoint.y, 100, 100);
 }
 
 #pragma mark -
@@ -71,7 +118,6 @@
     if (self) {
         _samples = [[NSMutableArray alloc] init];
         _types = [[NSMutableArray alloc] init];
-        _tags = [[NSMutableArray alloc] init];
     }
     
     return self;
@@ -81,6 +127,7 @@
 {
     [_samples release];
     [_location release];
+    [_measurementDate release];
     [_types release];
     [_tags release];
     [super dealloc];

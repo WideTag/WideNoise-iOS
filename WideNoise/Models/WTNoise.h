@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-
 #import <CoreLocation/CoreLocation.h>
+#import <MapKit/MapKit.h>
 
 /*
  *  WTNoise
@@ -16,11 +16,10 @@
  *  Discussion:
  *    Represents a noise measure along with geographical information.
  */
-@interface WTNoise : NSObject  {
+@interface WTNoise : NSObject <MKAnnotation> {
 @private
     NSMutableArray *_samples;
     NSMutableArray *_types;
-    NSMutableArray *_tags;
 }
 
 /*
@@ -52,6 +51,14 @@
 @property (nonatomic, retain) CLLocation *location;
 
 /*
+ *  measurementDate
+ *  
+ *  Discussion:
+ *    Contains the date of when the noise was measured.
+ */
+@property (nonatomic, retain) NSDate *measurementDate;
+
+/*
  *  types
  *  
  *  Discussion:
@@ -65,7 +72,7 @@
  *  Discussion:
  *    Contains values that can be defined by the user to categorize the noise.
  */
-@property (nonatomic, readonly) NSArray *tags;
+@property (nonatomic, retain) NSArray *tags;
 
 /*
  *  addSample:
@@ -85,12 +92,6 @@
  */
 - (void)addType:(NSString *)type;
 
-/*
- *  addTag:
- *  
- *  Discussion:
- *    Assigns a tag to the noise.
- */
-- (void)addTag:(NSString *)tag;
+- (UIImage *)icon;
 
 @end

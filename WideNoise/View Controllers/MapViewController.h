@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
+#import <MapKit/MapKit.h>
 
-@interface MapViewController : UIViewController
+@interface MapViewController : UIViewController <CLLocationManagerDelegate, MKMapViewDelegate>
+
+@property (nonatomic, retain) IBOutlet MKMapView *mapView;
+@property (nonatomic, retain) IBOutlet UIView *overlayView;
+@property (nonatomic, retain) IBOutlet UIImageView *overlayImageView;
+@property (nonatomic, retain) IBOutlet UILabel *overlayLabel;
 
 @end

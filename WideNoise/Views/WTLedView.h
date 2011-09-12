@@ -18,7 +18,7 @@
 
 @interface WTLedView : UIView
 
-@property (nonatomic, assign) id <WTLedViewDataSource> dataSource;
+@property (nonatomic, assign) IBOutlet id <WTLedViewDataSource> dataSource;
 @property (nonatomic, retain) UIColor *ledColor;
 
 @property (nonatomic, readonly) NSUInteger numberOfCols;

@@ -19,6 +19,7 @@
 @property (nonatomic, assign) NSTimer *samplingTimer;
 
 @property (nonatomic, retain) CLLocation *currentLocation;
+@property (nonatomic, retain) NSMutableSet *types;
 
 - (void)scrollToPage:(NSUInteger)page;
 - (void)updateLocation;
@@ -41,26 +42,43 @@
 @synthesize extendButton;
 @synthesize qualifyButton;
 @synthesize qualifyView;
+@synthesize sendingView;
+
+@synthesize recordedNoise = _recordedNoise;
 
 @synthesize noiseRecorder = _noiseRecorder;
 @synthesize locationManager = _locationManager;
 @synthesize samplingTimer;
 
 @synthesize currentLocation;
+@synthesize types;
 
-#pragma marl - IBAction methods
+#pragma mark - IBAction methods
 
 - (IBAction)action:(id)sender
 {
-    [(UIButton *)sender setSelected:YES];
-    if (sender == self.qualifyButton) {
+    if (sender != self.takeButton && [self.recordedNoise.samples count] == 0) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil 
+                                                            message:@"You must take a noise sample first to perform this action." 
+                                                           delegate:nil 
+                                                  cancelButtonTitle:@"OK" 
+                                                  otherButtonTitles:nil];
+        [alertView show];
+        [alertView release];
+        return;
+    } else if (sender == self.qualifyButton) {
+        [(UIButton *)sender setSelected:YES];
         [self scrollToPage:1];
         return;
-    }
+    } else if (sender == self.takeButton && [self.recordedNoise.samples count] > 0) {
+        [self clear:sender];
+    } 
+    
+    [(UIButton *)sender setSelected:YES];
     
     self.takeButton.userInteractionEnabled = NO;
     self.extendButton.userInteractionEnabled = NO;
-    self.extendButton.userInteractionEnabled = NO;
+    self.qualifyButton.userInteractionEnabled = NO;
     self.recordView.hidden = NO;
     
     [self.noiseRecorder recordForDuration:5];
@@ -73,9 +91,31 @@
     self.noiseRecorder.delegate = self;
     self.noiseRecorder.samplesPerSecond = 20;
     
+    self.currentLocation = nil;
+    
     self.meterView.image = [UIImage imageNamed:@"noise_meter.png"];
     self.dbLabel.text = @"";
     self.descriptionLabel.text = @"";
+    self.locationView.hidden = YES;
+    self.recordView.hidden = YES;
+    
+    self.types = [NSMutableSet set];
+    for (UIView *subview in self.samplingView.subviews) {
+        if ([subview isKindOfClass:[UIButton class]]) {
+            [(UIButton *)subview setSelected:NO];
+        }
+    }
+    for (UIView *subview in self.qualifyView.subviews) {
+        if ([subview isKindOfClass:[UIButton class]]) {
+            [(UIButton *)subview setSelected:NO];
+        }
+    }
+    
+    [self.ledView setNeedsDisplay];
+    
+    if (sender != self.takeButton) {
+        [self scrollToPage:0];
+    }    
 }
 
 - (IBAction)setType:(id)sender
@@ -113,19 +153,29 @@
     
     if ([typeButton isSelected]) {
         [typeButton setSelected:NO];
+        [self.types removeObject:type];
     } else {
         [typeButton setSelected:YES];
+        [self.types addObject:type];
     }
 }
 
 - (IBAction)sendReport:(id)sender
 {
     [(UIButton *)sender setSelected:YES];
-    [[[[UIAlertView alloc] initWithTitle:@"Beta Release" 
-                               message:@"This feature is not yet implemented!" 
-                              delegate:nil 
-                     cancelButtonTitle:@"OK" 
-                     otherButtonTitles:nil] autorelease] show];
+    [self scrollToPage:2];
+}
+
+- (IBAction)selectTags:(id)sender
+{
+    TagsViewController *tagsController = [[TagsViewController alloc] initWithNibName:@"TagsViewController" bundle:nil];
+    tagsController.selectedTags = [NSSet setWithArray:self.recordedNoise.tags];
+    tagsController.delegate = self;
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:tagsController];
+    [self presentModalViewController:navController animated:YES];
+    [navController release];
+    [tagsController release];
 }
 
 #pragma mark - Private methods
@@ -156,7 +206,7 @@
     }
 }
 
-#pragma marl - CoreLocation delegate methods
+#pragma mark - CoreLocation delegate methods
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
 {
@@ -210,10 +260,11 @@
 
 - (void)noiseRecorderDidFinishRecording:(WTNoiseRecorder *)noiseRecorder
 {
+    self.recordedNoise = noiseRecorder.recordedNoise;
     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
     self.recordView.hidden = YES;
     
-    float db = noiseRecorder.recordedNoise.averageLevel;
+    float db = self.recordedNoise.averageLevel;
     NSString *imageName = nil;
     NSString *description = nil;
     if (db <= 30) {
@@ -240,15 +291,22 @@
 	}
     
     self.meterView.image = [UIImage imageNamed:imageName];
-    self.dbLabel.text = [NSString stringWithFormat:@"%ddb", (int)noiseRecorder.recordedNoise.averageLevel];
+    self.dbLabel.text = [NSString stringWithFormat:@"%ddb", (int)self.recordedNoise.averageLevel];
     self.descriptionLabel.text = description;
     
     self.takeButton.userInteractionEnabled = YES;
     self.extendButton.userInteractionEnabled = YES;
-    self.extendButton.userInteractionEnabled = YES;
-    
-    [self.takeButton setSelected:NO];
-    [self.extendButton setSelected:NO];
+    self.qualifyButton.userInteractionEnabled = YES;
+}
+
+#pragma mark - TagsViewControllerDelegate methods
+
+- (void)tagsViewController:(TagsViewController *)tagsViewController didSelectTags:(NSSet *)tags
+{
+    self.recordedNoise.tags = [[tagsViewController.selectedTags allObjects] sortedArrayUsingComparator:^(id obj1, id obj2) {
+        return [obj1 compare:obj2];
+    }];
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark - 
@@ -286,11 +344,15 @@
     [extendButton release];
     [qualifyButton release];
     [qualifyView release];
+    [sendingView release];
+    
+    [_recordedNoise release];
     
     [_noiseRecorder release];
     [_locationManager release];
     
     [currentLocation release];
+    [types release];
     
     [super dealloc];
 }
@@ -304,10 +366,11 @@
     self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * 3, self.scrollView.frame.size.height);
     self.samplingView.frame = CGRectMake(0, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height);
     self.qualifyView.frame = CGRectMake(self.scrollView.frame.size.width, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height);
+    self.sendingView.frame = CGRectMake(self.scrollView.frame.size.width*2, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height);
     [self.scrollView addSubview:self.samplingView];
     [self.scrollView addSubview:self.qualifyView];
+    [self.scrollView addSubview:self.sendingView];
     
-    self.ledView.dataSource = self;
     self.ledView.ledColor = [UIColor colorWithRed:1.0 green:172.0/255.0 blue:83.0/255.0 alpha:1.0];
     
     UIColor *ledColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"pixel_pattern.png"]];
@@ -342,6 +405,7 @@
     self.extendButton = nil;
     self.qualifyButton = nil;
     self.qualifyView = nil;
+    self.sendingView = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

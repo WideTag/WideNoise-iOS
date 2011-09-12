@@ -10,16 +10,18 @@
 
 #import <CoreLocation/CoreLocation.h>
 
+#import "TagsViewController.h"
 #import "WTLedView.h"
 #import "WTNoiseRecorder.h"
 
-@interface ListenViewController : UIViewController <CLLocationManagerDelegate, UIScrollViewDelegate, WTLedViewDataSource, WTNoiseRecorderDelegate>
+@class WTNoise;
+
+@interface ListenViewController : UIViewController <CLLocationManagerDelegate, TagsViewControllerDelegate, UIScrollViewDelegate, WTLedViewDataSource, WTNoiseRecorderDelegate>
 
 @property (nonatomic, retain) IBOutlet UIImageView *bgView;
 @property (nonatomic, retain) IBOutlet UIImageView *meterView;
 @property (nonatomic, retain) IBOutlet UIImageView *pageView;
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
-
 @property (nonatomic, retain) IBOutlet UIView *samplingView;
 @property (nonatomic, retain) IBOutlet UIImageView *recordView;
 @property (nonatomic, retain) IBOutlet UIImageView *locationView;
@@ -29,12 +31,15 @@
 @property (nonatomic, retain) IBOutlet UIButton *takeButton;
 @property (nonatomic, retain) IBOutlet UIButton *extendButton;
 @property (nonatomic, retain) IBOutlet UIButton *qualifyButton;
-
 @property (nonatomic, retain) IBOutlet UIView *qualifyView;
+@property (nonatomic, retain) IBOutlet UIView *sendingView;
+
+@property (nonatomic, retain) WTNoise *recordedNoise;
 
 - (IBAction)action:(id)sender;
 - (IBAction)clear:(id)sender;
 - (IBAction)setType:(id)sender;
 - (IBAction)sendReport:(id)sender;
+- (IBAction)selectTags:(id)sender;
 
 @end

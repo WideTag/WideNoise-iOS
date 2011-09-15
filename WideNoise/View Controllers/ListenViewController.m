@@ -239,7 +239,15 @@
         }
     }
     
-    return level / (120.0 * ceil(len));
+    CGFloat value = (level / (120.0 * ceil(len)));
+    
+    if (value < 0.35) {
+        return value/4.0;
+    } else if (value < 0.6) {
+        return (4.0*value)-1.5;
+    }
+    
+    return (value+3.0)/4.0;
 }
 
 #pragma mark - UIScrollViewDelegate methods
@@ -255,13 +263,15 @@
 
 - (void)noiseRecorder:(WTNoiseRecorder *)noiseRecorder didUpdateNoise:(WTNoise *)noise
 {        
-    [self.ledView setNeedsDisplay];  
+    [self.ledView setNeedsDisplay];
 }
 
 - (void)noiseRecorderDidFinishRecording:(WTNoiseRecorder *)noiseRecorder
 {
-    self.recordedNoise = noiseRecorder.recordedNoise;
     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+    
+    self.recordedNoise = noiseRecorder.recordedNoise;
+    
     self.recordView.hidden = YES;
     
     float db = self.recordedNoise.averageLevel;

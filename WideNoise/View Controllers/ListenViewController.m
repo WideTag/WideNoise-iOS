@@ -100,16 +100,25 @@
     self.recordView.hidden = YES;
     
     self.types = [NSMutableSet set];
+    /*
     for (UIView *subview in self.samplingView.subviews) {
         if ([subview isKindOfClass:[UIButton class]]) {
             [(UIButton *)subview setSelected:NO];
         }
     }
+     */
     for (UIView *subview in self.qualifyView.subviews) {
         if ([subview isKindOfClass:[UIButton class]]) {
             [(UIButton *)subview setSelected:NO];
         }
     }
+    
+    self.takeButton.enabled = YES;
+    self.takeButton.selected = NO;
+    self.extendButton.enabled = NO;
+    self.extendButton.selected = NO;
+    self.qualifyButton.enabled = NO;
+    self.qualifyButton.selected = NO;
     
     [self.ledView setNeedsDisplay];
     
@@ -304,6 +313,9 @@
     self.dbLabel.text = [NSString stringWithFormat:@"%ddb", (int)self.recordedNoise.averageLevel];
     self.descriptionLabel.text = description;
     
+    self.takeButton.enabled = YES;
+    self.extendButton.enabled = YES;
+    self.qualifyButton.enabled = YES;
     self.takeButton.userInteractionEnabled = YES;
     self.extendButton.userInteractionEnabled = YES;
     self.qualifyButton.userInteractionEnabled = YES;

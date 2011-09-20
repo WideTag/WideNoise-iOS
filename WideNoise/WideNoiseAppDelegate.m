@@ -62,6 +62,11 @@ NSString * const TwitterDidFinishNotification = @"TwitterDidFinishNotification";
 
 - (void)fbDidLogout
 {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults removeObjectForKey:@"FBAccessTokenKey"];
+    [defaults removeObjectForKey:@"FBExpirationDateKey"];
+    [defaults synchronize];
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:FacebookDidLogoutNotification object:self];
 }
 

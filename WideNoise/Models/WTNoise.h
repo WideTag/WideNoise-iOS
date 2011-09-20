@@ -23,6 +23,14 @@
 }
 
 /*
+ *  identifier
+ *  
+ *  Discussion:
+ *    A unique ID used to identify a noise reported to the server.
+ */
+@property (nonatomic, copy) NSString *identifier;
+
+/*
  *  samples
  *  
  *  Discussion:
@@ -75,6 +83,14 @@
 @property (nonatomic, retain) NSArray *tags;
 
 /*
+ *  icon:
+ *  
+ *  Discussion:
+ *    Returns an iconic representation for the noise level.
+ */
+@property (nonatomic, readonly) UIImage *icon;
+
+/*
  *  addSample:
  *  
  *  Discussion:
@@ -92,6 +108,6 @@
  */
 - (void)addType:(NSString *)type;
 
-- (UIImage *)icon;
++ (void)processReportedNoisesInMapRect:(MKMapRect)mapRect withBlock:(void (^)(NSArray *noises))processNoises;
 
 @end

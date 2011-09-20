@@ -16,5 +16,7 @@
 @property (nonatomic, retain) IBOutlet UIView *overlayView;
 @property (nonatomic, retain) IBOutlet UIImageView *overlayImageView;
 @property (nonatomic, retain) IBOutlet UILabel *overlayLabel;
+@property (nonatomic, retain) IBOutlet UIView *topColorView;
+@property (nonatomic, retain) IBOutlet UIView *bottomColorView;
 
 @end

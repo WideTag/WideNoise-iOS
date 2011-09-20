@@ -42,18 +42,21 @@
 
 - (BOOL)recordForDuration:(NSTimeInterval)duration
 {
-    if (self.audioRecorder.recording || duration <= 0) {
+    if (duration <= 0) {
         return NO;
     }
     
     _recordingDuration += duration;
+    
+    if (self.audioRecorder.recording) {
+        return YES;
+    }    
     
     self.samplingTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/self.samplesPerSecond 
                                                           target:self
                                                         selector:@selector(recordSample) 
                                                         userInfo:nil 
                                                          repeats:YES];
-    
     return [self.audioRecorder record];
 }
 
@@ -110,6 +113,7 @@
         [self.samplingTimer invalidate];
         self.samplingTimer = nil;
         
+        [(NSObject *)self.delegate performSelectorOnMainThread:@selector(noiseRecorderDidFinishRecording:) withObject:self waitUntilDone:NO];
         [self stop];
     }
 }
@@ -118,8 +122,6 @@
 
 - (void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag
 {
-    [self.delegate noiseRecorderDidFinishRecording:self];
-    
     [recorder deleteRecording];
 }
 

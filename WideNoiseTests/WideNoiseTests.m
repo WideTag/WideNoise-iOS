@@ -8,7 +8,7 @@
 
 #import "WideNoiseTests.h"
 
-#import "NSData+Base64.h"
+#import "NSData+Base64Encoding.h"
 #import "WTNoise.h"
 
 @implementation WideNoiseTests

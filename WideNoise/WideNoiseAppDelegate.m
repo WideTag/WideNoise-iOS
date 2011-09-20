@@ -8,17 +8,82 @@
 
 #import "WideNoiseAppDelegate.h"
 
+#import "SFHFKeychainUtils.h"
+
+NSString * const FacebookDidLoginNotification = @"FacebookDidLoginNotification";
+NSString * const FacebookDidLogoutNotification = @"FacebookDidLogoutNotification";
+NSString * const TwitterDidSuccessNotification = @"TwitterDidSuccessNotification";
+NSString * const TwitterDidFailNotification = @"TwitterDidFailNotification";
+NSString * const TwitterDidFinishNotification = @"TwitterDidFinishNotification";
 
 @implementation WideNoiseAppDelegate
 
 @synthesize window = _window;
 @synthesize tabBarController = _tabBarController;
 
+@synthesize facebook;
+@synthesize twitter;
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    self.facebook = [[[Facebook alloc] initWithAppId:FACEBOOK_APP_ID andDelegate:self] autorelease];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults objectForKey:@"FBAccessTokenKey"] 
+        && [defaults objectForKey:@"FBExpirationDateKey"]) {
+        self.facebook.accessToken = [defaults objectForKey:@"FBAccessTokenKey"];
+        self.facebook.expirationDate = [defaults objectForKey:@"FBExpirationDateKey"];
+    }
+    
+    self.twitter = [[[XAuthTwitterEngine alloc] initXAuthWithDelegate:self] autorelease];
+    self.twitter.consumerKey = TWITTER_CONSUMER_KEY;
+    self.twitter.consumerSecret = TWITTER_CONSUMER_SECRET;
+    [self.twitter setUsername:[[NSUserDefaults standardUserDefaults] objectForKey:kTwitterUsernameDefaultKey] password:nil];
+    
     [self.window addSubview:self.tabBarController.view];
     [self.window makeKeyAndVisible];
     return YES;
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url 
+{
+    return [self.facebook handleOpenURL:url]; 
+}
+
+- (void)fbDidLogin 
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:[facebook accessToken] forKey:@"FBAccessTokenKey"];
+    [defaults setObject:[facebook expirationDate] forKey:@"FBExpirationDateKey"];
+    [defaults synchronize];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:FacebookDidLoginNotification object:self];
+}
+
+- (void)fbDidLogout
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:FacebookDidLogoutNotification object:self];
+}
+
+- (void)storeCachedTwitterXAuthAccessTokenString:(NSString *)tokenString forUsername:(NSString *)username
+{
+	[SFHFKeychainUtils storeUsername:username andPassword:tokenString forServiceName:@"twitter.token" updateExisting:YES error:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:TwitterDidSuccessNotification object:self userInfo:[NSDictionary dictionaryWithObject:username forKey:@"username"]];
+}
+
+- (NSString *)cachedTwitterXAuthAccessTokenStringForUsername:(NSString *)username
+{
+    return [SFHFKeychainUtils getPasswordForUsername:username andServiceName:@"twitter.token" error:nil];;
+}
+
+- (void) twitterXAuthConnectionDidFailWithError: (NSError *)error
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:TwitterDidFailNotification object:self];
+}
+
+- (void)connectionFinished:(NSString *)identifier
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:TwitterDidFinishNotification object:self];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -64,6 +129,8 @@
 {
     [_window release];
     [_tabBarController release];
+    [facebook release];
+    [twitter release];
     [super dealloc];
 }
 

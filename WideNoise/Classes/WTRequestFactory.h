@@ -43,4 +43,27 @@
  */
 - (NSURLRequest *)requestForReportingNoise:(WTNoise *)noise date:(NSDate *)date;
 
+/*
+ *  requestForReportingNoise:date:
+ *  
+ *  Discussion:
+ *    Returns a HTTP request object that can be used to fetch all noises
+ *    reported inside the provided map area. The server must return a JSON response with a status field
+ *    that indicates whether the request was successfully handled. Status codes are:
+ *
+ *       0: The request was succesfully handled.
+ *     100: The server could not read the JSON object you provided.
+ *     102: The request has an incorrect signature.
+ *
+ *    The JSON response must contain a data field with an array of all recorded noises.
+ *    The fields of each noise are:
+ *
+ *           id: An identifier for the report (must be unique).
+ *          lat: The latitude in decimal degrees of the report.
+ *          lon: The longitude in decimal degrees of the report.
+ *           db: The average level of noise.
+ *    timestamp: The unix timestamp (in seconds) of the report.
+ */
+- (NSURLRequest *)requestForFetchingNoiseReportsInMapRect:(MKMapRect)mapRect;
+
 @end

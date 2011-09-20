@@ -15,3 +15,9 @@
 
 #define USE_REFERENCE_API
 #define API_SHARED_KEY @"xxxxxxxxxxxxx"
+
+#define FACEBOOK_APP_ID @"xxxxxxxxxxxxx"
+#define TWITTER_CONSUMER_KEY @"xxxxxxxxxxxxx"
+#define TWITTER_CONSUMER_SECRET @"xxxxxxxxxxxxx"
+
+#define kTwitterUsernameDefaultKey @"twitter.username"

@@ -11,7 +11,8 @@
 #import "NSString+HMAC.h"
 #import "SBJson.h"
 
-#define REPORTING_URL @"http://xxxxxx/report"
+#define REPORTING_URL @"http://widenoise.com/report"
+#define MAP_URL @"http://widenoise.com/map"
 
 #define REQUEST_TIMEOUT 30.0
 
@@ -28,7 +29,9 @@
     [data setObject:[NSString stringWithFormat:@"%f", noise.averageLevel] forKey:@"rms"];
     [data setObject:[[UIDevice currentDevice] uniqueIdentifier] forKey:@"uid"];
     [data setObject:noise.types forKey:@"types"];
-    [data setObject:noise.tags forKey:@"tags"];
+    if (noise.tags != nil) {
+        [data setObject:noise.tags forKey:@"tags"];
+    }    
     [data setObject:@"" forKey:@"hash"];
 
     [data setObject:[[data JSONRepresentation] HMACUsingSHA256WithKey:API_SHARED_KEY] forKey:@"hash"];
@@ -36,6 +39,36 @@
     NSString *jsonString = [data JSONRepresentation];
 
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:REPORTING_URL]
+                                                           cachePolicy:NSURLRequestReloadIgnoringLocalCacheData 
+                                                       timeoutInterval:REQUEST_TIMEOUT];
+    
+    NSData *jsonData = [NSData dataWithBytes:[jsonString cStringUsingEncoding:NSUTF8StringEncoding] length:[jsonString length]];
+    
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:[NSString stringWithFormat:@"%d", [jsonData length]] forHTTPHeaderField:@"Content-Length"];
+    [request setHTTPBody: jsonData];
+    
+    return request;
+}
+
+- (NSURLRequest *)requestForFetchingNoiseReportsInMapRect:(MKMapRect)mapRect
+{
+    MKCoordinateRegion region = MKCoordinateRegionForMapRect(mapRect);
+    
+    NSMutableDictionary *data = [NSMutableDictionary dictionary];
+    [data setObject:[NSString stringWithFormat:@"%f", region.center.latitude] forKey:@"lat"];
+    [data setObject:[NSString stringWithFormat:@"%f", region.center.longitude] forKey:@"lon"];
+    [data setObject:[NSString stringWithFormat:@"%f", region.span.latitudeDelta] forKey:@"lat_delta"];
+    [data setObject:[NSString stringWithFormat:@"%f", region.span.longitudeDelta] forKey:@"lon_delta"];
+    [data setObject:@"" forKey:@"hash"];
+    
+    [data setObject:[[data JSONRepresentation] HMACUsingSHA256WithKey:API_SHARED_KEY] forKey:@"hash"];
+    
+    NSString *jsonString = [data JSONRepresentation];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:MAP_URL]
                                                            cachePolicy:NSURLRequestReloadIgnoringLocalCacheData 
                                                        timeoutInterval:REQUEST_TIMEOUT];
     

@@ -1,0 +1,22 @@
+/* 
+  Localizable.strings
+  WideNoise
+
+  Created by Emilio Pavia on 16/09/11.
+  Copyright 2011 WideTag, Inc. All rights reserved.
+*/
+
+"AlertViewYes" = "Yes";
+"AlertViewNo" = "No";
+"AlertViewOK" = "OK";
+"AlertViewErrorTitle" = "Error";
+
+"ConnectionErrorAlertTitle" = "Connection Error";
+"ConnectionErrorAlertMessage" = "There was an error sending the result to the server. Please check your Internet connection and retry.";
+
+"TwitterLinkAlertTitle" = "Twitter Account";
+"TwitterLinkAlertMessage" = "You won't be able to share your activities by your Twitter account. Are you sure?";
+"TwitterAuthErrorMessage" = "Username or password is incorrect. Please check and try again.";
+
+"FacebookLinkAlertTitle" = "Facebook Account";
+"FacebookLinkAlertMessage" = "You won't be able to share your activities by your Facebook account. Are you sure?";

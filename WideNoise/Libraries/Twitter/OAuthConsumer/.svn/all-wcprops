@@ -1,0 +1,101 @@
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/widenoise/!svn/ver/104/trunk/Classes/Libraries%20&%20Headers/OAuthConsumer
+END
+OADataFetcher.h
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/widenoise/!svn/ver/104/trunk/Classes/Libraries%20&%20Headers/OAuthConsumer/OADataFetcher.h
+END
+OAToken_KeychainExtensions.h
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/widenoise/!svn/ver/104/trunk/Classes/Libraries%20&%20Headers/OAuthConsumer/OAToken_KeychainExtensions.h
+END
+OAuthConsumer.h
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/widenoise/!svn/ver/104/trunk/Classes/Libraries%20&%20Headers/OAuthConsumer/OAuthConsumer.h
+END
+OAToken.h
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/widenoise/!svn/ver/104/trunk/Classes/Libraries%20&%20Headers/OAuthConsumer/OAToken.h
+END
+libOAuth.a
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/widenoise/!svn/ver/104/trunk/Classes/Libraries%20&%20Headers/OAuthConsumer/libOAuth.a
+END
+OAHMAC_SHA1SignatureProvider.h
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/widenoise/!svn/ver/104/trunk/Classes/Libraries%20&%20Headers/OAuthConsumer/OAHMAC_SHA1SignatureProvider.h
+END
+OASignatureProviding.h
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/widenoise/!svn/ver/104/trunk/Classes/Libraries%20&%20Headers/OAuthConsumer/OASignatureProviding.h
+END
+OAMutableURLRequest.h
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/widenoise/!svn/ver/104/trunk/Classes/Libraries%20&%20Headers/OAuthConsumer/OAMutableURLRequest.h
+END
+OAAsynchronousDataFetcher.h
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/widenoise/!svn/ver/104/trunk/Classes/Libraries%20&%20Headers/OAuthConsumer/OAAsynchronousDataFetcher.h
+END
+OARequestParameter.h
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/widenoise/!svn/ver/104/trunk/Classes/Libraries%20&%20Headers/OAuthConsumer/OARequestParameter.h
+END
+NSURL+Base.h
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/widenoise/!svn/ver/104/trunk/Classes/Libraries%20&%20Headers/OAuthConsumer/NSURL+Base.h
+END
+OAConsumer.h
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/widenoise/!svn/ver/104/trunk/Classes/Libraries%20&%20Headers/OAuthConsumer/OAConsumer.h
+END
+NSString+URLEncoding.h
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/widenoise/!svn/ver/104/trunk/Classes/Libraries%20&%20Headers/OAuthConsumer/NSString+URLEncoding.h
+END
+OAServiceTicket.h
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/widenoise/!svn/ver/104/trunk/Classes/Libraries%20&%20Headers/OAuthConsumer/OAServiceTicket.h
+END
+OAPlaintextSignatureProvider.h
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/widenoise/!svn/ver/104/trunk/Classes/Libraries%20&%20Headers/OAuthConsumer/OAPlaintextSignatureProvider.h
+END
+NSMutableURLRequest+Parameters.h
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/widenoise/!svn/ver/104/trunk/Classes/Libraries%20&%20Headers/OAuthConsumer/NSMutableURLRequest+Parameters.h
+END

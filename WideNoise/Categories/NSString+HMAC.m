@@ -10,7 +10,7 @@
 
 #import <CommonCrypto/CommonHMAC.h>
 
-#import "NSData+Base64.h"
+#import "NSData+Base64Encoding.h"
 
 @implementation NSString (HMAC)
 

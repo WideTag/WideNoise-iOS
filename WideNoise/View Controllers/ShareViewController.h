@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ShareViewController : UIViewController
+#import "TwitterLoginViewController.h"
+
+@interface ShareViewController : UIViewController <TwitterLoginDelegate, UIAlertViewDelegate>
+
+@property (nonatomic, retain) IBOutlet UIButton *twitterButton;
+@property (nonatomic, retain) IBOutlet UIButton *facebookButton;
+@property (nonatomic, retain) IBOutlet UIButton *emailButton;
+
+- (IBAction)linkTwitter:(id)sender;
+- (IBAction)linkFacebook:(id)sender;
+- (IBAction)sendEmail:(id)sender;
 
 @end

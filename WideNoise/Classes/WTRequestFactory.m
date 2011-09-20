@@ -27,6 +27,11 @@
     return nil;
 }
 
+- (NSURLRequest *)requestForFetchingNoiseReportsInMapRect:(MKMapRect)mapRect
+{
+    return nil;
+}
+
 - (id)init
 {
     self = [super init];

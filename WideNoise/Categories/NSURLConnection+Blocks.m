@@ -19,7 +19,7 @@
         NSURLResponse *response = nil;  
         NSError *error = nil;
         NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-        dispatch_async(dispatch_get_current_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
             if (error) {
                 failureBlock(data, error);
             } else {  

@@ -10,13 +10,14 @@
 
 #import <CoreLocation/CoreLocation.h>
 
+#import "Facebook.h"
 #import "TagsViewController.h"
 #import "WTLedView.h"
 #import "WTNoiseRecorder.h"
 
 @class WTNoise;
 
-@interface ListenViewController : UIViewController <CLLocationManagerDelegate, TagsViewControllerDelegate, UIScrollViewDelegate, WTLedViewDataSource, WTNoiseRecorderDelegate>
+@interface ListenViewController : UIViewController <CLLocationManagerDelegate, FBRequestDelegate, TagsViewControllerDelegate, UIScrollViewDelegate, WTLedViewDataSource, WTNoiseRecorderDelegate>
 
 @property (nonatomic, retain) IBOutlet UIImageView *bgView;
 @property (nonatomic, retain) IBOutlet UIImageView *meterView;
@@ -31,8 +32,13 @@
 @property (nonatomic, retain) IBOutlet UIButton *takeButton;
 @property (nonatomic, retain) IBOutlet UIButton *extendButton;
 @property (nonatomic, retain) IBOutlet UIButton *qualifyButton;
+@property (nonatomic, retain) IBOutlet UIButton *sendButton;
+@property (nonatomic, retain) IBOutlet UIButton *tagButton;
+@property (nonatomic, retain) IBOutlet UIButton *shareButton;
+@property (nonatomic, retain) IBOutlet UIButton *newButton;
 @property (nonatomic, retain) IBOutlet UIView *qualifyView;
 @property (nonatomic, retain) IBOutlet UIView *sendingView;
+@property (nonatomic, retain) IBOutlet UIImageView *statusView;
 
 @property (nonatomic, retain) WTNoise *recordedNoise;
 
@@ -41,5 +47,6 @@
 - (IBAction)setType:(id)sender;
 - (IBAction)sendReport:(id)sender;
 - (IBAction)selectTags:(id)sender;
+- (IBAction)shareResult:(id)sender;
 
 @end

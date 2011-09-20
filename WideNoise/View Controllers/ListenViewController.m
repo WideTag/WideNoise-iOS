@@ -10,7 +10,12 @@
 
 #import <AudioToolbox/AudioServices.h>
 
+#import "NSURLConnection+Blocks.h"
+#import "WideNoiseAppDelegate.h"
 #import "WTRequestFactory.h"
+
+#define SOCIAL_MESSAGE @"just read %.1fdb of %@ with #WideNoise"
+#define SOCIAL_URL @"http://widenoise.com/%@"
 
 @interface ListenViewController ()
 
@@ -21,8 +26,15 @@
 @property (nonatomic, retain) CLLocation *currentLocation;
 @property (nonatomic, retain) NSMutableSet *types;
 
+@property (assign) NSUInteger missingOperations;
+
 - (void)scrollToPage:(NSUInteger)page;
 - (void)updateLocation;
+
+- (void)shareToSocialNetworks;
+- (void)handleConnectionError;
+- (void)completeSendingReport;
+- (void)handleTwitterNotification:(NSNotification *)notification;
 
 @end
 
@@ -41,8 +53,13 @@
 @synthesize takeButton;
 @synthesize extendButton;
 @synthesize qualifyButton;
+@synthesize sendButton;
+@synthesize tagButton;
+@synthesize shareButton;
+@synthesize newButton;
 @synthesize qualifyView;
 @synthesize sendingView;
+@synthesize statusView;
 
 @synthesize recordedNoise = _recordedNoise;
 
@@ -53,36 +70,31 @@
 @synthesize currentLocation;
 @synthesize types;
 
+@synthesize missingOperations;
+
 #pragma mark - IBAction methods
 
 - (IBAction)action:(id)sender
 {
-    if (sender != self.takeButton && [self.recordedNoise.samples count] == 0) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil 
-                                                            message:@"You must take a noise sample first to perform this action." 
-                                                           delegate:nil 
-                                                  cancelButtonTitle:@"OK" 
-                                                  otherButtonTitles:nil];
-        [alertView show];
-        [alertView release];
-        return;
-    } else if (sender == self.qualifyButton) {
-        [(UIButton *)sender setSelected:YES];
+    if (sender == self.qualifyButton) {
         [self scrollToPage:1];
         return;
-    } else if (sender == self.takeButton && [self.recordedNoise.samples count] > 0) {
-        [self clear:sender];
-    } 
+    }
     
-    [(UIButton *)sender setSelected:YES];
-    
-    self.takeButton.userInteractionEnabled = NO;
-    self.extendButton.userInteractionEnabled = NO;
-    self.qualifyButton.userInteractionEnabled = NO;
-    self.recordView.hidden = NO;
-    
+    if (sender == self.takeButton) {
+        self.takeButton.enabled = NO;
+        self.extendButton.enabled = YES;
+        self.qualifyButton.enabled = NO;
+        self.recordView.hidden = NO;
+        
+        [self updateLocation];
+    } else if (sender == self.extendButton) {
+        self.takeButton.enabled = NO;
+        self.extendButton.enabled = NO;
+        self.qualifyButton.enabled = NO;
+    }
+
     [self.noiseRecorder recordForDuration:5];
-    [self updateLocation];
 }
 
 - (IBAction)clear:(id)sender
@@ -93,20 +105,17 @@
     
     self.currentLocation = nil;
     
-    self.meterView.image = [UIImage imageNamed:@"noise_meter.png"];
+    self.meterView.image = [UIImage imageNamed:@"noise_meter_off.png"];
     self.dbLabel.text = @"";
     self.descriptionLabel.text = @"";
     self.locationView.hidden = YES;
     self.recordView.hidden = YES;
+    self.statusView.image = [UIImage imageNamed:@"status_screen.png"];
     
     self.types = [NSMutableSet set];
-    /*
-    for (UIView *subview in self.samplingView.subviews) {
-        if ([subview isKindOfClass:[UIButton class]]) {
-            [(UIButton *)subview setSelected:NO];
-        }
-    }
-     */
+    
+    self.missingOperations = 0;
+    
     for (UIView *subview in self.qualifyView.subviews) {
         if ([subview isKindOfClass:[UIButton class]]) {
             [(UIButton *)subview setSelected:NO];
@@ -114,11 +123,14 @@
     }
     
     self.takeButton.enabled = YES;
-    self.takeButton.selected = NO;
     self.extendButton.enabled = NO;
-    self.extendButton.selected = NO;
     self.qualifyButton.enabled = NO;
-    self.qualifyButton.selected = NO;
+    
+    self.sendButton.enabled = NO;
+    
+    self.tagButton.enabled = NO;
+    self.shareButton.enabled = NO;
+    self.newButton.enabled = NO;
     
     [self.ledView setNeedsDisplay];
     
@@ -164,14 +176,24 @@
         [typeButton setSelected:NO];
         [self.types removeObject:type];
     } else {
+        [typeButton setBackgroundImage:[typeButton backgroundImageForState:UIControlStateHighlighted] forState:(UIControlStateSelected | UIControlStateHighlighted)];
         [typeButton setSelected:YES];
         [self.types addObject:type];
+    }
+    
+    if ([self.types count] > 0) {
+        self.sendButton.enabled = YES;
+    } else {
+        self.sendButton.enabled = NO;
     }
 }
 
 - (IBAction)sendReport:(id)sender
 {
-    [(UIButton *)sender setSelected:YES];
+    self.tagButton.enabled = YES;
+    self.shareButton.enabled = YES;
+    self.newButton.enabled = YES;
+    
     [self scrollToPage:2];
 }
 
@@ -187,6 +209,30 @@
     [tagsController release];
 }
 
+- (IBAction)shareResult:(id)sender
+{
+    self.tagButton.enabled = NO;
+    self.shareButton.enabled = NO;
+    self.newButton.enabled = NO;
+    self.statusView.image = [UIImage imageNamed:@"status_screen_connecting.png"];
+    
+    self.missingOperations = 1;
+    
+    NSURLRequest *request = [[WTRequestFactory factory] requestForReportingNoise:self.recordedNoise date:[NSDate date]];
+    
+    __block typeof(self) selfRef = self;
+    [NSURLConnection sendAsynchronousRequest:request
+                                   onSuccess:^(NSData *data, NSURLResponse *response) {
+                                       [[selfRef statusView] setImage:[UIImage imageNamed:@"status_screen_sending.png"]];
+
+                                       [selfRef shareToSocialNetworks];
+                                       [selfRef completeSendingReport];
+                                   } 
+                                   onFailure:^(NSData *data, NSError *error) {
+                                       [selfRef handleConnectionError];
+                                   }];
+}
+
 #pragma mark - Private methods
 
 - (void)scrollToPage:(NSUInteger)page
@@ -196,7 +242,7 @@
                                                     self.scrollView.frame.size.width, 
                                                     self.scrollView.frame.size.height) 
                                 animated:YES];
-    NSString *imageName = [NSString stringWithFormat:@"page_%d.png", page+1];
+    NSString *imageName = [NSString stringWithFormat:@"pager_%d.png", page+1];
     self.pageView.image = [UIImage imageNamed:imageName];
 }
 
@@ -211,8 +257,69 @@
         [alertView show];
         [alertView release];
     } else {
+        self.locationView.hidden = NO;
+        
         [self.locationManager startUpdatingLocation];
     }
+}
+
+- (void)shareToSocialNetworks
+{    
+    NSString *link = [NSString stringWithFormat:SOCIAL_URL, self.recordedNoise.identifier];
+    NSString *description = [NSString stringWithFormat:SOCIAL_MESSAGE, self.recordedNoise.averageLevel, self.recordedNoise];
+    
+    Facebook *facebook = ((WideNoiseAppDelegate *)[[UIApplication sharedApplication] delegate]).facebook;
+    XAuthTwitterEngine *twitter = ((WideNoiseAppDelegate *)[[UIApplication sharedApplication] delegate]).twitter;
+    
+    BOOL hasFacebook = [facebook isSessionValid];
+    BOOL hasTwitter = [twitter isAuthorized];
+    
+    if (hasFacebook) {
+        self.missingOperations++;
+        [facebook requestWithGraphPath:@"me/feed" 
+                             andParams:[NSMutableDictionary dictionaryWithObjects:[NSArray arrayWithObjects:link, description, nil]
+                                                                                                forKeys:[NSArray arrayWithObjects:@"link", @"description", nil]]
+                         andHttpMethod:@"POST"
+                           andDelegate:self];
+    }
+    if (hasTwitter) {
+        self.missingOperations++;
+        [twitter sendUpdate:[NSString stringWithFormat:@"%@ %@", description, link]];
+    }
+}
+
+- (void)handleConnectionError
+{
+    self.statusView.image = [UIImage imageNamed:@"status_screen.png"];
+    self.tagButton.enabled = YES;
+    self.shareButton.enabled = YES;
+    self.newButton.enabled = YES;
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ConnectionErrorAlertTitle", @"") 
+                                                    message:NSLocalizedString(@"ConnectionErrorAlertMessage", @"") 
+                                                   delegate:nil 
+                                          cancelButtonTitle:NSLocalizedString(@"AlertViewOK", @"") 
+                                          otherButtonTitles:nil];
+    [alert show];
+    [alert release];
+}
+
+- (void)completeSendingReport
+{
+    self.missingOperations--;
+    
+    if (self.missingOperations == 0) {
+        self.tagButton.enabled = NO;
+        self.shareButton.enabled = NO;
+        self.newButton.enabled = YES;
+        
+        self.statusView.image = [UIImage imageNamed:@"status_screen_done.png"];
+    }   
+}
+
+- (void)handleTwitterNotification:(NSNotification *)notification
+{
+    [self completeSendingReport];
 }
 
 #pragma mark - CoreLocation delegate methods
@@ -223,7 +330,7 @@
         self.currentLocation = newLocation;
         [manager stopUpdatingLocation];
         
-        self.locationView.hidden = NO;
+        self.locationView.hidden = YES;
     }    
 }
 
@@ -232,6 +339,7 @@
 - (CGFloat)ledView:(WTLedView *)ledView valueForColumnAtIndex:(NSUInteger)index
 {
     WTNoise *noise = self.noiseRecorder.recordedNoise;
+
     NSUInteger totalSamples = self.noiseRecorder.samplesPerSecond * self.noiseRecorder.recordingDuration;
     if (totalSamples == 0) {
         return 0;
@@ -264,7 +372,7 @@
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     NSUInteger page = floorf(CGRectGetMinX(scrollView.bounds) / CGRectGetWidth(scrollView.bounds)) + 1;
-    NSString *imageName = [NSString stringWithFormat:@"page_%d.png", page];
+    NSString *imageName = [NSString stringWithFormat:@"pager_%d.png", page];
     self.pageView.image = [UIImage imageNamed:imageName];
 }
 
@@ -313,12 +421,9 @@
     self.dbLabel.text = [NSString stringWithFormat:@"%ddb", (int)self.recordedNoise.averageLevel];
     self.descriptionLabel.text = description;
     
-    self.takeButton.enabled = YES;
-    self.extendButton.enabled = YES;
+    self.takeButton.enabled = NO;
+    self.extendButton.enabled = NO;
     self.qualifyButton.enabled = YES;
-    self.takeButton.userInteractionEnabled = YES;
-    self.extendButton.userInteractionEnabled = YES;
-    self.qualifyButton.userInteractionEnabled = YES;
 }
 
 #pragma mark - TagsViewControllerDelegate methods
@@ -329,6 +434,13 @@
         return [obj1 compare:obj2];
     }];
     [self dismissModalViewControllerAnimated:YES];
+}
+
+#pragma mark - Facebook delegate methods
+
+- (void)request:(FBRequest *)request didLoad:(id)result
+{
+    [self completeSendingReport];
 }
 
 #pragma mark - 
@@ -365,8 +477,13 @@
     [takeButton release];
     [extendButton release];
     [qualifyButton release];
+    [sendButton release];
+    [tagButton release];
+    [shareButton release];
+    [newButton release];
     [qualifyView release];
     [sendingView release];
+    [statusView release];
     
     [_recordedNoise release];
     
@@ -384,6 +501,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleTwitterNotification:) name:TwitterDidFinishNotification object:[UIApplication sharedApplication].delegate];
     
     self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * 3, self.scrollView.frame.size.height);
     self.samplingView.frame = CGRectMake(0, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height);
@@ -413,6 +532,8 @@
 {
     [super viewDidUnload];
     
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     self.bgView = nil;
     self.pageView = nil;
     self.scrollView = nil;
@@ -426,8 +547,13 @@
     self.takeButton = nil;
     self.extendButton = nil;
     self.qualifyButton = nil;
+    self.sendButton = nil;
+    self.tagButton = nil;
+    self.shareButton = nil;
+    self.newButton = nil;
     self.qualifyView = nil;
     self.sendingView = nil;
+    self.statusView = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

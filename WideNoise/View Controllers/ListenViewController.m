@@ -17,6 +17,10 @@
 #define SOCIAL_MESSAGE @"just read %.1fdb of %@ with #WideNoise"
 #define SOCIAL_URL @"http://widenoise.com/%@"
 
+#define SAMPLES_PER_SECOND 20
+#define RECORD_DURATION 5 // in seconds
+#define MAX_RECORDS 3
+
 @interface ListenViewController ()
 
 @property (nonatomic, retain) WTNoiseRecorder *noiseRecorder;
@@ -83,7 +87,7 @@
     
     if (sender == self.takeButton) {
         self.takeButton.enabled = NO;
-        self.extendButton.enabled = YES;
+        self.extendButton.enabled = NO;
         self.qualifyButton.enabled = NO;
         self.recordView.hidden = NO;
         
@@ -94,14 +98,14 @@
         self.qualifyButton.enabled = NO;
     }
 
-    [self.noiseRecorder recordForDuration:5];
+    [self.noiseRecorder recordForDuration:RECORD_DURATION];
 }
 
 - (IBAction)clear:(id)sender
 {
     self.noiseRecorder = [[[WTNoiseRecorder alloc] init] autorelease];
     self.noiseRecorder.delegate = self;
-    self.noiseRecorder.samplesPerSecond = 20;
+    self.noiseRecorder.samplesPerSecond = SAMPLES_PER_SECOND;
     
     self.currentLocation = nil;
     
@@ -380,6 +384,11 @@
 
 - (void)noiseRecorder:(WTNoiseRecorder *)noiseRecorder didUpdateNoise:(WTNoise *)noise
 {        
+    NSUInteger totalSamples = noiseRecorder.recordingDuration*noiseRecorder.samplesPerSecond;
+    if ((noise.samples.count > totalSamples/2.0) && (totalSamples < SAMPLES_PER_SECOND*RECORD_DURATION*MAX_RECORDS)) {
+        self.extendButton.enabled = YES;
+    }
+    
     [self.ledView setNeedsDisplay];
 }
 

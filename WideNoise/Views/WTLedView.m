@@ -65,7 +65,7 @@
         CGContextMoveToPoint(context, COL_WIDTH*i, self.frame.size.height);
         CGContextAddLineToPoint(context, COL_WIDTH*i, self.frame.size.height - ((int)(rows*value) * COL_WIDTH));
         
-        CGContextStrokePath(context);
+        CGContextStrokePath(context);             
     }
 }
 

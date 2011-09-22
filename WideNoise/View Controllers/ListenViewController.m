@@ -10,6 +10,7 @@
 
 #import <AudioToolbox/AudioServices.h>
 
+#import "Facebook.h"
 #import "NSURLConnection+Blocks.h"
 #import "WideNoiseAppDelegate.h"
 #import "WTRequestFactory.h"
@@ -21,6 +22,8 @@
 #define RECORD_DURATION 5 // in seconds
 #define MAX_RECORDS 3
 
+#define kSendingErrorAlertViewTag 1
+
 @interface ListenViewController ()
 
 @property (nonatomic, retain) WTNoiseRecorder *noiseRecorder;
@@ -30,7 +33,7 @@
 @property (nonatomic, retain) CLLocation *currentLocation;
 @property (nonatomic, retain) NSMutableSet *types;
 
-@property (assign) NSUInteger missingOperations;
+@property (nonatomic, assign) BOOL shared;
 
 - (void)scrollToPage:(NSUInteger)page;
 - (void)updateLocation;
@@ -38,7 +41,6 @@
 - (void)shareToSocialNetworks;
 - (void)handleConnectionError;
 - (void)completeSendingReport;
-- (void)handleTwitterNotification:(NSNotification *)notification;
 
 @end
 
@@ -49,6 +51,7 @@
 @synthesize pageView = _pageView;
 @synthesize scrollView = _scrollView;
 @synthesize samplingView = _samplingView;
+@synthesize stopView;
 @synthesize recordView;
 @synthesize locationView;
 @synthesize ledView = _ledView;
@@ -74,21 +77,26 @@
 @synthesize currentLocation;
 @synthesize types;
 
-@synthesize missingOperations;
+@synthesize shared;
 
 #pragma mark - IBAction methods
 
 - (IBAction)action:(id)sender
 {
     if (sender == self.qualifyButton) {
+        self.qualifyButton.enabled = NO;
         [self scrollToPage:1];
         return;
     }
     
     if (sender == self.takeButton) {
+        if (self.takeButton.selected) {
+            [self clear:nil];
+        }
         self.takeButton.enabled = NO;
         self.extendButton.enabled = NO;
         self.qualifyButton.enabled = NO;
+        self.stopView.hidden = YES;
         self.recordView.hidden = NO;
         
         [self updateLocation];
@@ -99,6 +107,7 @@
     }
 
     [self.noiseRecorder recordForDuration:RECORD_DURATION];
+    [self.ledView setNeedsDisplay];
 }
 
 - (IBAction)clear:(id)sender
@@ -113,12 +122,13 @@
     self.dbLabel.text = @"";
     self.descriptionLabel.text = @"";
     self.locationView.hidden = YES;
+    self.stopView.hidden = NO;
     self.recordView.hidden = YES;
     self.statusView.image = [UIImage imageNamed:@"status_screen.png"];
     
     self.types = [NSMutableSet set];
     
-    self.missingOperations = 0;
+    self.shared = NO;
     
     for (UIView *subview in self.qualifyView.subviews) {
         if ([subview isKindOfClass:[UIButton class]]) {
@@ -127,6 +137,7 @@
     }
     
     self.takeButton.enabled = YES;
+    self.takeButton.selected = NO;
     self.extendButton.enabled = NO;
     self.qualifyButton.enabled = NO;
     
@@ -194,15 +205,46 @@
 
 - (IBAction)sendReport:(id)sender
 {
-    self.tagButton.enabled = YES;
-    self.shareButton.enabled = YES;
-    self.newButton.enabled = YES;
+    self.sendButton.enabled = NO;
+    self.tagButton.enabled = NO;
+    self.shareButton.enabled = NO;
+    self.newButton.enabled = NO;
     
     [self scrollToPage:2];
+    [[self statusView] setImage:[UIImage imageNamed:@"status_screen_sending.png"]];
+    
+    self.recordedNoise.location = self.currentLocation;
+    
+    self.recordedNoise.types = [[self.types allObjects] sortedArrayUsingComparator:^(id obj1, id obj2) {
+        return [obj1 compare:obj2];
+    }];
+    
+    NSURLRequest *request = [[WTRequestFactory factory] requestForReportingNoise:self.recordedNoise date:[NSDate date]];
+    __block typeof(self) selfRef = self;
+    __block WTNoise *blockNoise = self.recordedNoise;
+    [NSURLConnection sendAsynchronousRequest:request
+                                   onSuccess:^(NSData *data, NSURLResponse *response) {
+                                       NSString *responseString = [[NSString alloc] initWithBytes:[data bytes]
+                                                                                           length:[data length] 
+                                                                                         encoding:NSUTF8StringEncoding];
+                                       NSDictionary *responseJSON = [responseString JSONValue];
+                                       if ([responseJSON objectForKey:@"status"] != nil && [[responseJSON objectForKey:@"status"] intValue] == 0) {
+                                           blockNoise.identifier = [responseJSON objectForKey:@"id"];
+                                           [selfRef completeSendingReport];
+                                       } else {
+                                           NSLog(@"An error occurred when trying to report noise (status = %@)", [responseJSON objectForKey:@"status"]);
+                                           [selfRef handleConnectionError];
+                                       }
+                                   } 
+                                   onFailure:^(NSData *data, NSError *error) {                                       
+                                       [selfRef handleConnectionError];
+                                   }];
 }
 
 - (IBAction)selectTags:(id)sender
 {
+    self.tagButton.enabled = NO;
+    
     TagsViewController *tagsController = [[TagsViewController alloc] initWithNibName:@"TagsViewController" bundle:nil];
     tagsController.selectedTags = [NSSet setWithArray:self.recordedNoise.tags];
     tagsController.delegate = self;
@@ -215,26 +257,9 @@
 
 - (IBAction)shareResult:(id)sender
 {
-    self.tagButton.enabled = NO;
     self.shareButton.enabled = NO;
-    self.newButton.enabled = NO;
-    self.statusView.image = [UIImage imageNamed:@"status_screen_connecting.png"];
-    
-    self.missingOperations = 1;
-    
-    NSURLRequest *request = [[WTRequestFactory factory] requestForReportingNoise:self.recordedNoise date:[NSDate date]];
-    
-    __block typeof(self) selfRef = self;
-    [NSURLConnection sendAsynchronousRequest:request
-                                   onSuccess:^(NSData *data, NSURLResponse *response) {
-                                       [[selfRef statusView] setImage:[UIImage imageNamed:@"status_screen_sending.png"]];
-
-                                       [selfRef shareToSocialNetworks];
-                                       [selfRef completeSendingReport];
-                                   } 
-                                   onFailure:^(NSData *data, NSError *error) {
-                                       [selfRef handleConnectionError];
-                                   }];
+    self.shared = YES;
+    [self shareToSocialNetworks];
 }
 
 #pragma mark - Private methods
@@ -279,51 +304,49 @@
     BOOL hasTwitter = [twitter isAuthorized];
     
     if (hasFacebook) {
-        self.missingOperations++;
         [facebook requestWithGraphPath:@"me/feed" 
                              andParams:[NSMutableDictionary dictionaryWithObjects:[NSArray arrayWithObjects:link, description, nil]
                                                                                                 forKeys:[NSArray arrayWithObjects:@"link", @"description", nil]]
                          andHttpMethod:@"POST"
-                           andDelegate:self];
+                           andDelegate:nil];
     }
     if (hasTwitter) {
-        self.missingOperations++;
         [twitter sendUpdate:[NSString stringWithFormat:@"%@ %@", description, link]];
     }
 }
 
 - (void)handleConnectionError
 {
-    self.statusView.image = [UIImage imageNamed:@"status_screen.png"];
-    self.tagButton.enabled = YES;
-    self.shareButton.enabled = YES;
-    self.newButton.enabled = YES;
+    [[self statusView] setImage:[UIImage imageNamed:@"status_screen.png"]];
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ConnectionErrorAlertTitle", @"") 
                                                     message:NSLocalizedString(@"ConnectionErrorAlertMessage", @"") 
-                                                   delegate:nil 
-                                          cancelButtonTitle:NSLocalizedString(@"AlertViewOK", @"") 
-                                          otherButtonTitles:nil];
+                                                   delegate:self 
+                                          cancelButtonTitle:NSLocalizedString(@"AlertViewNo", @"") 
+                                          otherButtonTitles:NSLocalizedString(@"AlertViewYes", @""), nil];
+    [alert setTag:kSendingErrorAlertViewTag];
     [alert show];
     [alert release];
 }
 
 - (void)completeSendingReport
 {
-    self.missingOperations--;
+    self.tagButton.enabled = YES;
     
-    if (self.missingOperations == 0) {
-        self.tagButton.enabled = NO;
+    Facebook *facebook = ((WideNoiseAppDelegate *)[[UIApplication sharedApplication] delegate]).facebook;
+    XAuthTwitterEngine *twitter = ((WideNoiseAppDelegate *)[[UIApplication sharedApplication] delegate]).twitter;
+    
+    BOOL hasFacebook = [facebook isSessionValid];
+    BOOL hasTwitter = [twitter isAuthorized];
+    if (hasTwitter || hasFacebook) {
+        self.shareButton.enabled = YES;
+    } else {
         self.shareButton.enabled = NO;
-        self.newButton.enabled = YES;
-        
-        self.statusView.image = [UIImage imageNamed:@"status_screen_done.png"];
-    }   
-}
+    }
+    
+    self.newButton.enabled = YES;
 
-- (void)handleTwitterNotification:(NSNotification *)notification
-{
-    [self completeSendingReport];
+    self.statusView.image = [UIImage imageNamed:@"status_screen_done.png"];
 }
 
 #pragma mark - CoreLocation delegate methods
@@ -345,30 +368,42 @@
     WTNoise *noise = self.noiseRecorder.recordedNoise;
 
     NSUInteger totalSamples = self.noiseRecorder.samplesPerSecond * self.noiseRecorder.recordingDuration;
-    if (totalSamples == 0) {
-        return 0;
-    }
-    
     float len = totalSamples / (float)ledView.numberOfCols;
     float level = 0.0;
-    for (NSUInteger i=0; i<ceilf(len); i++) {
-        NSUInteger j = (int)(len*index) + i;
-        if (j < [noise.samples count]) {
-            level += [(NSNumber *)[noise.samples objectAtIndex:j] floatValue];
+    
+    NSUInteger j = (int)(len*index);
+    if (j < [noise.samples count]) {
+        level = [(NSNumber *)[noise.samples objectAtIndex:j] floatValue];
+    } else {
+        level = 0;
+    }
+    
+    CGFloat value = 0.0;
+    if (level <= 0) {
+        value = 0.0;
+    } else if (level <= 30) {
+        value = 0.07;
+    } else if (level <= 100) {
+        value = 0.07 + ((level-30.0)/70.0)*0.97;
+    } else {
+        value = 1.0;
+    }
+    return value;
+}
+
+#pragma mark - UIAlertView delegate
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == kSendingErrorAlertViewTag) {
+        if (buttonIndex == alertView.cancelButtonIndex) {
+            [self clear:nil];
         } else {
-            return 0;
-        }
+            self.sendButton.enabled = YES;
+            
+            [self scrollToPage:1];
+        }        
     }
-    
-    CGFloat value = (level / (120.0 * ceil(len)));
-    
-    if (value < 0.35) {
-        return value/4.0;
-    } else if (value < 0.6) {
-        return (4.0*value)-1.5;
-    }
-    
-    return (value+3.0)/4.0;
 }
 
 #pragma mark - UIScrollViewDelegate methods
@@ -385,7 +420,7 @@
 - (void)noiseRecorder:(WTNoiseRecorder *)noiseRecorder didUpdateNoise:(WTNoise *)noise
 {        
     NSUInteger totalSamples = noiseRecorder.recordingDuration*noiseRecorder.samplesPerSecond;
-    if ((noise.samples.count > totalSamples/2.0) && (totalSamples < SAMPLES_PER_SECOND*RECORD_DURATION*MAX_RECORDS)) {
+    if ((noise.samples.count > totalSamples/2) && (totalSamples < SAMPLES_PER_SECOND*RECORD_DURATION*MAX_RECORDS)) {
         self.extendButton.enabled = YES;
     }
     
@@ -398,6 +433,7 @@
     
     self.recordedNoise = noiseRecorder.recordedNoise;
     
+    self.stopView.hidden = NO;
     self.recordView.hidden = YES;
     
     float db = self.recordedNoise.averageLevel;
@@ -430,7 +466,8 @@
     self.dbLabel.text = [NSString stringWithFormat:@"%ddb", (int)self.recordedNoise.averageLevel];
     self.descriptionLabel.text = description;
     
-    self.takeButton.enabled = NO;
+    self.takeButton.enabled = YES;
+    self.takeButton.selected = YES;
     self.extendButton.enabled = NO;
     self.qualifyButton.enabled = YES;
 }
@@ -442,16 +479,31 @@
     self.recordedNoise.tags = [[tagsViewController.selectedTags allObjects] sortedArrayUsingComparator:^(id obj1, id obj2) {
         return [obj1 compare:obj2];
     }];
+    
+    [[self statusView] setImage:[UIImage imageNamed:@"status_screen_sending.png"]];
+    
+    //UIButton *blockTagButton = self.tagButton;
+    UIImageView *blockStatusView = self.statusView;
+    NSURLRequest *request = [[WTRequestFactory factory] requestForAssigningTags:self.recordedNoise.tags toNoise:self.recordedNoise];
+    [NSURLConnection sendAsynchronousRequest:request
+                                   onSuccess:^(NSData *data, NSURLResponse *response) {
+                                       //blockTagButton.enabled = YES;
+                                       [blockStatusView setImage:[UIImage imageNamed:@"status_screen_done.png"]];
+                                   } 
+                                   onFailure:^(NSData *data, NSError *error) {   
+                                       //blockTagButton.enabled = YES;
+                                       [blockStatusView setImage:[UIImage imageNamed:@"status_screen.png"]];
+                                   }];
+    
     [self dismissModalViewControllerAnimated:YES];
 }
 
-#pragma mark - Facebook delegate methods
-
-- (void)request:(FBRequest *)request didLoad:(id)result
+- (void)tagsViewControllerDidCancel:(TagsViewController *)tagsViewController
 {
-    [self completeSendingReport];
+    self.tagButton.enabled = YES;
+    
+    [self dismissModalViewControllerAnimated:YES];
 }
-
 #pragma mark - 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -477,6 +529,7 @@
     [_pageView release];
     [_scrollView release];
     [_samplingView release];
+    [stopView release];
     [recordView release];
     [locationView release];
     [meterView release];
@@ -511,8 +564,6 @@
 {
     [super viewDidLoad];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleTwitterNotification:) name:TwitterDidFinishNotification object:[UIApplication sharedApplication].delegate];
-    
     self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * 3, self.scrollView.frame.size.height);
     self.samplingView.frame = CGRectMake(0, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height);
     self.qualifyView.frame = CGRectMake(self.scrollView.frame.size.width, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height);
@@ -523,12 +574,11 @@
     
     self.ledView.ledColor = [UIColor colorWithRed:1.0 green:172.0/255.0 blue:83.0/255.0 alpha:1.0];
     
-    UIColor *ledColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"pixel_pattern.png"]];
-    self.dbLabel.textColor = ledColor;
-    self.descriptionLabel.textColor = ledColor;
-
-    self.recordView.hidden = YES;
-    self.locationView.hidden = YES;
+    // UIColor *ledColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"pixel_pattern.png"]];
+    // self.dbLabel.textColor = ledColor;
+    // self.descriptionLabel.textColor = ledColor;
+    
+    [self.takeButton setBackgroundImage:[self.takeButton backgroundImageForState:UIControlStateHighlighted] forState:(UIControlStateSelected | UIControlStateHighlighted)];
 
     [self clear:nil];
     
@@ -547,6 +597,7 @@
     self.pageView = nil;
     self.scrollView = nil;
     self.samplingView = nil;
+    self.stopView = nil;
     self.recordView = nil;
     self.locationView = nil;
     self.meterView = nil;
@@ -581,6 +632,24 @@
     [super viewWillDisappear:animated];
     
     [self.locationManager stopUpdatingLocation];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if (!self.shared) {
+        Facebook *facebook = ((WideNoiseAppDelegate *)[[UIApplication sharedApplication] delegate]).facebook;
+        XAuthTwitterEngine *twitter = ((WideNoiseAppDelegate *)[[UIApplication sharedApplication] delegate]).twitter;
+        
+        BOOL hasFacebook = [facebook isSessionValid];
+        BOOL hasTwitter = [twitter isAuthorized];
+        if (hasTwitter || hasFacebook) {
+            self.shareButton.enabled = YES;
+        } else {
+            self.shareButton.enabled = NO;
+        }
+    }
 }
 
 @end

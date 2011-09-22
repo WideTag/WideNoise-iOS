@@ -19,5 +19,6 @@
 - (IBAction)linkTwitter:(id)sender;
 - (IBAction)linkFacebook:(id)sender;
 - (IBAction)sendEmail:(id)sender;
+- (IBAction)openPersonalPage:(id)sender;
 
 @end

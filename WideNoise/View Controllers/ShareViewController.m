@@ -8,7 +8,11 @@
 
 #import "ShareViewController.h"
 
+#import "UIDevice+IdentifierAddition.h"
 #import "WideNoiseAppDelegate.h"
+
+#define WIDGET_URL @"http://www.widetag.com/widenoise/widget"
+#define PERSONAL_PAGE_URL @"http://widenoise.com/profile?id=%@"
 
 #define kTwitterTag 100
 #define kFacebookTag 200
@@ -72,7 +76,12 @@
 
 - (IBAction)sendEmail:(id)sender
 {
-    
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:WIDGET_URL]];
+}
+
+- (IBAction)openPersonalPage:(id)sender
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:PERSONAL_PAGE_URL, [[UIDevice currentDevice] uniqueDeviceIdentifier]]]];
 }
 
 #pragma mark - Private methods
@@ -184,8 +193,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleTwitterNotification:) name:TwitterDidSuccessNotification object:applicationDelegate];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleTwitterNotification:) name:TwitterDidFailNotification object:applicationDelegate];
     
-    [self.twitterButton setBackgroundImage:[self.twitterButton backgroundImageForState:UIControlStateSelected] forState:(UIControlStateSelected | UIControlStateHighlighted)];
-    [self.facebookButton setBackgroundImage:[self.facebookButton backgroundImageForState:UIControlStateSelected] forState:(UIControlStateSelected | UIControlStateHighlighted)];
+    [self.twitterButton setBackgroundImage:[UIImage imageNamed:@"link_twitter_active_hl.png"] forState:(UIControlStateSelected | UIControlStateHighlighted)];
+    [self.facebookButton setBackgroundImage:[UIImage imageNamed:@"link_facebook_active_hl.png"] forState:(UIControlStateSelected | UIControlStateHighlighted)];
     [self.emailButton setBackgroundImage:[self.emailButton backgroundImageForState:UIControlStateSelected] forState:(UIControlStateSelected | UIControlStateHighlighted)];
 }
 

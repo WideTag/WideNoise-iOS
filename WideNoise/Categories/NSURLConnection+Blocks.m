@@ -14,6 +14,9 @@
                       onSuccess:(void(^)(NSData *, NSURLResponse *))successBlock
                       onFailure:(void(^)(NSData *, NSError *))failureBlock
 {
+    if (request == nil) {
+        return;
+    }
     dispatch_queue_t requestQueue = dispatch_queue_create("Request handler", NULL);
     dispatch_async(requestQueue, ^{
         NSURLResponse *response = nil;  

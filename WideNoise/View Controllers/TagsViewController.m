@@ -28,7 +28,7 @@
 
 - (IBAction)cancel:(id)sender
 {
-    [self dismissModalViewControllerAnimated:YES];
+    [self.delegate tagsViewControllerDidCancel:self];
 }
 
 - (IBAction)save:(id)sender

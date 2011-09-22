@@ -12,6 +12,7 @@
 
 @protocol TagsViewControllerDelegate <NSObject>
 - (void)tagsViewController:(TagsViewController *)tagsViewController didSelectTags:(NSSet *)tags;
+- (void)tagsViewControllerDidCancel:(TagsViewController *)tagsViewController;
 @end
 
 @interface TagsViewController : UITableViewController <UITextFieldDelegate> {

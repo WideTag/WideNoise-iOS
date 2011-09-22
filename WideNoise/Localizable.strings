@@ -12,7 +12,7 @@
 "AlertViewErrorTitle" = "Error";
 
 "ConnectionErrorAlertTitle" = "Connection Error";
-"ConnectionErrorAlertMessage" = "There was an error sending the result to the server. Please check your Internet connection and retry.";
+"ConnectionErrorAlertMessage" = "There was an error sending this noise to the server. Do you want to keep it and send it later?";
 
 "TwitterLinkAlertTitle" = "Twitter Account";
 "TwitterLinkAlertMessage" = "You won't be able to share your activities by your Twitter account. Are you sure?";

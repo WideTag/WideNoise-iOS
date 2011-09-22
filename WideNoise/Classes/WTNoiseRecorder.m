@@ -105,15 +105,11 @@
         level = interpolate(level, lookup_table, 14);
         
         [self.recordedNoise addSample:level];
-        
-        if ([self.delegate respondsToSelector:@selector(noiseRecorder:didUpdateNoise:)] && [self.recordedNoise.samples count]%2 == 0) {
-            [self.delegate noiseRecorder:self didUpdateNoise:self.recordedNoise];
-        }        
+        [self.delegate noiseRecorder:self didUpdateNoise:self.recordedNoise];
     } else {
         [self.samplingTimer invalidate];
         self.samplingTimer = nil;
         
-        [(NSObject *)self.delegate performSelectorOnMainThread:@selector(noiseRecorderDidFinishRecording:) withObject:self waitUntilDone:NO];
         [self stop];
     }
 }
@@ -122,6 +118,9 @@
 
 - (void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag
 {
+    self.recordedNoise.measurementDuration = self.recordingDuration;
+    
+    [(NSObject *)self.delegate performSelectorOnMainThread:@selector(noiseRecorderDidFinishRecording:) withObject:self waitUntilDone:NO];
     [recorder deleteRecording];
 }
 

@@ -38,13 +38,16 @@
  *
  *       0: The request was succesfully handled.
  *     100: The server could not read the JSON object you provided.
- *     101: The request was already sent to the server (duplicate).
- *     102: The request has an incorrect signature.
+ *     101: The request has an incorrect signature.
+ *     102: The request was already sent to the server (duplicate).
+ *
+ *    The JSON response must contain a id field with the identifier assigned from the server
+ *    to the provided noise.
  */
 - (NSURLRequest *)requestForReportingNoise:(WTNoise *)noise date:(NSDate *)date;
 
 /*
- *  requestForReportingNoise:date:
+ *  requestForFetchingNoiseReportsInMapRect:
  *  
  *  Discussion:
  *    Returns a HTTP request object that can be used to fetch all noises
@@ -53,7 +56,7 @@
  *
  *       0: The request was succesfully handled.
  *     100: The server could not read the JSON object you provided.
- *     102: The request has an incorrect signature.
+ *     101: The request has an incorrect signature.
  *
  *    The JSON response must contain a data field with an array of all recorded noises.
  *    The fields of each noise are:
@@ -63,7 +66,24 @@
  *          lon: The longitude in decimal degrees of the report.
  *           db: The average level of noise.
  *    timestamp: The unix timestamp (in seconds) of the report.
+ *     duration: The duration of the sampling (in seconds).
  */
 - (NSURLRequest *)requestForFetchingNoiseReportsInMapRect:(MKMapRect)mapRect;
+
+/*
+ *  requestForAssigningTags:toNoise:
+ *  
+ *  Discussion:
+ *    Returns a HTTP request object that can be used to set the specified tags
+ *    to an  already reported noise (i.e. a noise with an identifier).
+ *    The server must return a JSON response with a status field
+ *    that indicates whether the request was successfully handled. Status codes are:
+ *
+ *       0: The request was succesfully handled.
+ *     100: The server could not read the JSON object you provided.
+ *     101: The request has an incorrect signature.
+ *     102: The request was already sent to the server (duplicate).
+ */
+- (NSURLRequest *)requestForAssigningTags:(NSArray *)tags toNoise:(WTNoise *)noise;
 
 @end

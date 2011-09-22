@@ -17,10 +17,10 @@
 @protocol WTNoiseRecorderDelegate <NSObject>
 
 - (void)noiseRecorderDidFinishRecording:(WTNoiseRecorder *)noiseRecorder;
+- (void)noiseRecorder:(WTNoiseRecorder *)noiseRecorder didUpdateNoise:(WTNoise *)noise;
 
 @optional
 
-- (void)noiseRecorder:(WTNoiseRecorder *)noiseRecorder didUpdateNoise:(WTNoise *)noise;
 - (void)noiseRecorderErrorDidOccurr:(WTNoiseRecorder *)noiseRecorder error:(NSError *)error;
 
 @end
@@ -29,7 +29,7 @@
 
 @property (nonatomic, assign) id <WTNoiseRecorderDelegate> delegate;
 @property (nonatomic, assign) NSUInteger samplesPerSecond;
-@property (nonatomic, readonly) NSUInteger recordingDuration;
+@property (nonatomic, readonly) NSTimeInterval recordingDuration;
 @property (nonatomic, readonly) WTNoise *recordedNoise;
 
 - (BOOL)recordForDuration:(NSTimeInterval)duration;

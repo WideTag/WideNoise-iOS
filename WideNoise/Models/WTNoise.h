@@ -19,7 +19,6 @@
 @interface WTNoise : NSObject <MKAnnotation> {
 @private
     NSMutableArray *_samples;
-    NSMutableArray *_types;
 }
 
 /*
@@ -67,12 +66,20 @@
 @property (nonatomic, retain) NSDate *measurementDate;
 
 /*
+ *  measurementDuration
+ *  
+ *  Discussion:
+ *    Contains the duration in seconds of the recorded noise.
+ */
+@property (nonatomic, assign) NSTimeInterval measurementDuration;
+
+/*
  *  types
  *  
  *  Discussion:
  *    Contains values from a predefined set selected by the user to categorize the noise.
  */
-@property (nonatomic, readonly) NSArray *types;
+@property (nonatomic, retain) NSArray *types;
 
 /*
  *  tags
@@ -99,14 +106,6 @@
  *    or maximum power. Out of range values will be given the nearest valid value.
  */
 - (void)addSample:(float)level;
-
-/*
- *  addType:
- *  
- *  Discussion:
- *    Assigns a type to the noise.
- */
-- (void)addType:(NSString *)type;
 
 + (void)processReportedNoisesInMapRect:(MKMapRect)mapRect withBlock:(void (^)(NSArray *noises))processNoises;
 

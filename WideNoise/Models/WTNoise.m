@@ -23,6 +23,8 @@
 @synthesize identifier = _identifier;
 @synthesize location = _location;
 @synthesize measurementDate = _measurementDate;
+@synthesize measurementDuration = _measurementDuration;
+@synthesize types = _types;
 @synthesize tags = _tags;
 
 #pragma mark - Properties
@@ -31,12 +33,6 @@
 {
     NSArray *samples = [[NSArray alloc] initWithArray:_samples];
     return [samples autorelease];
-}
-
-- (NSArray *)types
-{
-    NSSet *types = [[NSArray alloc] initWithArray:_types];
-    return [types autorelease];
 }
 
 - (float)averageLevel
@@ -83,11 +79,6 @@
     [_samples addObject:[NSNumber numberWithFloat:level]];
 }
 
-- (void)addType:(NSString *)type
-{
-    [_types addObject:type];
-}
-
 - (NSString *)description
 {
     NSString *description;
@@ -117,25 +108,27 @@
 
 + (void)processReportedNoisesInMapRect:(MKMapRect)mapRect withBlock:(void (^)(NSArray *noises))processNoises
 {
+    /*
     NSMutableArray *noises = [NSMutableArray arrayWithCapacity:10];
     for (int i=0; i<10; i++) {
         WTNoise *noise = [[[WTNoise alloc] init] autorelease];
         MKMapPoint randomPoint = MKMapPointMake(mapRect.origin.x + (((double)rand()/(double)RAND_MAX)*mapRect.size.width), mapRect.origin.y + (((double)rand()/(double)RAND_MAX)*mapRect.size.height));
         CLLocationCoordinate2D randomCoordinate = MKCoordinateForMapPoint(randomPoint);
+        noise.measurementDuration = 5;
         noise.location = [[[CLLocation alloc] initWithLatitude:randomCoordinate.latitude longitude:randomCoordinate.longitude] autorelease];
         [noise addSample:((double)rand()/(double)RAND_MAX)*120.0];
         noise.measurementDate = [NSDate date];
         [noises addObject:noise];
     }
     processNoises(noises);
-    /*
+    */
     [NSURLConnection sendAsynchronousRequest:[[WTRequestFactory factory] requestForFetchingNoiseReportsInMapRect:mapRect] 
                                    onSuccess:^(NSData *data, NSURLResponse *response) {
                                        NSString *responseString = [[NSString alloc] initWithBytes:[data bytes]
                                                                                            length:[data length] 
                                                                                          encoding:NSUTF8StringEncoding];
                                        NSDictionary *responseJSON = [responseString JSONValue];
-                                       if ([[responseJSON objectForKey:@"status"] intValue] == 0) {
+                                       if ([responseJSON objectForKey:@"status"] != nil && [[responseJSON objectForKey:@"status"] intValue] == 0) {
                                            NSMutableArray *noises = [NSMutableArray array];
                                            NSArray *fetchedNoises = (NSArray *)[responseJSON objectForKey:@"data"];
                                            for (id noise in fetchedNoises) {
@@ -143,6 +136,7 @@
                                                    WTNoise *noiseObject = [[[WTNoise alloc] init] autorelease];
                                                    noiseObject.identifier = [noise objectForKey:@"id"];
                                                    noiseObject.measurementDate = [NSDate dateWithTimeIntervalSince1970:[[noise objectForKey:@"timestamp"] doubleValue]];
+                                                   noiseObject.measurementDuration = [[noise objectForKey:@"duration"] doubleValue];
                                                    noiseObject.location = [[[CLLocation alloc] initWithLatitude:[[noise objectForKey:@"lat"] doubleValue] longitude:[[noise objectForKey:@"lon"] doubleValue]] autorelease];
                                                    [noiseObject addSample:[[noise objectForKey:@"db"] floatValue]];
                                                    [noises addObject:noiseObject];
@@ -157,7 +151,6 @@
                                    onFailure:^(NSData *data, NSError *error) {
                                        processNoises(nil);
                                    }];
-     */
 }
 
 #pragma mark - MKAnnotation protocol methods
@@ -169,7 +162,7 @@
 
 - (NSString *)title
 {
-    return [NSString stringWithFormat:@"%ddb", (int)self.averageLevel];
+    return [NSString stringWithFormat:@"%ddb - %d\"", (int)self.averageLevel, (int)self.measurementDuration];
 }
 
 - (NSString *)subtitle
@@ -189,7 +182,6 @@
     self = [super init];
     if (self) {
         _samples = [[NSMutableArray alloc] init];
-        _types = [[NSMutableArray alloc] init];
     }
     
     return self;
@@ -227,8 +219,8 @@
     [_samples release];
     [_location release];
     [_measurementDate release];
-    [_types release];
     [_tags release];
+    [_types release];
     [super dealloc];
 }
 

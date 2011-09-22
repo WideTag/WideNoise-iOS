@@ -32,6 +32,11 @@
     return nil;
 }
 
+- (NSURLRequest *)requestForAssigningTags:(NSArray *)tags toNoise:(WTNoise *)noise
+{
+    return nil;
+}
+
 - (id)init
 {
     self = [super init];

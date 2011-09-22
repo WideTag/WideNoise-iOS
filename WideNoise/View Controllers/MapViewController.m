@@ -78,7 +78,9 @@
             }
         }
         
-        averageLevel /= (float)[self.annotations count];    
+        if ([self.annotations count]) {
+            averageLevel /= (float)[self.annotations count];
+        }            
         
         NSString *imageName = nil;
         NSString *description = nil;

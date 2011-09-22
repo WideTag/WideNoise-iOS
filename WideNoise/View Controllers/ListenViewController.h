@@ -10,20 +10,20 @@
 
 #import <CoreLocation/CoreLocation.h>
 
-#import "Facebook.h"
 #import "TagsViewController.h"
 #import "WTLedView.h"
 #import "WTNoiseRecorder.h"
 
 @class WTNoise;
 
-@interface ListenViewController : UIViewController <CLLocationManagerDelegate, FBRequestDelegate, TagsViewControllerDelegate, UIScrollViewDelegate, WTLedViewDataSource, WTNoiseRecorderDelegate>
+@interface ListenViewController : UIViewController <CLLocationManagerDelegate, TagsViewControllerDelegate, UIAlertViewDelegate, UIScrollViewDelegate, WTLedViewDataSource, WTNoiseRecorderDelegate>
 
 @property (nonatomic, retain) IBOutlet UIImageView *bgView;
 @property (nonatomic, retain) IBOutlet UIImageView *meterView;
 @property (nonatomic, retain) IBOutlet UIImageView *pageView;
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, retain) IBOutlet UIView *samplingView;
+@property (nonatomic, retain) IBOutlet UIImageView *stopView;
 @property (nonatomic, retain) IBOutlet UIImageView *recordView;
 @property (nonatomic, retain) IBOutlet UIImageView *locationView;
 @property (nonatomic, retain) IBOutlet WTLedView *ledView;

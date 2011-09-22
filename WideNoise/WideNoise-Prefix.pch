@@ -14,10 +14,10 @@
 #endif
 
 #define USE_REFERENCE_API
-#define API_SHARED_KEY @"xxxxxxxxxxxxx"
+#define API_SHARED_KEY @""
 
-#define FACEBOOK_APP_ID @"xxxxxxxxxxxxx"
-#define TWITTER_CONSUMER_KEY @"xxxxxxxxxxxxx"
-#define TWITTER_CONSUMER_SECRET @"xxxxxxxxxxxxx"
+#define FACEBOOK_APP_ID @""
+#define TWITTER_CONSUMER_KEY @""
+#define TWITTER_CONSUMER_SECRET @""
 
 #define kTwitterUsernameDefaultKey @"twitter.username"

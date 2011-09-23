@@ -182,7 +182,7 @@
 		BC1C6A941427965200FEDC06 /* take_new_sample_disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = BC1C6A8E1427965200FEDC06 /* take_new_sample_disabled.png */; };
 		BC1C6A951427965200FEDC06 /* take_new_sample_disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC1C6A8F1427965200FEDC06 /* take_new_sample_disabled@2x.png */; };
 		BC268DCD1427A705003DE92A /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BC268DCC1427A705003DE92A /* libxml2.dylib */; };
-		BC268E051427A991003DE92A /* NSData+Base64Encodind.m in Sources */ = {isa = PBXBuildFile; fileRef = BC268E041427A991003DE92A /* NSData+Base64Encodind.m */; };
+		BC268E051427A991003DE92A /* NSData+Base64Encoding.m in Sources */ = {isa = PBXBuildFile; fileRef = BC268E041427A991003DE92A /* NSData+Base64Encoding.m */; };
 		BC268FB91427C23A003DE92A /* ExchangeCredentialsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = BC268F811427C23A003DE92A /* ExchangeCredentialsOperation.m */; };
 		BC268FBA1427C23A003DE92A /* jQueryInject.txt in Resources */ = {isa = PBXBuildFile; fileRef = BC268F831427C23A003DE92A /* jQueryInject.txt */; };
 		BC268FBB1427C23A003DE92A /* jQueryInjectLandscape.txt in Resources */ = {isa = PBXBuildFile; fileRef = BC268F841427C23A003DE92A /* jQueryInjectLandscape.txt */; };
@@ -513,7 +513,7 @@
 		BC1C6A8F1427965200FEDC06 /* take_new_sample_disabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "take_new_sample_disabled@2x.png"; path = "Images/take_new_sample_disabled@2x.png"; sourceTree = "<group>"; };
 		BC268DCC1427A705003DE92A /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		BC268E031427A991003DE92A /* NSData+Base64Encoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+Base64Encoding.h"; path = "Categories/NSData+Base64Encoding.h"; sourceTree = "<group>"; };
-		BC268E041427A991003DE92A /* NSData+Base64Encodind.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+Base64Encodind.m"; path = "Categories/NSData+Base64Encodind.m"; sourceTree = "<group>"; };
+		BC268E041427A991003DE92A /* NSData+Base64Encoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+Base64Encoding.m"; path = "Categories/NSData+Base64Encoding.m"; sourceTree = "<group>"; };
 		BC268F801427C23A003DE92A /* ExchangeCredentialsOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExchangeCredentialsOperation.h; sourceTree = "<group>"; };
 		BC268F811427C23A003DE92A /* ExchangeCredentialsOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExchangeCredentialsOperation.m; sourceTree = "<group>"; };
 		BC268F821427C23A003DE92A /* ExchangeCredentialsOperationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExchangeCredentialsOperationDelegate.h; sourceTree = "<group>"; };
@@ -884,7 +884,7 @@
 			isa = PBXGroup;
 			children = (
 				BC268E031427A991003DE92A /* NSData+Base64Encoding.h */,
-				BC268E041427A991003DE92A /* NSData+Base64Encodind.m */,
+				BC268E041427A991003DE92A /* NSData+Base64Encoding.m */,
 				BC5706E11404FB5C009AE913 /* NSURLConnection+Blocks.h */,
 				BC5706E21404FB5C009AE913 /* NSURLConnection+Blocks.m */,
 				BC6F78F6140D3E1600F76639 /* NSString+HMAC.h */,
@@ -1694,7 +1694,7 @@
 				BC1C6A471427693A00FEDC06 /* FBDialog.m in Sources */,
 				BC1C6A481427693A00FEDC06 /* FBLoginDialog.m in Sources */,
 				BC1C6A491427693A00FEDC06 /* FBRequest.m in Sources */,
-				BC268E051427A991003DE92A /* NSData+Base64Encodind.m in Sources */,
+				BC268E051427A991003DE92A /* NSData+Base64Encoding.m in Sources */,
 				BC268FB91427C23A003DE92A /* ExchangeCredentialsOperation.m in Sources */,
 				BC268FBC1427C23A003DE92A /* MGTwitterEngine.m in Sources */,
 				BC268FBD1427C23A003DE92A /* MGTwitterHTTPURLConnection.m in Sources */,

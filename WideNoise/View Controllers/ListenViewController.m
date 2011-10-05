@@ -165,6 +165,7 @@
     self.takeButton.enabled = YES;
     self.takeButton.selected = NO;
     self.extendButton.enabled = NO;
+    self.restartButton.enabled = NO;
     self.qualifyButton.enabled = NO;
     
     self.sendButton.enabled = NO;

@@ -21,6 +21,7 @@
 #define SAMPLES_PER_SECOND 20
 #define RECORD_DURATION 5 // in seconds
 #define MAX_RECORDS 3
+#define SWIPE_ANIMATION_DURATION 0.4f // in seconds
 
 #define kSendingErrorAlertViewTag 1
 
@@ -51,14 +52,24 @@
 @synthesize pageView = _pageView;
 @synthesize scrollView = _scrollView;
 @synthesize samplingView = _samplingView;
+@synthesize samplingScrollView = _samplingScrollView;
+@synthesize samplingSubview1;
+@synthesize samplingSubview2;
+@synthesize samplingSubview3;
 @synthesize stopView;
 @synthesize recordView;
 @synthesize locationView;
 @synthesize ledView = _ledView;
 @synthesize dbLabel;
 @synthesize descriptionLabel;
+@synthesize predictedDbLabel;
+@synthesize predictedDescriptionLabel;
+@synthesize matchImageView;
 @synthesize takeButton;
 @synthesize extendButton;
+@synthesize sliderLedView;
+@synthesize slider;
+@synthesize restartButton;
 @synthesize qualifyButton;
 @synthesize sendButton;
 @synthesize tagButton;
@@ -83,31 +94,42 @@
 
 - (IBAction)action:(id)sender
 {
-    if (sender == self.qualifyButton) {
-        self.qualifyButton.enabled = NO;
-        [self scrollToPage:1];
-        return;
-    }
-    
     if (sender == self.takeButton) {
-        if (self.takeButton.selected) {
-            [self clear:nil];
-        }
         self.takeButton.enabled = NO;
         self.extendButton.enabled = NO;
-        self.qualifyButton.enabled = NO;
-        self.stopView.hidden = YES;
-        self.recordView.hidden = NO;
+        self.sliderLedView.highlighted = YES;
+        self.slider.enabled = YES;
+        [self changePrediction:self.slider];
+        self.pageView.image = [UIImage imageNamed:@"pager_2.png"];
+        [UIView animateWithDuration:SWIPE_ANIMATION_DURATION 
+                         animations:^{
+                             [self.samplingScrollView scrollRectToVisible:CGRectMake(self.samplingScrollView.frame.size.width,
+                                                                                     0, 
+                                                                                     self.samplingScrollView.frame.size.width, 
+                                                                                     self.samplingScrollView.frame.size.height) 
+                                                                 animated:NO];
+                         }
+                         completion:^(BOOL finished) {
+                             if (finished) {
+                                 self.stopView.hidden = YES;
+                                 self.recordView.hidden = NO;
+                                 
+                                 [self updateLocation];
+                                 [self.noiseRecorder recordForDuration:RECORD_DURATION];
+                                 [self.ledView setNeedsDisplay];
+                             }                             
+                         }];
         
-        [self updateLocation];
     } else if (sender == self.extendButton) {
-        self.takeButton.enabled = NO;
         self.extendButton.enabled = NO;
+        
+        [self.noiseRecorder recordForDuration:RECORD_DURATION];
+        [self.ledView setNeedsDisplay];
+    } else if (sender == self.qualifyButton) {
         self.qualifyButton.enabled = NO;
+        
+        [self scrollToPage:1];
     }
-
-    [self.noiseRecorder recordForDuration:RECORD_DURATION];
-    [self.ledView setNeedsDisplay];
 }
 
 - (IBAction)clear:(id)sender
@@ -121,6 +143,10 @@
     self.meterView.image = [UIImage imageNamed:@"noise_meter_off.png"];
     self.dbLabel.text = @"";
     self.descriptionLabel.text = @"";
+    self.predictedDbLabel.text = @"";
+    self.predictedDescriptionLabel.text = @"";
+    self.matchImageView.hidden = YES;
+    self.slider.value = 0.0f;
     self.locationView.hidden = YES;
     self.stopView.hidden = NO;
     self.recordView.hidden = YES;
@@ -149,9 +175,25 @@
     
     [self.ledView setNeedsDisplay];
     
-    if (sender != self.takeButton) {
+    if (sender == self.restartButton) {
+        self.pageView.image = [UIImage imageNamed:@"pager_1.png"];
+        [UIView animateWithDuration:SWIPE_ANIMATION_DURATION 
+                         animations:^{
+                             [self.samplingScrollView scrollRectToVisible:CGRectMake(0,
+                                                                                     0, 
+                                                                                     self.samplingScrollView.frame.size.width, 
+                                                                                     self.samplingScrollView.frame.size.height) 
+                                                                 animated:NO];
+                         }
+                         completion:^(BOOL finished) {
+                             if (finished) {
+                                 
+                             }                             
+                         }];
+    } else {
+        [self.samplingScrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
         [self scrollToPage:0];
-    }    
+    }
 }
 
 - (IBAction)setType:(id)sender
@@ -262,17 +304,54 @@
     [self shareToSocialNetworks];
 }
 
+- (IBAction)changePrediction:(id)sender
+{
+    float db = [(UISlider *)sender value];
+    NSString *description = nil;
+    if (db <= 30) {
+        description = @"Feather";
+	} else if (db <= 60) {
+        description = @"Sleeping Cat";
+	} else if (db <= 70) {
+        description = @"TV";
+	} else if (db <= 90) {
+        description = @"Car";
+	} else if (db <= 100) {
+        description = @"Dragster";
+	} else if (db <= 115) {
+        description = @"T-rex";
+	} else {
+        description = @"Rock Concert";
+	}
+    
+    self.predictedDbLabel.text = [NSString stringWithFormat:@"%.0fdb", db];
+    self.predictedDescriptionLabel.text = description;
+}
+
 #pragma mark - Private methods
 
 - (void)scrollToPage:(NSUInteger)page
 {
-    [self.scrollView scrollRectToVisible:CGRectMake(self.scrollView.frame.size.width * page, 
-                                                    0, 
-                                                    self.scrollView.frame.size.width, 
-                                                    self.scrollView.frame.size.height) 
-                                animated:YES];
-    NSString *imageName = [NSString stringWithFormat:@"pager_%d.png", page+1];
+    int dot = page+1;
+    if (page > 0) {
+        dot += 2;
+    }
+    NSString *imageName = [NSString stringWithFormat:@"pager_%d.png", dot];
     self.pageView.image = [UIImage imageNamed:imageName];
+    
+    [UIView animateWithDuration:SWIPE_ANIMATION_DURATION 
+                     animations:^{
+                         [self.scrollView scrollRectToVisible:CGRectMake(self.scrollView.frame.size.width * page, 
+                                                                         0, 
+                                                                         self.scrollView.frame.size.width, 
+                                                                         self.scrollView.frame.size.height) 
+                                                     animated:NO];
+                     }
+                     completion:^(BOOL finished) {
+                         if (finished) {
+                             
+                         }                             
+                     }];
 }
 
 - (void)updateLocation
@@ -466,10 +545,33 @@
     self.dbLabel.text = [NSString stringWithFormat:@"%ddb", (int)self.recordedNoise.averageLevel];
     self.descriptionLabel.text = description;
     
-    self.takeButton.enabled = YES;
-    self.takeButton.selected = YES;
+    self.slider.enabled = NO;
+    if ([self.dbLabel.text isEqualToString:self.predictedDbLabel.text]) {
+        self.matchImageView.highlighted = NO;
+    } else {
+        self.matchImageView.highlighted = YES;
+    }
+    self.matchImageView.hidden = NO;
+    
     self.extendButton.enabled = NO;
+    self.sliderLedView.highlighted = NO;
+    self.restartButton.enabled = YES;
     self.qualifyButton.enabled = YES;
+    self.pageView.image = [UIImage imageNamed:@"pager_3.png"];
+    
+    [UIView animateWithDuration:SWIPE_ANIMATION_DURATION 
+                     animations:^{
+                         [self.samplingScrollView scrollRectToVisible:CGRectMake(self.samplingScrollView.frame.size.width*2,
+                                                                                 0, 
+                                                                                 self.samplingScrollView.frame.size.width, 
+                                                                                 self.samplingScrollView.frame.size.height) 
+                                                             animated:NO];
+                     }
+                     completion:^(BOOL finished) {
+                         if (finished) {
+                             
+                         }                             
+                     }];
 }
 
 #pragma mark - TagsViewControllerDelegate methods
@@ -529,6 +631,10 @@
     [_pageView release];
     [_scrollView release];
     [_samplingView release];
+    [_samplingScrollView release];
+    [samplingSubview1 release];
+    [samplingSubview2 release];
+    [samplingSubview3 release];
     [stopView release];
     [recordView release];
     [locationView release];
@@ -536,8 +642,14 @@
     [_ledView release];
     [dbLabel release];
     [descriptionLabel release];
+    [predictedDbLabel release];
+    [predictedDescriptionLabel release];
+    [matchImageView release];
     [takeButton release];
     [extendButton release];
+    [sliderLedView release];
+    [slider release];
+    [restartButton release];
     [qualifyButton release];
     [sendButton release];
     [tagButton release];
@@ -572,6 +684,16 @@
     [self.scrollView addSubview:self.qualifyView];
     [self.scrollView addSubview:self.sendingView];
     
+    self.samplingScrollView.contentSize = CGSizeMake(self.samplingScrollView.frame.size.width * 3, self.samplingScrollView.frame.size.height);
+    self.samplingSubview1.frame = CGRectMake(0, 0, self.samplingScrollView.frame.size.width, self.samplingScrollView.frame.size.height);
+    self.samplingSubview2.frame = CGRectMake(self.samplingScrollView.frame.size.width, 0, self.samplingScrollView.frame.size.width, self.samplingScrollView.frame.size.height);
+    self.samplingSubview3.frame = CGRectMake(self.samplingScrollView.frame.size.width*2, 0, self.samplingScrollView.frame.size.width, self.samplingScrollView.frame.size.height);
+    [self.samplingScrollView addSubview:self.samplingSubview1];
+    [self.samplingScrollView addSubview:self.samplingSubview2];
+    [self.samplingScrollView addSubview:self.samplingSubview3];
+    
+    [self scrollToPage:0];
+    
     self.ledView.ledColor = [UIColor colorWithRed:1.0 green:172.0/255.0 blue:83.0/255.0 alpha:1.0];
     
     // UIColor *ledColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"pixel_pattern.png"]];
@@ -597,6 +719,10 @@
     self.pageView = nil;
     self.scrollView = nil;
     self.samplingView = nil;
+    self.samplingScrollView = nil;
+    self.samplingSubview1 = nil;
+    self.samplingSubview2 = nil;
+    self.samplingSubview3 = nil;
     self.stopView = nil;
     self.recordView = nil;
     self.locationView = nil;
@@ -604,8 +730,14 @@
     self.ledView = nil;
     self.dbLabel = nil;
     self.descriptionLabel = nil;
+    self.predictedDbLabel = nil;
+    self.predictedDescriptionLabel = nil;
+    self.matchImageView = nil;
     self.takeButton = nil;
     self.extendButton = nil;
+    self.sliderLedView = nil;
+    self.slider = nil;
+    self.restartButton = nil;
     self.qualifyButton = nil;
     self.sendButton = nil;
     self.tagButton = nil;

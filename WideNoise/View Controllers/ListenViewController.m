@@ -571,7 +571,7 @@
     self.dbLabel.text = [NSString stringWithFormat:@"%ddb", (int)self.recordedNoise.averageLevel];
     self.descriptionLabel.text = description;
     
-    if (db == self.slider.value) {
+    if ((int)db == (int)self.slider.value) {
         [self.matchImageView setImage:[UIImage imageNamed:@"perfect.png"]];
     } else if (abs(db-self.slider.value) <= 5) {
         [self.matchImageView setImage:[UIImage imageNamed:@"good.png"]];

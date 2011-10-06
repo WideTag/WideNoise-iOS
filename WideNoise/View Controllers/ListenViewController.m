@@ -15,7 +15,7 @@
 #import "WideNoiseAppDelegate.h"
 #import "WTRequestFactory.h"
 
-#define SOCIAL_MESSAGE @"just read %.1fdb of %@ with #WideNoise"
+#define SOCIAL_MESSAGE @"just read %.1fdb of %@ with #WideNoise3"
 #define SOCIAL_URL @"http://widenoise.com/%@"
 
 #define SAMPLES_PER_SECOND 20

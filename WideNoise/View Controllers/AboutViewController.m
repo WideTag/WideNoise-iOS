@@ -12,7 +12,32 @@
 
 - (IBAction)openURL:(id)sender
 {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.makemeapp.it"]];
+    NSString *url = nil;
+    switch (((UIButton *)sender).tag) {
+        case 1:
+            url = @"http://www.widetag.com/";
+            break;
+        case 2:
+            url = @"http://www.everyaware.eu/";
+            break;
+        case 3:
+            url = @"http://www.isi.it";
+            break;
+        case 4:
+            url = @"http://www.phys.uniroma1.it/DipWeb/home.html";
+            break;
+        case 5:
+            url = @"http://www.csp.it/";
+            break;
+        case 6:
+            url = @"http://www.makemeapp.it/";
+            break;
+        default:
+            break;
+    }
+    if (url != nil) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+    }    
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil

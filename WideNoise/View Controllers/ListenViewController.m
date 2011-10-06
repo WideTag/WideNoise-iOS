@@ -24,6 +24,7 @@
 #define SWIPE_ANIMATION_DURATION 0.4f // in seconds
 
 #define kSendingErrorAlertViewTag 1
+#define kWideNoiseLogoTag 2
 
 @interface ListenViewController ()
 
@@ -64,6 +65,7 @@
 @synthesize descriptionLabel;
 @synthesize predictedDbLabel;
 @synthesize predictedDescriptionLabel;
+@synthesize guessTextView;
 @synthesize matchImageView;
 @synthesize takeButton;
 @synthesize extendButton;
@@ -98,9 +100,18 @@
         self.takeButton.enabled = NO;
         self.extendButton.enabled = NO;
         self.sliderLedView.highlighted = YES;
+        self.guessTextView.hidden = NO;
         self.slider.enabled = YES;
-        [self changePrediction:self.slider];
+        self.slider.selected = NO;
         self.pageView.image = [UIImage imageNamed:@"pager_2.png"];
+        
+        UIView *logo = [[self.view viewWithTag:kWideNoiseLogoTag] retain];
+        if (logo.superview != self.samplingSubview1) {
+            [logo removeFromSuperview];
+            [self.samplingSubview1 addSubview:logo];
+        }
+        [logo release];
+        
         [UIView animateWithDuration:SWIPE_ANIMATION_DURATION 
                          animations:^{
                              [self.samplingScrollView scrollRectToVisible:CGRectMake(self.samplingScrollView.frame.size.width,
@@ -146,7 +157,10 @@
     self.predictedDbLabel.text = @"";
     self.predictedDescriptionLabel.text = @"";
     self.matchImageView.hidden = YES;
+    self.guessTextView.hidden = YES;
     self.slider.value = 0.0f;
+    self.slider.enabled = NO;
+    self.slider.selected = NO;
     self.locationView.hidden = YES;
     self.stopView.hidden = NO;
     self.recordView.hidden = YES;
@@ -307,6 +321,12 @@
 
 - (IBAction)changePrediction:(id)sender
 {
+    if (![(UISlider *)sender isEnabled]) {
+        return;
+    }
+    
+    self.guessTextView.hidden = YES;
+    [(UISlider *)sender setSelected:YES];
     float db = [(UISlider *)sender value];
     NSString *description = nil;
     if (db <= 30) {
@@ -342,7 +362,7 @@
     
     [UIView animateWithDuration:SWIPE_ANIMATION_DURATION 
                      animations:^{
-                         [self.scrollView scrollRectToVisible:CGRectMake(self.scrollView.frame.size.width * page, 
+                         [self.scrollView scrollRectToVisible:CGRectMake(self.scrollView.frame.size.width * (page+1), 
                                                                          0, 
                                                                          self.scrollView.frame.size.width, 
                                                                          self.scrollView.frame.size.height) 
@@ -513,8 +533,11 @@
     
     self.recordedNoise = noiseRecorder.recordedNoise;
     
+    self.guessTextView.hidden = YES;
     self.stopView.hidden = NO;
     self.recordView.hidden = YES;
+    self.slider.enabled = NO;
+    self.slider.selected = NO;
     
     float db = self.recordedNoise.averageLevel;
     NSString *imageName = nil;
@@ -542,15 +565,18 @@
         description = @"Rock Concert";
 	}
     
+    [self changePrediction:self.slider];
+    
     self.meterView.image = [UIImage imageNamed:imageName];
     self.dbLabel.text = [NSString stringWithFormat:@"%ddb", (int)self.recordedNoise.averageLevel];
     self.descriptionLabel.text = description;
     
-    self.slider.enabled = NO;
-    if ([self.dbLabel.text isEqualToString:self.predictedDbLabel.text]) {
-        self.matchImageView.highlighted = NO;
+    if (db == self.slider.value) {
+        [self.matchImageView setImage:[UIImage imageNamed:@"perfect.png"]];
+    } else if (abs(db-self.slider.value) <= 5) {
+        [self.matchImageView setImage:[UIImage imageNamed:@"good.png"]];
     } else {
-        self.matchImageView.highlighted = YES;
+        [self.matchImageView setImage:[UIImage imageNamed:@"no_match.png"]];
     }
     self.matchImageView.hidden = NO;
     
@@ -645,6 +671,7 @@
     [descriptionLabel release];
     [predictedDbLabel release];
     [predictedDescriptionLabel release];
+    [guessTextView release];
     [matchImageView release];
     [takeButton release];
     [extendButton release];
@@ -677,10 +704,10 @@
 {
     [super viewDidLoad];
     
-    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * 3, self.scrollView.frame.size.height);
-    self.samplingView.frame = CGRectMake(0, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height);
-    self.qualifyView.frame = CGRectMake(self.scrollView.frame.size.width, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height);
-    self.sendingView.frame = CGRectMake(self.scrollView.frame.size.width*2, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height);
+    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * 4, self.scrollView.frame.size.height);
+    self.samplingView.frame = CGRectMake(self.scrollView.frame.size.width, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height);
+    self.qualifyView.frame = CGRectMake(self.scrollView.frame.size.width*2, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height);
+    self.sendingView.frame = CGRectMake(self.scrollView.frame.size.width*3, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height);
     [self.scrollView addSubview:self.samplingView];
     [self.scrollView addSubview:self.qualifyView];
     [self.scrollView addSubview:self.sendingView];
@@ -703,6 +730,17 @@
     
     [self.takeButton setBackgroundImage:[self.takeButton backgroundImageForState:UIControlStateHighlighted] forState:(UIControlStateSelected | UIControlStateHighlighted)];
 
+    [self.slider setThumbImage:[UIImage imageNamed:@"thumb_on.png"] forState:UIControlStateNormal];
+    [self.slider setThumbImage:[UIImage imageNamed:@"thumb.png"] forState:UIControlStateDisabled];
+    [self.slider setThumbImage:[UIImage imageNamed:@"thumb.png"] forState:UIControlStateDisabled|UIControlStateSelected];
+    [self.slider setThumbImage:[UIImage imageNamed:@"thumb.png"] forState:UIControlStateDisabled|UIControlStateHighlighted];
+    [self.slider setThumbImage:[UIImage imageNamed:@"thumb.png"] forState:UIControlStateSelected];
+    [self.slider setThumbImage:[UIImage imageNamed:@"thumb.png"] forState:UIControlStateSelected|UIControlStateHighlighted];
+    [self.slider setMinimumTrackImage:[[UIImage imageNamed:@"left_bar.png"] stretchableImageWithLeftCapWidth:6 topCapHeight:0] forState:UIControlStateNormal];
+    [self.slider setMaximumTrackImage:[[UIImage imageNamed:@"right_bar.png"] stretchableImageWithLeftCapWidth:6 topCapHeight:0] forState:UIControlStateNormal];
+    [self.slider setMinimumTrackImage:[[UIImage imageNamed:@"left_bar.png"] stretchableImageWithLeftCapWidth:6 topCapHeight:0] forState:UIControlStateDisabled];
+    [self.slider setMaximumTrackImage:[[UIImage imageNamed:@"right_bar.png"] stretchableImageWithLeftCapWidth:6 topCapHeight:0] forState:UIControlStateDisabled];
+    
     [self clear:nil];
     
     self.locationManager = [[[CLLocationManager alloc] init] autorelease];
@@ -733,6 +771,7 @@
     self.descriptionLabel = nil;
     self.predictedDbLabel = nil;
     self.predictedDescriptionLabel = nil;
+    self.guessTextView = nil;
     self.matchImageView = nil;
     self.takeButton = nil;
     self.extendButton = nil;

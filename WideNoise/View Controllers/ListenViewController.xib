@@ -112,11 +112,27 @@
 						<string key="NSFrame">{{0, 83}, {320, 2}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="486534056"/>
+						<reference key="NSNextKeyView" ref="349809977"/>
 						<string key="NSReuseIdentifierKey">_NS:541</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<reference key="IBUIImage" ref="79082143"/>
+					</object>
+					<object class="IBUIImageView" id="349809977">
+						<reference key="NSNextResponder" ref="191373211"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrame">{{46, 256}, {228, 30}}</string>
+						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="486534056"/>
+						<string key="NSReuseIdentifierKey">_NS:541</string>
+						<int key="IBUITag">2</int>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<object class="NSCustomResource" key="IBUIImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">widenoise_logo.png</string>
+						</object>
 					</object>
 					<object class="IBUIScrollView" id="210908590">
 						<reference key="NSNextResponder" ref="191373211"/>
@@ -273,7 +289,7 @@
 							<object class="IBUILabel" id="988381258">
 								<reference key="NSNextResponder" ref="229734597"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{26, 85}, {100, 33}}</string>
+								<string key="NSFrame">{{26, 84}, {100, 33}}</string>
 								<reference key="NSSuperview" ref="229734597"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="104127616"/>
@@ -301,10 +317,10 @@
 							<object class="IBUILabel" id="388284370">
 								<reference key="NSNextResponder" ref="229734597"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{27, 112}, {99, 23}}</string>
+								<string key="NSFrame">{{27, 111}, {99, 23}}</string>
 								<reference key="NSSuperview" ref="229734597"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="663561902"/>
+								<reference key="NSNextKeyView" ref="155307701"/>
 								<string key="NSReuseIdentifierKey">_NS:311</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -329,7 +345,7 @@
 							<object class="IBUILabel" id="832719502">
 								<reference key="NSNextResponder" ref="229734597"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{214, 85}, {100, 33}}</string>
+								<string key="NSFrame">{{214, 84}, {100, 33}}</string>
 								<reference key="NSSuperview" ref="229734597"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="906447137"/>
@@ -353,7 +369,7 @@
 							<object class="IBUILabel" id="906447137">
 								<reference key="NSNextResponder" ref="229734597"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{215, 112}, {99, 23}}</string>
+								<string key="NSFrame">{{215, 111}, {99, 23}}</string>
 								<reference key="NSSuperview" ref="229734597"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="692716992"/>
@@ -374,10 +390,25 @@
 								<float key="IBUIMinimumFontSize">10</float>
 								<int key="IBUITextAlignment">1</int>
 							</object>
+							<object class="IBUIImageView" id="155307701">
+								<reference key="NSNextResponder" ref="229734597"/>
+								<int key="NSvFlags">-2147483356</int>
+								<string key="NSFrame">{{58, 102}, {224, 14}}</string>
+								<reference key="NSSuperview" ref="229734597"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="663561902"/>
+								<string key="NSReuseIdentifierKey">_NS:541</string>
+								<bool key="IBUIUserInteractionEnabled">NO</bool>
+								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+								<object class="NSCustomResource" key="IBUIImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">guess_text.png</string>
+								</object>
+							</object>
 							<object class="IBUIImageView" id="663561902">
 								<reference key="NSNextResponder" ref="229734597"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{127, 92}, {87, 34}}</string>
+								<string key="NSFrame">{{133, 91}, {74, 35}}</string>
 								<reference key="NSSuperview" ref="229734597"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="832719502"/>
@@ -386,11 +417,7 @@
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">match.png</string>
-								</object>
-								<object class="NSCustomResource" key="IBUIHighlightedImage">
-									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">no_match.png</string>
+									<string key="NSResourceName">perfect.png</string>
 								</object>
 							</object>
 							<object class="IBUIImageView" id="886592905">
@@ -972,26 +999,11 @@
 							<string key="NSResourceName">take_noise_sample.png</string>
 						</object>
 					</object>
-					<object class="IBUIImageView" id="245477212">
-						<reference key="NSNextResponder" ref="726556619"/>
-						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{46, 256}, {228, 30}}</string>
-						<reference key="NSSuperview" ref="726556619"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="15963518"/>
-						<string key="NSReuseIdentifierKey">_NS:541</string>
-						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<object class="NSCustomResource" key="IBUIImage">
-							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">widenoise_logo.png</string>
-						</object>
-					</object>
 				</object>
 				<string key="NSFrameSize">{320, 431}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView" ref="245477212"/>
+				<reference key="NSNextKeyView" ref="15963518"/>
 				<string key="NSReuseIdentifierKey">_NS:180</string>
 				<reference key="IBUIBackgroundColor" ref="363784229"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -1053,13 +1065,28 @@
 							<string key="NSResourceName">led_2.png</string>
 						</object>
 					</object>
+					<object class="IBUIImageView" id="720391607">
+						<reference key="NSNextResponder" ref="689715846"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrame">{{78, 335}, {229, 33}}</string>
+						<reference key="NSSuperview" ref="689715846"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
+						<string key="NSReuseIdentifierKey">_NS:541</string>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<object class="NSCustomResource" key="IBUIImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">scale.png</string>
+						</object>
+					</object>
 					<object class="IBUISlider" id="280382558">
 						<reference key="NSNextResponder" ref="689715846"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{71, 340}, {242, 23}}</string>
 						<reference key="NSSuperview" ref="689715846"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
+						<reference key="NSNextKeyView" ref="720391607"/>
 						<string key="NSReuseIdentifierKey">_NS:605</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -1218,27 +1245,11 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">dbLabel</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="988381258"/>
-					</object>
-					<int key="connectionID">54</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">meterView</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="1001977949"/>
 					</object>
 					<int key="connectionID">65</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">descriptionLabel</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="388284370"/>
-					</object>
-					<int key="connectionID">67</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -1554,22 +1565,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">predictedDbLabel</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="832719502"/>
-					</object>
-					<int key="connectionID">167</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">predictedDescriptionLabel</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="906447137"/>
-					</object>
-					<int key="connectionID">168</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">matchImageView</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="663561902"/>
@@ -1584,6 +1579,46 @@
 						<int key="IBEventType">13</int>
 					</object>
 					<int key="connectionID">170</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">dbLabel</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="832719502"/>
+					</object>
+					<int key="connectionID">172</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">predictedDbLabel</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="988381258"/>
+					</object>
+					<int key="connectionID">173</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">predictedDescriptionLabel</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="388284370"/>
+					</object>
+					<int key="connectionID">174</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">descriptionLabel</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="906447137"/>
+					</object>
+					<int key="connectionID">175</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">guessTextView</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="155307701"/>
+					</object>
+					<int key="connectionID">177</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1606,6 +1641,7 @@
 							<reference ref="1001977949"/>
 							<reference ref="486534056"/>
 							<reference ref="53999363"/>
+							<reference ref="349809977"/>
 						</object>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">View</string>
@@ -1655,6 +1691,7 @@
 							<reference ref="663561902"/>
 							<reference ref="832719502"/>
 							<reference ref="906447137"/>
+							<reference ref="155307701"/>
 						</object>
 						<reference key="parent" ref="615085251"/>
 						<string key="objectName">View</string>
@@ -1842,7 +1879,6 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="15963518"/>
-							<reference ref="245477212"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -1854,6 +1890,7 @@
 							<reference ref="651859584"/>
 							<reference ref="595527582"/>
 							<reference ref="280382558"/>
+							<reference ref="720391607"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -1880,11 +1917,6 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">139</int>
 						<reference key="object" ref="15963518"/>
-						<reference key="parent" ref="726556619"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">141</int>
-						<reference key="object" ref="245477212"/>
 						<reference key="parent" ref="726556619"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -1931,6 +1963,7 @@
 						<int key="objectID">164</int>
 						<reference key="object" ref="663561902"/>
 						<reference key="parent" ref="229734597"/>
+						<string key="objectName">Image View - perfect.png</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">165</int>
@@ -1941,6 +1974,21 @@
 						<int key="objectID">166</int>
 						<reference key="object" ref="906447137"/>
 						<reference key="parent" ref="229734597"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">171</int>
+						<reference key="object" ref="720391607"/>
+						<reference key="parent" ref="689715846"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">176</int>
+						<reference key="object" ref="155307701"/>
+						<reference key="parent" ref="229734597"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">181</int>
+						<reference key="object" ref="349809977"/>
+						<reference key="parent" ref="191373211"/>
 					</object>
 				</object>
 			</object>
@@ -1971,7 +2019,6 @@
 					<string>137.IBPluginDependency</string>
 					<string>139.IBPluginDependency</string>
 					<string>139.IBUIButtonInspectorSelectedStateConfigurationMetadataKey</string>
-					<string>141.IBPluginDependency</string>
 					<string>142.IBPluginDependency</string>
 					<string>142.IBUIButtonInspectorSelectedStateConfigurationMetadataKey</string>
 					<string>144.IBPluginDependency</string>
@@ -1987,6 +2034,9 @@
 					<string>164.IBPluginDependency</string>
 					<string>165.IBPluginDependency</string>
 					<string>166.IBPluginDependency</string>
+					<string>171.IBPluginDependency</string>
+					<string>176.IBPluginDependency</string>
+					<string>181.IBPluginDependency</string>
 					<string>32.IBPluginDependency</string>
 					<string>34.IBPluginDependency</string>
 					<string>36.IBPluginDependency</string>
@@ -2048,7 +2098,6 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<real value="1"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<real value="1"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<real value="1"/>
@@ -2060,6 +2109,9 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<real value="3"/>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -2111,7 +2163,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">170</int>
+			<int key="maxID">181</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -2194,6 +2246,7 @@
 							<string>dbLabel</string>
 							<string>descriptionLabel</string>
 							<string>extendButton</string>
+							<string>guessTextView</string>
 							<string>ledView</string>
 							<string>locationView</string>
 							<string>matchImageView</string>
@@ -2228,6 +2281,7 @@
 							<string>UILabel</string>
 							<string>UILabel</string>
 							<string>UIButton</string>
+							<string>UIImageView</string>
 							<string>WTLedView</string>
 							<string>UIImageView</string>
 							<string>UIImageView</string>
@@ -2265,6 +2319,7 @@
 							<string>dbLabel</string>
 							<string>descriptionLabel</string>
 							<string>extendButton</string>
+							<string>guessTextView</string>
 							<string>ledView</string>
 							<string>locationView</string>
 							<string>matchImageView</string>
@@ -2310,6 +2365,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">extendButton</string>
 								<string key="candidateClassName">UIButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">guessTextView</string>
+								<string key="candidateClassName">UIImageView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">ledView</string>
@@ -2471,6 +2530,7 @@
 				<string>extend_sampling.png</string>
 				<string>extend_sampling_disabled.png</string>
 				<string>extend_sampling_hl.png</string>
+				<string>guess_text.png</string>
 				<string>hurting_button.png</string>
 				<string>hurting_button_hl.png</string>
 				<string>hurting_button_on.png</string>
@@ -2483,7 +2543,6 @@
 				<string>lovable_button.png</string>
 				<string>lovable_button_hl.png</string>
 				<string>lovable_button_on.png</string>
-				<string>match.png</string>
 				<string>multiple_button.png</string>
 				<string>multiple_button_hl.png</string>
 				<string>multiple_button_on.png</string>
@@ -2491,12 +2550,12 @@
 				<string>natural_button_hl.png</string>
 				<string>natural_button_on.png</string>
 				<string>next_label.png</string>
-				<string>no_match.png</string>
 				<string>noise_meter_off.png</string>
 				<string>outdoor_button.png</string>
 				<string>outdoor_button_hl.png</string>
 				<string>outdoor_button_on.png</string>
 				<string>pager_disabled.png</string>
+				<string>perfect.png</string>
 				<string>qualify_noise.png</string>
 				<string>qualify_noise_disabled.png</string>
 				<string>qualify_noise_hl.png</string>
@@ -2504,6 +2563,7 @@
 				<string>restart.png</string>
 				<string>restart_disabed.png</string>
 				<string>restart_hl.png</string>
+				<string>scale.png</string>
 				<string>screen.png</string>
 				<string>screen_dots.png</string>
 				<string>screen_glare.png</string>
@@ -2542,6 +2602,7 @@
 				<string>{302, 43}</string>
 				<string>{302, 43}</string>
 				<string>{302, 43}</string>
+				<string>{224, 14}</string>
 				<string>{144, 52}</string>
 				<string>{144, 52}</string>
 				<string>{144, 52}</string>
@@ -2554,7 +2615,6 @@
 				<string>{144, 52}</string>
 				<string>{144, 52}</string>
 				<string>{144, 52}</string>
-				<string>{87, 34}</string>
 				<string>{144, 52}</string>
 				<string>{144, 52}</string>
 				<string>{144, 52}</string>
@@ -2562,12 +2622,12 @@
 				<string>{144, 52}</string>
 				<string>{144, 52}</string>
 				<string>{27, 7}</string>
-				<string>{87, 34}</string>
 				<string>{303, 68}</string>
 				<string>{144, 52}</string>
 				<string>{144, 52}</string>
 				<string>{144, 52}</string>
 				<string>{95, 17}</string>
+				<string>{74, 35}</string>
 				<string>{302, 43}</string>
 				<string>{302, 43}</string>
 				<string>{302, 43}</string>
@@ -2575,6 +2635,7 @@
 				<string>{302, 43}</string>
 				<string>{302, 43}</string>
 				<string>{302, 43}</string>
+				<string>{229, 33}</string>
 				<string>{303, 129}</string>
 				<string>{288, 95}</string>
 				<string>{270, 30}</string>

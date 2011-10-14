@@ -8,9 +8,30 @@
 
 #import "WTNoise.h"
 
+#import "functions.h"
 #import "SBJson.h"
 #import "NSURLConnection+Blocks.h"
 #import "WTRequestFactory.h"
+
+// use this table to convert from raw mic level to dB SPL
+static Float32 lookup_table[][2] = {
+    {0.0, 0.0},
+    {0.003, 50},
+    {0.0046, 55},
+    {0.009, 60},
+    {0.016, 65},
+    {0.031, 70},
+    {0.052, 75},
+    {0.085, 80},
+    {0.15, 85},
+    {0.25, 90},
+    {0.5, 95},
+    {0.8, 100},
+    {0.9, 110},
+    {1, 120}
+};
+
+#define kLookupTableSize 14
 
 @interface WTNoise ()
 
@@ -24,7 +45,7 @@
 @synthesize location = _location;
 @synthesize measurementDate = _measurementDate;
 @synthesize measurementDuration = _measurementDuration;
-@synthesize types = _types;
+@synthesize perceptions = _perceptions;
 @synthesize tags = _tags;
 
 #pragma mark - Properties
@@ -44,9 +65,14 @@
     return averageLevel / [_samples count];
 }
 
+- (float)averageLevelInDB
+{
+    return interpolate([self averageLevel], lookup_table, kLookupTableSize);
+}
+
 - (UIImage *)icon
 {
-    float db = self.averageLevel;
+    float db = self.averageLevelInDB;
     NSString *imageName = nil;
     if (db <= 30) {
 		imageName = @"icon_1.png";
@@ -73,31 +99,65 @@
 {
     if (level < 0.0) {
         level = 0.0;
-    } else if (level > 120.0) {
-        level = 120.0;
+    } else if (level > 1.0) {
+        level = 1.0;
     }
     [_samples addObject:[NSNumber numberWithFloat:level]];
 }
 
+- (float)rawSampleAtIndex:(NSUInteger)index
+{
+    float sample = 0.0f;
+    if (index < [_samples count]) {
+        sample = [(NSNumber *)[_samples objectAtIndex:index] floatValue];
+    }
+    return sample;
+}
+
+- (float)sampleAtIndex:(NSUInteger)index
+{
+    return interpolate([self rawSampleAtIndex:index], lookup_table, kLookupTableSize);
+}
+
+- (void)setFeelingLevel:(float)level
+{
+    [_perceptions setObject:[NSString stringWithFormat:@"%.1f", (round(level * 10) / 10.0)] forKey:@"feeling"];
+}
+
+- (void)setDisturbanceLevel:(float)level
+{
+    [_perceptions setObject:[NSString stringWithFormat:@"%.1f", (round(level * 10) / 10.0)] forKey:@"disturbance"];
+}
+
+- (void)setIsolationLevel:(float)level
+{
+    [_perceptions setObject:[NSString stringWithFormat:@"%.1f", (round(level * 10) / 10.0)] forKey:@"isolation"];
+}
+
+- (void)setArtificialityLevel:(float)level
+{
+    [_perceptions setObject:[NSString stringWithFormat:@"%.1f", (round(level * 10) / 10.0)] forKey:@"artificiality"];
+}
+
 - (NSString *)description
 {
-    NSString *description;
-    
-    if (self.averageLevel <= 10) {
+    float db = self.averageLevelInDB;
+    NSString *description;    
+    if (db <= 10) {
         description = @"silence";
-    } else if (self.averageLevel <= 30) {
+    } else if (db <= 30) {
         description = @"feather noise";
-    } else if (self.averageLevel <= 60) {
+    } else if (db <= 60) {
         description = @"sleeping cat noise";
-    } else if (self.averageLevel <= 70) {
+    } else if (db <= 70) {
         description = @"television noise";
-    } else if (self.averageLevel <= 90) {
+    } else if (db <= 90) {
         description = @"car noise";
-    } else if (self.averageLevel <= 100) {
+    } else if (db <= 100) {
         description = @"dragster noise";
-    } else if (self.averageLevel <= 115) {
+    } else if (db <= 115) {
         description = @"t-rex noise";
-    } else if (self.averageLevel > 115) {
+    } else if (db > 115) {
         description = @"rock concert noise";
     }
     
@@ -162,7 +222,7 @@
 
 - (NSString *)title
 {
-    return [NSString stringWithFormat:@"%ddb - %d\"", (int)self.averageLevel, (int)self.measurementDuration];
+    return [NSString stringWithFormat:@"%ddb - %d\"", (int)self.averageLevelInDB, (int)self.measurementDuration];
 }
 
 - (NSString *)subtitle
@@ -182,6 +242,7 @@
     self = [super init];
     if (self) {
         _samples = [[NSMutableArray alloc] init];
+        _perceptions = [[NSMutableDictionary alloc] init];
     }
     
     return self;
@@ -220,7 +281,7 @@
     [_location release];
     [_measurementDate release];
     [_tags release];
-    [_types release];
+    [_perceptions release];
     [super dealloc];
 }
 

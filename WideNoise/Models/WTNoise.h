@@ -19,6 +19,7 @@
 @interface WTNoise : NSObject <MKAnnotation> {
 @private
     NSMutableArray *_samples;
+    NSMutableDictionary *_perceptions;
 }
 
 /*
@@ -42,12 +43,23 @@
  *  averageLevel
  *  
  *  Discussion:
+ *    Returns the average raw level of all samples.
+ *
+ *  Range:
+ *    0.0 - 1.0
+ */
+@property (nonatomic, readonly) float averageLevel;
+
+/*
+ *  averageLevelInDB
+ *  
+ *  Discussion:
  *    Returns the average level of all samples.
  *
  *  Range:
  *    0.0 - 120.0 dB
  */
-@property (nonatomic, readonly) float averageLevel;
+@property (nonatomic, readonly) float averageLevelInDB;
 
 /*
  *  location
@@ -74,12 +86,12 @@
 @property (nonatomic, assign) NSTimeInterval measurementDuration;
 
 /*
- *  types
+ *  perceptions
  *  
  *  Discussion:
- *    Contains values from a predefined set selected by the user to categorize the noise.
+ *    Contains values that define how the user perceived the noise.
  */
-@property (nonatomic, retain) NSArray *types;
+@property (nonatomic, readonly) NSDictionary *perceptions;
 
 /*
  *  tags
@@ -106,6 +118,14 @@
  *    or maximum power. Out of range values will be given the nearest valid value.
  */
 - (void)addSample:(float)level;
+
+- (float)rawSampleAtIndex:(NSUInteger)index;
+- (float)sampleAtIndex:(NSUInteger)index;
+
+- (void)setFeelingLevel:(float)level;
+- (void)setDisturbanceLevel:(float)level;
+- (void)setIsolationLevel:(float)level;
+- (void)setArtificialityLevel:(float)level;
 
 + (void)processReportedNoisesInMapRect:(MKMapRect)mapRect withBlock:(void (^)(NSArray *noises))processNoises;
 

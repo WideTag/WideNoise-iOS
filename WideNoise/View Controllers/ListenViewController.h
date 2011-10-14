@@ -55,10 +55,10 @@
 
 - (IBAction)action:(id)sender;
 - (IBAction)clear:(id)sender;
-- (IBAction)setType:(id)sender;
 - (IBAction)sendReport:(id)sender;
 - (IBAction)selectTags:(id)sender;
 - (IBAction)shareResult:(id)sender;
 - (IBAction)changePrediction:(id)sender;
+- (IBAction)qualifyNoise:(id)sender;
 
 @end

@@ -26,6 +26,11 @@
 #define kSendingErrorAlertViewTag 1
 #define kWideNoiseLogoTag 2
 
+#define kHateSliderTag 10
+#define kHecticSliderTag 11
+#define kSocialSliderTag 12
+#define kHumanMadeSliderTag 13
+
 @interface ListenViewController ()
 
 @property (nonatomic, retain) WTNoiseRecorder *noiseRecorder;
@@ -36,6 +41,8 @@
 @property (nonatomic, retain) NSMutableSet *types;
 
 @property (nonatomic, assign) BOOL shared;
+
+- (void)initSliders;
 
 - (void)scrollToPage:(NSUInteger)page;
 - (void)updateLocation;
@@ -138,6 +145,7 @@
         [self.ledView setNeedsDisplay];
     } else if (sender == self.qualifyButton) {
         self.qualifyButton.enabled = NO;
+        self.sendButton.enabled = YES;
         
         [self scrollToPage:1];
     }
@@ -171,8 +179,11 @@
     self.shared = NO;
     
     for (UIView *subview in self.qualifyView.subviews) {
-        if ([subview isKindOfClass:[UIButton class]]) {
-            [(UIButton *)subview setSelected:NO];
+        if ([subview isKindOfClass:[UISlider class]]) {
+            UISlider *_slider = (UISlider *)subview;
+            [_slider setValue:0.5];
+            [_slider setThumbImage:[UIImage imageNamed:@"slider_thumb.png"] forState:UIControlStateNormal];
+            [_slider setThumbImage:[UIImage imageNamed:@"slider_thumb.png"] forState:UIControlStateHighlighted];
         }
     }
     
@@ -211,55 +222,6 @@
     }
 }
 
-- (IBAction)setType:(id)sender
-{
-    UIButton *typeButton = (UIButton *)sender;
-    NSString *type = nil;
-    switch (typeButton.tag) {
-        case 10:
-            type = @"natural";
-            break;
-        case 11:
-            type = @"artificial";
-            break;
-        case 12:
-            type = @"lovable";
-            break;
-        case 13:
-            type = @"hurting";
-            break;
-        case 14:
-            type = @"indoor";
-            break;
-        case 15:
-            type = @"outdoor";
-            break;
-        case 16:
-            type = @"single";
-            break;
-        case 17:
-            type = @"multiple";
-            break;
-        default:
-            break;
-    }
-    
-    if ([typeButton isSelected]) {
-        [typeButton setSelected:NO];
-        [self.types removeObject:type];
-    } else {
-        [typeButton setBackgroundImage:[typeButton backgroundImageForState:UIControlStateHighlighted] forState:(UIControlStateSelected | UIControlStateHighlighted)];
-        [typeButton setSelected:YES];
-        [self.types addObject:type];
-    }
-    
-    if ([self.types count] > 0) {
-        self.sendButton.enabled = YES;
-    } else {
-        self.sendButton.enabled = NO;
-    }
-}
-
 - (IBAction)sendReport:(id)sender
 {
     self.sendButton.enabled = NO;
@@ -272,9 +234,10 @@
     
     self.recordedNoise.location = self.currentLocation;
     
-    self.recordedNoise.types = [[self.types allObjects] sortedArrayUsingComparator:^(id obj1, id obj2) {
-        return [obj1 compare:obj2];
-    }];
+    [self.recordedNoise setFeelingLevel:[(UISlider *)[self.qualifyView viewWithTag:kHateSliderTag] value]];
+    [self.recordedNoise setDisturbanceLevel:[(UISlider *)[self.qualifyView viewWithTag:kHecticSliderTag] value]];
+    [self.recordedNoise setIsolationLevel:[(UISlider *)[self.qualifyView viewWithTag:kSocialSliderTag] value]];
+    [self.recordedNoise setArtificialityLevel:[(UISlider *)[self.qualifyView viewWithTag:kHumanMadeSliderTag] value]];
     
     NSURLRequest *request = [[WTRequestFactory factory] requestForReportingNoise:self.recordedNoise date:[NSDate date]];
     __block typeof(self) selfRef = self;
@@ -349,7 +312,48 @@
     self.predictedDescriptionLabel.text = description;
 }
 
+- (IBAction)qualifyNoise:(id)sender
+{
+    UISlider *_slider = (UISlider *)sender;
+    float value = (round(_slider.value * 10) / 10.0);
+    //_slider.value = value;
+    
+    NSString *thumbImageName = nil;
+    if (value < 0.5) {
+        thumbImageName = @"slider_thumb_left.png";
+    } else if (value > 0.5) {
+        thumbImageName = @"slider_thumb_right.png";
+    } else {
+        thumbImageName = @"slider_thumb.png";
+    }
+    
+    [_slider setThumbImage:[UIImage imageNamed:thumbImageName] forState:UIControlStateNormal];
+    [_slider setThumbImage:[UIImage imageNamed:thumbImageName] forState:UIControlStateHighlighted];
+}
+
 #pragma mark - Private methods
+
+- (void)initSliders
+{
+    [self.slider setThumbImage:[UIImage imageNamed:@"thumb_on.png"] forState:UIControlStateNormal];
+    [self.slider setThumbImage:[UIImage imageNamed:@"thumb.png"] forState:UIControlStateDisabled];
+    [self.slider setThumbImage:[UIImage imageNamed:@"thumb.png"] forState:UIControlStateDisabled|UIControlStateSelected];
+    [self.slider setThumbImage:[UIImage imageNamed:@"thumb.png"] forState:UIControlStateDisabled|UIControlStateHighlighted];
+    [self.slider setThumbImage:[UIImage imageNamed:@"thumb.png"] forState:UIControlStateSelected];
+    [self.slider setThumbImage:[UIImage imageNamed:@"thumb.png"] forState:UIControlStateSelected|UIControlStateHighlighted];
+    [self.slider setMinimumTrackImage:[[UIImage imageNamed:@"left_bar.png"] stretchableImageWithLeftCapWidth:6 topCapHeight:0] forState:UIControlStateNormal];
+    [self.slider setMaximumTrackImage:[[UIImage imageNamed:@"right_bar.png"] stretchableImageWithLeftCapWidth:6 topCapHeight:0] forState:UIControlStateNormal];
+    [self.slider setMinimumTrackImage:[[UIImage imageNamed:@"left_bar.png"] stretchableImageWithLeftCapWidth:6 topCapHeight:0] forState:UIControlStateDisabled];
+    [self.slider setMaximumTrackImage:[[UIImage imageNamed:@"right_bar.png"] stretchableImageWithLeftCapWidth:6 topCapHeight:0] forState:UIControlStateDisabled];
+    
+    for (int i=0; i<4; i++) {
+        UISlider *_slider = (UISlider *)[self.qualifyView viewWithTag:kHateSliderTag+i];
+        [_slider setThumbImage:[UIImage imageNamed:@"slider_thumb.png"] forState:UIControlStateNormal];
+        [_slider setThumbImage:[UIImage imageNamed:@"slider_thumb.png"] forState:UIControlStateHighlighted];
+        [_slider setMinimumTrackImage:[[UIImage imageNamed:@"left_bar_off.png"] stretchableImageWithLeftCapWidth:6 topCapHeight:0] forState:UIControlStateNormal];
+        [_slider setMaximumTrackImage:[[UIImage imageNamed:@"right_bar.png"] stretchableImageWithLeftCapWidth:6 topCapHeight:0] forState:UIControlStateNormal];
+    }
+}
 
 - (void)scrollToPage:(NSUInteger)page
 {
@@ -395,7 +399,7 @@
 - (void)shareToSocialNetworks
 {    
     NSString *link = [NSString stringWithFormat:SOCIAL_URL, self.recordedNoise.identifier];
-    NSString *description = [NSString stringWithFormat:SOCIAL_MESSAGE, self.recordedNoise.averageLevel, self.recordedNoise];
+    NSString *description = [NSString stringWithFormat:SOCIAL_MESSAGE, self.recordedNoise.averageLevelInDB, self.recordedNoise];
     
     Facebook *facebook = ((WideNoiseAppDelegate *)[[UIApplication sharedApplication] delegate]).facebook;
     XAuthTwitterEngine *twitter = ((WideNoiseAppDelegate *)[[UIApplication sharedApplication] delegate]).twitter;
@@ -469,14 +473,9 @@
 
     NSUInteger totalSamples = self.noiseRecorder.samplesPerSecond * self.noiseRecorder.recordingDuration;
     float len = totalSamples / (float)ledView.numberOfCols;
-    float level = 0.0;
     
     NSUInteger j = (int)(len*index);
-    if (j < [noise.samples count]) {
-        level = [(NSNumber *)[noise.samples objectAtIndex:j] floatValue];
-    } else {
-        level = 0;
-    }
+    float level = [noise sampleAtIndex:j];
     
     CGFloat value = 0.0;
     if (level <= 0) {
@@ -533,13 +532,16 @@
     
     self.recordedNoise = noiseRecorder.recordedNoise;
     
-    self.guessTextView.hidden = YES;
     self.stopView.hidden = NO;
     self.recordView.hidden = YES;
+    
+    if (!self.predictedDbLabel.text || [self.predictedDbLabel.text isEqualToString:@""]) {
+        [self changePrediction:self.slider];
+    }
     self.slider.enabled = NO;
     self.slider.selected = NO;
     
-    float db = self.recordedNoise.averageLevel;
+    float db = noiseRecorder.recordedNoise.averageLevelInDB;
     NSString *imageName = nil;
     NSString *description = nil;
     if (db <= 30) {
@@ -568,7 +570,7 @@
     [self changePrediction:self.slider];
     
     self.meterView.image = [UIImage imageNamed:imageName];
-    self.dbLabel.text = [NSString stringWithFormat:@"%ddb", (int)self.recordedNoise.averageLevel];
+    self.dbLabel.text = [NSString stringWithFormat:@"%ddb", (int)db];
     self.descriptionLabel.text = description;
     
     if ((int)db == (int)self.slider.value) {
@@ -730,16 +732,7 @@
     
     [self.takeButton setBackgroundImage:[self.takeButton backgroundImageForState:UIControlStateHighlighted] forState:(UIControlStateSelected | UIControlStateHighlighted)];
 
-    [self.slider setThumbImage:[UIImage imageNamed:@"thumb_on.png"] forState:UIControlStateNormal];
-    [self.slider setThumbImage:[UIImage imageNamed:@"thumb.png"] forState:UIControlStateDisabled];
-    [self.slider setThumbImage:[UIImage imageNamed:@"thumb.png"] forState:UIControlStateDisabled|UIControlStateSelected];
-    [self.slider setThumbImage:[UIImage imageNamed:@"thumb.png"] forState:UIControlStateDisabled|UIControlStateHighlighted];
-    [self.slider setThumbImage:[UIImage imageNamed:@"thumb.png"] forState:UIControlStateSelected];
-    [self.slider setThumbImage:[UIImage imageNamed:@"thumb.png"] forState:UIControlStateSelected|UIControlStateHighlighted];
-    [self.slider setMinimumTrackImage:[[UIImage imageNamed:@"left_bar.png"] stretchableImageWithLeftCapWidth:6 topCapHeight:0] forState:UIControlStateNormal];
-    [self.slider setMaximumTrackImage:[[UIImage imageNamed:@"right_bar.png"] stretchableImageWithLeftCapWidth:6 topCapHeight:0] forState:UIControlStateNormal];
-    [self.slider setMinimumTrackImage:[[UIImage imageNamed:@"left_bar.png"] stretchableImageWithLeftCapWidth:6 topCapHeight:0] forState:UIControlStateDisabled];
-    [self.slider setMaximumTrackImage:[[UIImage imageNamed:@"right_bar.png"] stretchableImageWithLeftCapWidth:6 topCapHeight:0] forState:UIControlStateDisabled];
+    [self initSliders];
     
     [self clear:nil];
     

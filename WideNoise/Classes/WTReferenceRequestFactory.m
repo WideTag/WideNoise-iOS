@@ -24,19 +24,32 @@
 
 - (NSURLRequest *)requestForReportingNoise:(WTNoise *)noise date:(NSDate *)date
 {
+    int interval = (int)([noise.samples count] / (2*noise.measurementDuration));
+    NSMutableArray *samples = [NSMutableArray array];
+    int i = 0;
+    while (i < [noise.samples count]) {
+        [samples addObject:[NSString stringWithFormat:@"%@", [noise.samples objectAtIndex:i]]];
+        i += interval;
+    }
+    
     NSMutableDictionary *data = [NSMutableDictionary dictionary];
     [data setObject:[NSString stringWithFormat:@"%d", (int)[date timeIntervalSince1970]] forKey:@"timestamp"];
-    [data setObject:[NSString stringWithFormat:@"%.3f", noise.measurementDuration] forKey:@"duration"];
+    [data setObject:[NSString stringWithFormat:@"%.0f", noise.measurementDuration] forKey:@"duration"];
     [data setObject:[NSString stringWithFormat:@"%f", noise.location.coordinate.latitude] forKey:@"lat"];
     [data setObject:[NSString stringWithFormat:@"%f", noise.location.coordinate.longitude] forKey:@"lon"];
-    [data setObject:[NSString stringWithFormat:@"%f", noise.averageLevel] forKey:@"rms"];
+    [data setObject:[NSString stringWithFormat:@"%f", noise.averageLevel] forKey:@"average_raw"];
+    [data setObject:[NSString stringWithFormat:@"%f", noise.averageLevelInDB] forKey:@"average_db"];
     [data setObject:[[UIDevice currentDevice] uniqueDeviceIdentifier] forKey:@"uid"];
-    [data setObject:noise.types forKey:@"types"];
+    [data setObject:noise.perceptions forKey:@"perceptions"];
+    [data setObject:samples forKey:@"samples"];
+    [data setObject:[[UIDevice currentDevice] model] forKey:@"device"];
     [data setObject:@"" forKey:@"hash"];
 
     [data setObject:[[data JSONRepresentation] HMACUsingSHA256WithKey:API_SHARED_KEY] forKey:@"hash"];
     
     NSString *jsonString = [data JSONRepresentation];
+    
+    NSLog(@"%@", jsonString);
 
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:REPORTING_URL]
                                                            cachePolicy:NSURLRequestReloadIgnoringLocalCacheData 

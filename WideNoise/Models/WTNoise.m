@@ -198,7 +198,7 @@ static Float32 lookup_table[][2] = {
                                        
                                        processNoises([NSArray arrayWithArray:noises], averageLevel);
                                        
-                                       NSLog(@"%@", responseJSON);
+                                       // NSLog(@"%@", responseJSON);
                                    }
                                    onFailure:^(NSData *data, NSError *error) {
                                        processNoises(nil, 0.0);

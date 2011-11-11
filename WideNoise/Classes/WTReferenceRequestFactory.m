@@ -81,7 +81,7 @@
                                           region.span.latitudeDelta,
                                           region.span.longitudeDelta]];
     
-    NSLog(@"%@", mapURL);
+    // NSLog(@"%@", mapURL);
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:mapURL
                                                            cachePolicy:NSURLRequestReloadIgnoringLocalCacheData 

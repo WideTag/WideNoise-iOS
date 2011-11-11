@@ -23,11 +23,14 @@
         NSError *error = nil;
         NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (error) {
+            NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
+            if (!error && statusCode == 200) {
+                successBlock(data, response);
+            } else {
+                NSLog(@"status code: %d", statusCode);
+                NSLog(@"Error: %@", error.localizedDescription);
                 failureBlock(data, error);
-            } else {  
-                successBlock(data, response);  
-            }  
+            }
         });
     });
     dispatch_release(requestQueue);

@@ -12,9 +12,9 @@
 #import "SBJson.h"
 #import "UIDevice+IdentifierAddition.h"
 
-#define REPORTING_URL @"http://widenoise.com/report"
-#define MAP_URL @"http://widenoise.com/map"
-#define TAGS_URL @"http://widenoise.com/tags"
+#define REPORTING_URL @"http://www.widetag.com/widenoise/v2/api/noise/"
+#define MAP_URL @"http://www.widetag.com/widenoise/v2/api/noise/"
+#define TAGS_URL @"http://www.widetag.com/widenoise/v2/api/noise/%@/tag/"
 
 #define REQUEST_TIMEOUT 30.0
 
@@ -35,8 +35,12 @@
     NSMutableDictionary *data = [NSMutableDictionary dictionary];
     [data setObject:[NSString stringWithFormat:@"%d", (int)[date timeIntervalSince1970]] forKey:@"timestamp"];
     [data setObject:[NSString stringWithFormat:@"%.0f", noise.measurementDuration] forKey:@"duration"];
-    [data setObject:[NSString stringWithFormat:@"%f", noise.location.coordinate.latitude] forKey:@"lat"];
-    [data setObject:[NSString stringWithFormat:@"%f", noise.location.coordinate.longitude] forKey:@"lon"];
+    
+    [data setObject:[NSArray arrayWithObjects:
+                     [NSNumber numberWithDouble:noise.location.coordinate.longitude],
+                     [NSNumber numberWithDouble:noise.location.coordinate.latitude], nil] 
+             forKey:@"geo_coord"];
+     
     [data setObject:[NSString stringWithFormat:@"%f", noise.averageLevel] forKey:@"average_raw"];
     [data setObject:[NSString stringWithFormat:@"%f", noise.averageLevelInDB] forKey:@"average_db"];
     [data setObject:[[UIDevice currentDevice] uniqueDeviceIdentifier] forKey:@"uid"];
@@ -49,7 +53,7 @@
     
     NSString *jsonString = [data JSONRepresentation];
     
-    NSLog(@"%@", jsonString);
+    // NSLog(@"%@", jsonString);
 
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:REPORTING_URL]
                                                            cachePolicy:NSURLRequestReloadIgnoringLocalCacheData 
@@ -70,42 +74,29 @@
 {
     MKCoordinateRegion region = MKCoordinateRegionForMapRect(mapRect);
     
-    NSMutableDictionary *data = [NSMutableDictionary dictionary];
-    [data setObject:[NSString stringWithFormat:@"%f", region.center.latitude] forKey:@"lat"];
-    [data setObject:[NSString stringWithFormat:@"%f", region.center.longitude] forKey:@"lon"];
-    [data setObject:[NSString stringWithFormat:@"%f", region.span.latitudeDelta] forKey:@"lat_delta"];
-    [data setObject:[NSString stringWithFormat:@"%f", region.span.longitudeDelta] forKey:@"lon_delta"];
-    [data setObject:@"" forKey:@"hash"];
+    NSURL *mapURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@?lat=%f&lon=%f&lat_delta=%f&lon_delta=%f",
+                                          MAP_URL,
+                                          region.center.latitude,
+                                          region.center.longitude,
+                                          region.span.latitudeDelta,
+                                          region.span.longitudeDelta]];
     
-    [data setObject:[[data JSONRepresentation] HMACUsingSHA256WithKey:API_SHARED_KEY] forKey:@"hash"];
+    NSLog(@"%@", mapURL);
     
-    NSString *jsonString = [data JSONRepresentation];
-    
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:MAP_URL]
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:mapURL
                                                            cachePolicy:NSURLRequestReloadIgnoringLocalCacheData 
                                                        timeoutInterval:REQUEST_TIMEOUT];
     
-    NSData *jsonData = [NSData dataWithBytes:[jsonString cStringUsingEncoding:NSUTF8StringEncoding] length:[jsonString length]];
-    
-    [request setHTTPMethod:@"POST"];
+    [request setHTTPMethod:@"GET"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request setValue:[NSString stringWithFormat:@"%d", [jsonData length]] forHTTPHeaderField:@"Content-Length"];
-    [request setHTTPBody: jsonData];
     
     return request;
 }
 
 - (NSURLRequest *)requestForAssigningTags:(NSArray *)tags toNoise:(WTNoise *)noise
 {
-    if (noise.identifier == nil) {
-        noise.identifier = @"test";
-        //return nil;
-    }
-    
     NSMutableDictionary *data = [NSMutableDictionary dictionary];
     [data setObject:[NSString stringWithFormat:@"%d", (int)[[NSDate date] timeIntervalSince1970]] forKey:@"timestamp"];
-    [data setObject:noise.identifier forKey:@"id"];
     if (tags == nil) {
         [data setObject:[NSArray array] forKey:@"tags"];
     } else {
@@ -118,7 +109,11 @@
     
     NSString *jsonString = [data JSONRepresentation];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:TAGS_URL]
+    // NSLog(@"%@", jsonString);
+    
+    NSURL *tagsURL = [NSURL URLWithString:[NSString stringWithFormat:TAGS_URL, noise.identifier]];
+    // NSLog(@"%@", tagsURL);
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:tagsURL
                                                            cachePolicy:NSURLRequestReloadIgnoringLocalCacheData 
                                                        timeoutInterval:REQUEST_TIMEOUT];
     

@@ -61,6 +61,8 @@
  */
 @property (nonatomic, readonly) float averageLevelInDB;
 
+@property (nonatomic, assign) float fetchedAverageLevel;
+
 /*
  *  location
  *  
@@ -127,6 +129,6 @@
 - (void)setIsolationLevel:(float)level;
 - (void)setArtificialityLevel:(float)level;
 
-+ (void)processReportedNoisesInMapRect:(MKMapRect)mapRect withBlock:(void (^)(NSArray *noises))processNoises;
++ (void)processReportedNoisesInMapRect:(MKMapRect)mapRect withBlock:(void (^)(NSArray *noises, float averageLevel))processNoises;
 
 @end

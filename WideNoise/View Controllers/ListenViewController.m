@@ -83,7 +83,7 @@
 @synthesize sendButton;
 @synthesize tagButton;
 @synthesize shareButton;
-@synthesize newButton;
+@synthesize takeNewButton;
 @synthesize qualifyView;
 @synthesize sendingView;
 @synthesize statusView;
@@ -197,7 +197,7 @@
     
     self.tagButton.enabled = NO;
     self.shareButton.enabled = NO;
-    self.newButton.enabled = NO;
+    self.takeNewButton.enabled = NO;
     
     [self.ledView setNeedsDisplay];
     
@@ -227,7 +227,7 @@
     self.sendButton.enabled = NO;
     self.tagButton.enabled = NO;
     self.shareButton.enabled = NO;
-    self.newButton.enabled = NO;
+    self.takeNewButton.enabled = NO;
     
     [self scrollToPage:2];
     [[self statusView] setImage:[UIImage imageNamed:@"status_screen_sending.png"]];
@@ -248,13 +248,8 @@
                                                                                            length:[data length] 
                                                                                          encoding:NSUTF8StringEncoding];
                                        NSDictionary *responseJSON = [responseString JSONValue];
-                                       if ([responseJSON objectForKey:@"status"] != nil && [[responseJSON objectForKey:@"status"] intValue] == 0) {
-                                           blockNoise.identifier = [responseJSON objectForKey:@"id"];
-                                           [selfRef completeSendingReport];
-                                       } else {
-                                           NSLog(@"An error occurred when trying to report noise (status = %@)", [responseJSON objectForKey:@"status"]);
-                                           [selfRef handleConnectionError];
-                                       }
+                                       blockNoise.identifier = [responseJSON objectForKey:@"id"];
+                                       [selfRef completeSendingReport];
                                    } 
                                    onFailure:^(NSData *data, NSError *error) {                                       
                                        [selfRef handleConnectionError];
@@ -448,7 +443,7 @@
         self.shareButton.enabled = NO;
     }
     
-    self.newButton.enabled = YES;
+    self.takeNewButton.enabled = YES;
 
     self.statusView.image = [UIImage imageNamed:@"status_screen_done.png"];
 }
@@ -684,7 +679,7 @@
     [sendButton release];
     [tagButton release];
     [shareButton release];
-    [newButton release];
+    [takeNewButton release];
     [qualifyView release];
     [sendingView release];
     [statusView release];
@@ -775,7 +770,7 @@
     self.sendButton = nil;
     self.tagButton = nil;
     self.shareButton = nil;
-    self.newButton = nil;
+    self.takeNewButton = nil;
     self.qualifyView = nil;
     self.sendingView = nil;
     self.statusView = nil;

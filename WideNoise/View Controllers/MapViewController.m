@@ -53,34 +53,24 @@
 
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
 {
-    __block float averageLevel = 0.0;
-    
     NSMutableSet *removedAnnotations = [[NSMutableSet alloc] init];
     for (WTNoise *noise in self.annotations) {
         MKMapPoint annotationPoint = MKMapPointForCoordinate(noise.location.coordinate);
         if (!MKMapRectContainsPoint(mapView.visibleMapRect, annotationPoint)) {
             [removedAnnotations addObject:noise];
             [mapView removeAnnotation:noise];
-        } else {
-            averageLevel += noise.averageLevel;
         }
     }
     [self.annotations minusSet:removedAnnotations];
     [removedAnnotations release];
     
-    [WTNoise processReportedNoisesInMapRect:mapView.visibleMapRect withBlock:^(NSArray *noises) {
+    [WTNoise processReportedNoisesInMapRect:mapView.visibleMapRect withBlock:^(NSArray *noises, float averageLevel) {
         for (WTNoise *noise in noises) {
             if (![self.annotations containsObject:noise]) {
                 [self.annotations addObject:noise];
                 [mapView addAnnotation:noise];
-                
-                averageLevel += noise.averageLevel;
             }
         }
-        
-        if ([self.annotations count]) {
-            averageLevel /= (float)[self.annotations count];
-        }            
         
         NSString *imageName = nil;
         NSString *description = nil;

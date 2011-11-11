@@ -46,7 +46,7 @@
 @property (nonatomic, retain) IBOutlet UIButton *sendButton;
 @property (nonatomic, retain) IBOutlet UIButton *tagButton;
 @property (nonatomic, retain) IBOutlet UIButton *shareButton;
-@property (nonatomic, retain) IBOutlet UIButton *newButton;
+@property (nonatomic, retain) IBOutlet UIButton *takeNewButton;
 @property (nonatomic, retain) IBOutlet UIView *qualifyView;
 @property (nonatomic, retain) IBOutlet UIView *sendingView;
 @property (nonatomic, retain) IBOutlet UIImageView *statusView;

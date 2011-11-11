@@ -48,6 +48,8 @@ static Float32 lookup_table[][2] = {
 @synthesize perceptions = _perceptions;
 @synthesize tags = _tags;
 
+@synthesize fetchedAverageLevel;
+
 #pragma mark - Properties
 
 - (NSArray *)samples
@@ -166,50 +168,40 @@ static Float32 lookup_table[][2] = {
 
 #pragma mark Class methods
 
-+ (void)processReportedNoisesInMapRect:(MKMapRect)mapRect withBlock:(void (^)(NSArray *noises))processNoises
++ (void)processReportedNoisesInMapRect:(MKMapRect)mapRect withBlock:(void (^)(NSArray *noises, float averageLevel))processNoises
 {
-    /*
-    NSMutableArray *noises = [NSMutableArray arrayWithCapacity:10];
-    for (int i=0; i<10; i++) {
-        WTNoise *noise = [[[WTNoise alloc] init] autorelease];
-        MKMapPoint randomPoint = MKMapPointMake(mapRect.origin.x + (((double)rand()/(double)RAND_MAX)*mapRect.size.width), mapRect.origin.y + (((double)rand()/(double)RAND_MAX)*mapRect.size.height));
-        CLLocationCoordinate2D randomCoordinate = MKCoordinateForMapPoint(randomPoint);
-        noise.measurementDuration = 5;
-        noise.location = [[[CLLocation alloc] initWithLatitude:randomCoordinate.latitude longitude:randomCoordinate.longitude] autorelease];
-        [noise addSample:((double)rand()/(double)RAND_MAX)*120.0];
-        noise.measurementDate = [NSDate date];
-        [noises addObject:noise];
-    }
-    processNoises(noises);
-    */
     [NSURLConnection sendAsynchronousRequest:[[WTRequestFactory factory] requestForFetchingNoiseReportsInMapRect:mapRect] 
                                    onSuccess:^(NSData *data, NSURLResponse *response) {
                                        NSString *responseString = [[NSString alloc] initWithBytes:[data bytes]
                                                                                            length:[data length] 
                                                                                          encoding:NSUTF8StringEncoding];
                                        NSDictionary *responseJSON = [responseString JSONValue];
-                                       if ([responseJSON objectForKey:@"status"] != nil && [[responseJSON objectForKey:@"status"] intValue] == 0) {
-                                           NSMutableArray *noises = [NSMutableArray array];
-                                           NSArray *fetchedNoises = (NSArray *)[responseJSON objectForKey:@"data"];
-                                           for (id noise in fetchedNoises) {
-                                               if ([noise isKindOfClass:[NSDictionary class]]) {
-                                                   WTNoise *noiseObject = [[[WTNoise alloc] init] autorelease];
-                                                   noiseObject.identifier = [noise objectForKey:@"id"];
-                                                   noiseObject.measurementDate = [NSDate dateWithTimeIntervalSince1970:[[noise objectForKey:@"timestamp"] doubleValue]];
-                                                   noiseObject.measurementDuration = [[noise objectForKey:@"duration"] doubleValue];
-                                                   noiseObject.location = [[[CLLocation alloc] initWithLatitude:[[noise objectForKey:@"lat"] doubleValue] longitude:[[noise objectForKey:@"lon"] doubleValue]] autorelease];
-                                                   [noiseObject addSample:[[noise objectForKey:@"db"] floatValue]];
-                                                   [noises addObject:noiseObject];
-                                               }
-                                           }
-                                           processNoises([NSArray arrayWithArray:noises]);
-                                       } else {
-                                           NSLog(@"An error occurred when trying to fetch reported noises (status = %@)", [responseJSON objectForKey:@"status"]);
-                                           processNoises(nil);
-                                       }                                       
+                                       
+                                       float averageLevel = [[responseJSON objectForKey:@"average_db"] floatValue];
+                                       NSMutableArray *noises = [NSMutableArray array];
+                                       NSDictionary *fetchedNoises = nil;
+                                       if ([[responseJSON objectForKey:@"data"] isKindOfClass:[NSDictionary class]]) {
+                                           fetchedNoises = (NSDictionary *)[responseJSON objectForKey:@"data"];
+                                       }
+                                       for (NSString *noiseID in [fetchedNoises allKeys]) {
+                                           NSDictionary *noise = [fetchedNoises objectForKey:noiseID];
+                                           WTNoise *noiseObject = [[[WTNoise alloc] init] autorelease];
+                                           noiseObject.identifier = noiseID;
+                                           noiseObject.measurementDate = [NSDate dateWithTimeIntervalSince1970:[[noise objectForKey:@"timestamp"] doubleValue]];
+                                           noiseObject.measurementDuration = [[noise objectForKey:@"duration"] doubleValue];
+                                           NSArray *coordinates = (NSArray *)[noise objectForKey:@"geo_coord"];
+                                           noiseObject.location = [[[CLLocation alloc] initWithLatitude:[[coordinates objectAtIndex:1] doubleValue] longitude:[[coordinates objectAtIndex:0] doubleValue]] autorelease];
+                                           noiseObject.fetchedAverageLevel = [[noise objectForKey:@"average_db"] floatValue];
+
+                                           [noises addObject:noiseObject];
+                                       }
+                                       
+                                       processNoises([NSArray arrayWithArray:noises], averageLevel);
+                                       
+                                       NSLog(@"%@", responseJSON);
                                    }
                                    onFailure:^(NSData *data, NSError *error) {
-                                       processNoises(nil);
+                                       processNoises(nil, 0.0);
                                    }];
 }
 
@@ -222,7 +214,7 @@ static Float32 lookup_table[][2] = {
 
 - (NSString *)title
 {
-    return [NSString stringWithFormat:@"%ddb - %d\"", (int)self.averageLevelInDB, (int)self.measurementDuration];
+    return [NSString stringWithFormat:@"%ddb - %d\"", (int)self.fetchedAverageLevel, (int)self.measurementDuration];
 }
 
 - (NSString *)subtitle
@@ -243,6 +235,8 @@ static Float32 lookup_table[][2] = {
     if (self) {
         _samples = [[NSMutableArray alloc] init];
         _perceptions = [[NSMutableDictionary alloc] init];
+        
+        fetchedAverageLevel = -1;
     }
     
     return self;

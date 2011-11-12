@@ -69,7 +69,11 @@ static Float32 lookup_table[][2] = {
 
 - (float)averageLevelInDB
 {
-    return interpolate([self averageLevel], lookup_table, kLookupTableSize);
+    if (self.fetchedAverageLevel < 0) {
+        return interpolate([self averageLevel], lookup_table, kLookupTableSize);
+    }
+    
+    return self.fetchedAverageLevel;
 }
 
 - (UIImage *)icon

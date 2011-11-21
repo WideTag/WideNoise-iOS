@@ -268,6 +268,7 @@
 		BCB4ED4A143DF0E100EDDA73 /* good@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BCB4ED46143DF0E100EDDA73 /* good@2x.png */; };
 		BCB4ED4B143DF0E100EDDA73 /* perfect.png in Resources */ = {isa = PBXBuildFile; fileRef = BCB4ED47143DF0E100EDDA73 /* perfect.png */; };
 		BCB4ED4C143DF0E100EDDA73 /* perfect@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BCB4ED48143DF0E100EDDA73 /* perfect@2x.png */; };
+		BCC08555147A3EBA0009E521 /* WideSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC08554147A3EBA0009E521 /* WideSlider.m */; };
 		BCC206581403D9CE00C1BF57 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCC206571403D9CE00C1BF57 /* UIKit.framework */; };
 		BCC2065A1403D9CE00C1BF57 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCC206591403D9CE00C1BF57 /* Foundation.framework */; };
 		BCC2065C1403D9CE00C1BF57 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCC2065B1403D9CE00C1BF57 /* CoreGraphics.framework */; };
@@ -672,6 +673,8 @@
 		BCB4ED46143DF0E100EDDA73 /* good@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "good@2x.png"; path = "Images/good@2x.png"; sourceTree = "<group>"; };
 		BCB4ED47143DF0E100EDDA73 /* perfect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = perfect.png; path = Images/perfect.png; sourceTree = "<group>"; };
 		BCB4ED48143DF0E100EDDA73 /* perfect@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "perfect@2x.png"; path = "Images/perfect@2x.png"; sourceTree = "<group>"; };
+		BCC08553147A3EBA0009E521 /* WideSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WideSlider.h; path = Views/WideSlider.h; sourceTree = "<group>"; };
+		BCC08554147A3EBA0009E521 /* WideSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WideSlider.m; path = Views/WideSlider.m; sourceTree = "<group>"; };
 		BCC206531403D9CE00C1BF57 /* WideNoise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WideNoise.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCC206571403D9CE00C1BF57 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		BCC206591403D9CE00C1BF57 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1080,6 +1083,8 @@
 				BCAF7FA4141E475B00929BFB /* EditableTableViewCell.xib */,
 				BCAF7FA7141E624C00929BFB /* TagTableViewCell.h */,
 				BCAF7FA8141E624C00929BFB /* TagTableViewCell.m */,
+				BCC08553147A3EBA0009E521 /* WideSlider.h */,
+				BCC08554147A3EBA0009E521 /* WideSlider.m */,
 				BCAC8591140FC056003891E9 /* WTLedView.h */,
 				BCAC8592140FC056003891E9 /* WTLedView.m */,
 			);
@@ -1732,6 +1737,7 @@
 				BC268FD51427D130003DE92A /* TwitterLoginViewController.m in Sources */,
 				BC2D16BB142B9973001F0DBA /* NSString+MD5Addition.m in Sources */,
 				BC2D16BC142B9973001F0DBA /* UIDevice+IdentifierAddition.m in Sources */,
+				BCC08555147A3EBA0009E521 /* WideSlider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

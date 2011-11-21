@@ -11,8 +11,8 @@
 #import "UIDevice+IdentifierAddition.h"
 #import "WideNoiseAppDelegate.h"
 
-#define WIDGET_URL @"http://www.widetag.com/widenoise/widget"
-#define PERSONAL_PAGE_URL @"http://widenoise.com/profile?id=%@"
+#define WIDGET_URL @"http://www.widetag.com/widenoise/profile/widget/%@"
+#define PERSONAL_PAGE_URL @"http://www.widetag.com/widenoise/profile/%@"
 
 #define kTwitterTag 100
 #define kFacebookTag 200
@@ -76,7 +76,7 @@
 
 - (IBAction)sendEmail:(id)sender
 {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:WIDGET_URL]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:WIDGET_URL, [[UIDevice currentDevice] uniqueDeviceIdentifier]]]];
 }
 
 - (IBAction)openPersonalPage:(id)sender

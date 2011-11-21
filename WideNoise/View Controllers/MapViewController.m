@@ -26,6 +26,8 @@
 @synthesize overlayLabel;
 @synthesize topColorView;
 @synthesize bottomColorView;
+@synthesize noDataLabel;
+@synthesize areaLabel;
 
 @synthesize locationManager = _locationManager;
 @synthesize annotations = _annotations;
@@ -75,40 +77,53 @@
         NSString *imageName = nil;
         NSString *description = nil;
         float color = 0;
-        if (averageLevel <= 30) {
-            imageName = @"icon_1.png";
-            description = @"Feather";
-            color = 30;
-        } else if (averageLevel <= 60) {
-            imageName = @"icon_2.png";
-            description = @"Sleeping Cat";
-            color = 60;
-        } else if (averageLevel <= 70) {
-            imageName = @"icon_3.png";
-            description = @"TV";
-            color = 70;
-        } else if (averageLevel <= 90) {
-            imageName = @"icon_4.png";
-            description = @"Car";
-            color = 90;
-        } else if (averageLevel <= 100) {
-            imageName = @"icon_5.png";
-            description = @"Dragster";
-            color = 90;
-        } else if (averageLevel <= 115) {
-            imageName = @"icon_6.png";
-            description = @"T-rex";
-            color = 115;
+        if (averageLevel == 0) {
+            self.overlayImageView.hidden = YES;
+            self.areaLabel.hidden = YES;
+            self.overlayLabel.hidden = YES;
+            self.noDataLabel.hidden = NO;
+            
+            self.topColorView.backgroundColor = self.bottomColorView.backgroundColor = [UIColor lightGrayColor];
         } else {
-            imageName = @"icon_7.png";
-            description = @"Rock Concert";
-            color = 120;
+            self.overlayImageView.hidden = NO;
+            self.areaLabel.hidden = NO;
+            self.overlayLabel.hidden = NO;
+            self.noDataLabel.hidden = YES;
+            
+            if (averageLevel <= 30) {
+                imageName = @"icon_1.png";
+                description = @"Feather";
+                color = 30;
+            } else if (averageLevel <= 60) {
+                imageName = @"icon_2.png";
+                description = @"Sleeping Cat";
+                color = 60;
+            } else if (averageLevel <= 70) {
+                imageName = @"icon_3.png";
+                description = @"TV";
+                color = 70;
+            } else if (averageLevel <= 90) {
+                imageName = @"icon_4.png";
+                description = @"Car";
+                color = 90;
+            } else if (averageLevel <= 100) {
+                imageName = @"icon_5.png";
+                description = @"Dragster";
+                color = 90;
+            } else if (averageLevel <= 115) {
+                imageName = @"icon_6.png";
+                description = @"T-rex";
+                color = 115;
+            } else {
+                imageName = @"icon_7.png";
+                description = @"Rock Concert";
+                color = 120;
+            }
+            
+            self.overlayImageView.image = [UIImage imageNamed:imageName];
+            self.overlayLabel.text = [NSString stringWithFormat:@"%@ area", description];
+            self.topColorView.backgroundColor = self.bottomColorView.backgroundColor = [UIColor colorWithHue:(120.0-color)/360.0 saturation:1.0 brightness:1.0 alpha:1.0];
         }
-        
-        self.topColorView.backgroundColor = self.bottomColorView.backgroundColor = [UIColor colorWithHue:(120.0-color)/360.0 saturation:1.0 brightness:1.0 alpha:1.0];
-        
-        self.overlayImageView.image = [UIImage imageNamed:imageName];
-        self.overlayLabel.text = [NSString stringWithFormat:@"%@ area", description];
     }];   
 }
 
@@ -203,6 +218,8 @@
     self.overlayLabel = nil;
     self.topColorView = nil;
     self.bottomColorView = nil;
+    self.noDataLabel = nil;
+    self.areaLabel = nil;
     self.locationManager = nil;
     self.annotations = nil;
 }

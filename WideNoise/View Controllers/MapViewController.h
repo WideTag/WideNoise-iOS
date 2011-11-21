@@ -18,5 +18,7 @@
 @property (nonatomic, retain) IBOutlet UILabel *overlayLabel;
 @property (nonatomic, retain) IBOutlet UIView *topColorView;
 @property (nonatomic, retain) IBOutlet UIView *bottomColorView;
+@property (nonatomic, retain) IBOutlet UILabel *noDataLabel;
+@property (nonatomic, retain) IBOutlet UILabel *areaLabel;
 
 @end

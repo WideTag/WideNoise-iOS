@@ -32,6 +32,9 @@
         case 6:
             url = @"http://www.makemeapp.it/";
             break;
+        case 7:
+            url = @"http://www.everyaware.eu/consortium/l3s-research-center/";
+            break;
         default:
             break;
     }

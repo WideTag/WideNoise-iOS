@@ -31,7 +31,7 @@
 @property (nonatomic, retain) IBOutlet UIImageView *recordView;
 @property (nonatomic, retain) IBOutlet UIImageView *locationView;
 @property (nonatomic, retain) IBOutlet WTLedView *ledView;
-@property (nonatomic, retain) IBOutlet UIImageView *guessTextView;
+@property (nonatomic, retain) IBOutlet UILabel *guessTextView;
 @property (nonatomic, retain) IBOutlet UILabel *dbLabel;
 @property (nonatomic, retain) IBOutlet UILabel *descriptionLabel;
 @property (nonatomic, retain) IBOutlet UILabel *predictedDbLabel;

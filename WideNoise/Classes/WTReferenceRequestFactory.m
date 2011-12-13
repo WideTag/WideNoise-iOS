@@ -103,6 +103,7 @@
         [data setObject:tags forKey:@"tags"];
     }
     [data setObject:[[UIDevice currentDevice] uniqueDeviceIdentifier] forKey:@"uid"];
+    [data setObject:noise.identifier forKey:@"id"];
     [data setObject:@"" forKey:@"hash"];
     
     [data setObject:[[data JSONRepresentation] HMACUsingSHA256WithKey:API_SHARED_KEY] forKey:@"hash"];

@@ -14,6 +14,7 @@
 #import "WTRequestFactory.h"
 
 // use this table to convert from raw mic level to dB SPL
+// based on research and device testing done by Babele Dunnit
 static Float32 lookup_table[][2] = {
     {0.0, 0.0},
     {0.003, 50},
